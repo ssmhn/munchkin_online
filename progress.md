@@ -106,6 +106,13 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-021 — WebSocket server
+- Created Fastify + @fastify/websocket server with JWT auth
+- WsClient wraps WebSocket with send(), ping(), playerId, roomId
+- MessageRouter parses messages, handles PING/PONG, routes to GameRoom handler
+- Invalid JSON returns ERROR without dropping connection
+- 4 tests: reject without JWT, accept with JWT, error on invalid JSON, PING→PONG
+
 ## TASK-020 — Redis + Prisma/PostgreSQL setup
 - Created docker-compose.yml with Redis 7 and PostgreSQL 16
 - Created Prisma schema with User and GameSession models
