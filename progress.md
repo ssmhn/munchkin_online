@@ -106,6 +106,13 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-020 — Redis + Prisma/PostgreSQL setup
+- Created docker-compose.yml with Redis 7 and PostgreSQL 16
+- Created Prisma schema with User and GameSession models
+- Created RedisGameStore with getState, setState, compareAndSet (atomic via Lua script), 24h TTL
+- Created PgUserStore with createUser, findUserById, findUserByEmail
+- 4 integration tests: setState+getState, null for missing, CAS success, CAS failure with wrong version
+
 ## TASK-019 — Passive race/class abilities
 - Verified all passive abilities already implemented: Elf ON_HELPER_VICTORY, Halfling ESCAPE_BONUS, Dwarf EXTRA_BIG_ITEM
 - Created packages/game-engine/__tests__/passive-abilities.test.ts consolidating 3 integration tests
