@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      '/auth': 'http://localhost:3000',
       '/lobby': 'http://localhost:3000',
       '/ws': {
         target: 'ws://localhost:3000',
