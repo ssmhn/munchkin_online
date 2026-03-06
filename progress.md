@@ -97,3 +97,11 @@
 - Warrior IGNORE_WEAPON_RESTRICTIONS bypasses requirements
 - Requirements: CLASS, RACE, GENDER, NOT_CLASS, NOT_RACE
 - 5 tests: equip, duplicate slot, two-handed blocking, big item limit, Dwarf exception
+
+## TASK-016 — Curses system
+- Created packages/game-engine/src/curses.ts with applyCurseCard and removeCurse
+- Immediate effects: REMOVE_CLASS, REMOVE_RACE, CHANGE_GENDER, MODIFY_LEVEL, REMOVE_EQUIPMENT
+- Lasting curses via APPLY_CURSE effect → added to player.curses, affect calculatePlayerPower
+- removeCurse removes by curseId or shifts first curse
+- Curse cards discarded after application
+- 4 tests: lose class, change gender, lasting combat curse, remove curse restores power
