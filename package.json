@@ -16,7 +16,8 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@prisma/engines",
-      "prisma"
+      "prisma",
+      "bcrypt"
     ]
   }
 }

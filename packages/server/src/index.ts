@@ -6,3 +6,7 @@ export type { ServerConfig, JwtPayload } from './ws/server';
 export { WsClient } from './ws/ws-client';
 export { MessageRouter } from './ws/message-router';
 export type { GameRoomHandler } from './ws/message-router';
+export { createAuthRoutes } from './auth/auth-routes';
+export type { AuthConfig } from './auth/auth-routes';
+export { createLobbyRoutes } from './lobby/lobby-routes';
+export type { LobbyConfig, Room, RoomPlayer, Invite } from './lobby/lobby-routes';
