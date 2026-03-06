@@ -306,3 +306,12 @@
 - Performance: only transform and opacity animated, no width/height/top/left
 - TestAmbientPage at /test-ambient
 - 4 Playwright E2E tests: title letters, particle count, glow switching, transform-only animation
+
+## TASK-042 — Victory screen
+- Created VictoryScreen: 100+ confetti particles, trophy bounce, letter-by-letter winner name
+- Confetti: gsap.to random x/y/rotation/scale/color from center, 8 colors
+- Trophy: gsap.from y:-200 bounce.out + wobble rotation repeat:-1 yoyo
+- Winner name: letter stagger gsap.from y:-50, opacity:0, scale:0→1 with back.out
+- Play Again button appears after 2s delay with gsap.from opacity:0, y:30
+- TestVictoryPage at /test-victory
+- 4 Playwright E2E tests: 100+ confetti, letter count, trophy, button delay+navigate
