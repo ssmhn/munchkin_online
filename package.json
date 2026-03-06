@@ -1,0 +1,16 @@
+{
+  "name": "munchkin-online",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "turbo": "^2",
+    "typescript": "^5.7.0"
+  },
+  "packageManager": "pnpm@10.30.3"
+}
