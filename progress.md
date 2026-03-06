@@ -23,3 +23,9 @@
 - GameAction is exhaustive discriminated union (12 variants)
 - S2C_Message covers all 12 message types from spec
 - 4 tests verify exhaustive switch, FULL_SYNC construction, C2S messages
+
+## TASK-005 — Game engine skeleton
+- Created engine.ts with applyAction, validate.ts with phase-based validation, errors.ts, helpers.ts
+- State machine: KICK_DOOR→LOOT_ROOM, LOOT_ROOM→END_TURN→KICK_DOOR (next player) or CHARITY
+- Action handlers stubbed for future tasks (combat, help, sell, etc.)
+- 11 tests cover phase transitions, validation, immutability, diceRoll range check

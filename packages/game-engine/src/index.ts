@@ -1,1 +1,4 @@
-export type { GameState, PlayerState, CombatState } from '@munchkin/shared';
+export { applyAction } from './engine';
+export type { ActionResult } from './engine';
+export { InvalidActionError } from './errors';
+export { validateAction } from './validate';
