@@ -7,3 +7,4 @@ export type { CombatResult } from './combat';
 export { resolveCombatVictory } from './combat-resolution';
 export type { CombatConfig } from './combat-resolution';
 export { handleRunAwayFull } from './combat-defeat';
+export { handleDoppelganger, handleChooseMonsterToClone } from './doppelganger';

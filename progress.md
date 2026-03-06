@@ -74,3 +74,10 @@
 - Bad Stuff on failure: MODIFY_LEVEL, SET_LEVEL, REMOVE_EQUIPMENT (ALL/BEST/specific), DISCARD_HAND
 - Dragon death: level=1, all equipment removed, hand discarded
 - 4 tests: failed escape, successful escape, Dragon death, Halfling escape bonus
+
+## TASK-012 — Doppelganger mechanics
+- Created packages/game-engine/src/doppelganger.ts + id-gen.ts
+- Auto-clone when 1 monster, CHOOSE_MONSTER_TO_CLONE pending action when multiple
+- Clone inherits all modifiers (independent copies)
+- handleChooseMonsterToClone resolves pending action and adds clone
+- 4 tests: auto-clone, pending action creation, choice resolution, modifier inheritance
