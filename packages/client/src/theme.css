@@ -1,0 +1,38 @@
+:root {
+  --color-bg: #1a1208;
+  --color-surface: #2a1f10;
+  --color-surface-light: #3a2f1a;
+  --color-gold: #c9a84c;
+  --color-gold-light: #e0c96a;
+  --color-danger: #dc2626;
+  --color-danger-light: #f87171;
+  --color-success: #16a34a;
+  --color-info: #3b82f6;
+  --color-text: #f5f0e6;
+  --color-text-muted: #a39880;
+  --color-border: #4a3f2a;
+
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-glow-gold: 0 0 16px rgba(201, 168, 76, 0.5);
+
+  --font-fantasy: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}

@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './theme.css';
 import { LobbyPage } from './pages/LobbyPage';
 import { GamePage } from './pages/GamePage';
 import { TestBoardPage } from './pages/TestBoardPage';
 import { TestCombatPage } from './pages/TestCombatPage';
 import { TestReactionPage } from './pages/TestReactionPage';
 import { TestChoicePage } from './pages/TestChoicePage';
+import { TestDesignPage } from './pages/TestDesignPage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -18,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/test-combat" element={<TestCombatPage />} />
         <Route path="/test-reaction" element={<TestReactionPage />} />
         <Route path="/test-choice" element={<TestChoicePage />} />
+        <Route path="/test-design" element={<TestDesignPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

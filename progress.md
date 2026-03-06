@@ -216,3 +216,12 @@
 - Unknown player → INVALID_PLAYER error
 - Integrated into GameRoom.handleAction before engine call
 - 10 tests: card ownership, JWT playerId, diceRoll range, trade cards, unknown player
+
+## TASK-034 — Design system
+- Created theme.css with CSS variables: --color-bg, --color-surface, --color-gold, --color-danger, --color-text, --shadow-card, etc.
+- Cinzel fantasy font via Google Fonts, Inter for body text
+- GoldButton: hover via GSAP scale:1.05 + box-shadow glow, primary/danger variants, disabled state
+- CardFrame: border color by card type (MONSTER=red, EQUIPMENT=gold, CLASS=blue, etc.), gradient background
+- LevelBadge: circular badge with GSAP scale+elastic animation on level change
+- TestDesignPage at /test-design with all components
+- 7 Playwright E2E tests: button variants, no CSS transition, card types, level badge, CSS vars, font
