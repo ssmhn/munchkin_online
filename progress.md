@@ -198,3 +198,10 @@
 - removeCurse removes by curseId or shifts first curse
 - Curse cards discarded after application
 - 4 tests: lose class, change gender, lasting combat curse, remove curse restores power
+
+## TASK-030 — ChooseTargetOverlay UI
+- Created ChooseTargetOverlay: modal for pending actions (clone monster, choose player, choose item)
+- GSAP animations: overlay scale-in, progress bar countdown timer
+- Dynamic title based on action type, option buttons with data-testid
+- TestChoicePage: test harness with mock PendingAction and choice callback
+- 3 Playwright E2E tests: overlay with options visible, choice closes overlay, timer bar exists

@@ -6,6 +6,7 @@ import { GamePage } from './pages/GamePage';
 import { TestBoardPage } from './pages/TestBoardPage';
 import { TestCombatPage } from './pages/TestCombatPage';
 import { TestReactionPage } from './pages/TestReactionPage';
+import { TestChoicePage } from './pages/TestChoicePage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/test-board" element={<TestBoardPage />} />
         <Route path="/test-combat" element={<TestCombatPage />} />
         <Route path="/test-reaction" element={<TestReactionPage />} />
+        <Route path="/test-choice" element={<TestChoicePage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
