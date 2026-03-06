@@ -8,6 +8,7 @@ import { LobbyPage } from './pages/LobbyPage';
 import { RoomPage } from './pages/RoomPage';
 import { JoinPage } from './pages/JoinPage';
 import { GamePage } from './pages/GamePage';
+import { AdminPage } from './pages/AdminPage';
 const isDev = import.meta.env.DEV;
 
 // Lazy-load test pages only in development
@@ -82,6 +83,7 @@ function App() {
       <Route path="/" element={<AuthGuard><LobbyPage /></AuthGuard>} />
       <Route path="/room/:roomId" element={<AuthGuard><RoomPage /></AuthGuard>} />
       <Route path="/game/:roomId" element={<AuthGuard><GamePage /></AuthGuard>} />
+      <Route path="/admin" element={<AuthGuard><AdminPage /></AuthGuard>} />
       {isDev && (
         <>
           <Route path="/test-board" element={<React.Suspense fallback={null}>{TestBoardPage && <TestBoardPage />}</React.Suspense>} />

@@ -101,7 +101,7 @@ export function createAuthRoutes(config: AuthConfig, userStore: UserStore) {
         if (!user) {
           return reply.code(401).send({ error: 'User not found' });
         }
-        return reply.send({ user: { id: user.id, email: user.email, name: user.name } });
+        return reply.send({ user: { id: user.id, email: user.email, name: user.name, isAdmin: (user as any).isAdmin || false } });
       } catch {
         return reply.code(401).send({ error: 'Invalid token' });
       }

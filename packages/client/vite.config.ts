@@ -8,6 +8,7 @@ export default defineConfig({
     proxy: {
       '/auth': 'http://localhost:3000',
       '/lobby': 'http://localhost:3000',
+      '/admin': 'http://localhost:3000',
       '/ws': {
         target: 'ws://localhost:3000',
         ws: true,

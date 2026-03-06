@@ -125,6 +125,11 @@ export function LobbyPage() {
           <span data-testid="user-name" style={{ color: 'var(--color-gold)', fontFamily: 'var(--font-fantasy)' }}>
             {user?.name}
           </span>
+          {user?.isAdmin && (
+            <GoldButton data-testid="btn-admin" onClick={() => navigate('/admin')}>
+              Admin
+            </GoldButton>
+          )}
           <GoldButton data-testid="btn-logout" variant="danger" onClick={logout}>
             Logout
           </GoldButton>

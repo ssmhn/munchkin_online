@@ -10,3 +10,5 @@ export { createAuthRoutes } from './auth/auth-routes';
 export type { AuthConfig } from './auth/auth-routes';
 export { createLobbyRoutes } from './lobby/lobby-routes';
 export type { LobbyConfig, Room, RoomPlayer, Invite } from './lobby/lobby-routes';
+export { createAdminRoutes } from './admin/admin-routes';
+export type { AdminConfig } from './admin/admin-routes';

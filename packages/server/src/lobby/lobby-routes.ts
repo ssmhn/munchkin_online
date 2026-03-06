@@ -308,5 +308,15 @@ export function createLobbyRoutes(config: LobbyConfig) {
     }, 60000);
   }
 
-  return { registerRoutes, rooms, invites };
+  function listRooms() {
+    return Array.from(rooms.values()).map(r => ({
+      id: r.id,
+      name: r.name,
+      phase: r.phase,
+      playerCount: r.players.length,
+      adminName: r.players.find(p => p.userId === r.adminUserId)?.name ?? 'Unknown',
+    }));
+  }
+
+  return { registerRoutes, rooms, invites, listRooms };
 }
