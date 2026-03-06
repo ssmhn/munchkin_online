@@ -1,0 +1,51 @@
+[
+  {
+    "id": "race_elf",
+    "name": "Эльф",
+    "deck": "DOOR",
+    "type": "RACE",
+    "description": "Каждый раз, когда ты помогаешь победить монстра, получаешь уровень.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [],
+    "triggers": [
+      {
+        "event": "ON_HELPER_VICTORY",
+        "effects": [{ "type": "MODIFY_LEVEL", "value": 1, "target": "SELF" }]
+      }
+    ]
+  },
+  {
+    "id": "race_dwarf",
+    "name": "Дварф",
+    "deck": "DOOR",
+    "type": "RACE",
+    "description": "Можешь нести дополнительный Большой предмет.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [
+      { "type": "APPLY_STATUS", "status": "EXTRA_BIG_ITEM", "target": "SELF" }
+    ],
+    "triggers": []
+  },
+  {
+    "id": "race_halfling",
+    "name": "Хоббит",
+    "deck": "DOOR",
+    "type": "RACE",
+    "description": "+1 к побегу. Можешь продать предмет за двойную цену раз в ход.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [
+      { "type": "ESCAPE_BONUS", "value": 1 }
+    ],
+    "triggers": []
+  },
+  {
+    "id": "race_human",
+    "name": "Человек",
+    "deck": "DOOR",
+    "type": "RACE",
+    "description": "Нет особых способностей, но нет и ограничений.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [],
+    "triggers": []
+  }
+]

@@ -1,0 +1,83 @@
+[
+  {
+    "id": "modifier_enraged",
+    "name": "Разъярённый",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "+5 к уровню монстра",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [{ "type": "MONSTER_BONUS", "value": 5 }]
+  },
+  {
+    "id": "modifier_ancient",
+    "name": "Древний",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "+10 к уровню монстра. +2 сокровища.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [
+      { "type": "MONSTER_BONUS", "value": 10 },
+      { "type": "EXTRA_TREASURE", "count": 2 }
+    ]
+  },
+  {
+    "id": "modifier_baby",
+    "name": "Малыш",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "-5 к уровню монстра.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [{ "type": "MONSTER_PENALTY", "value": 5 }]
+  },
+  {
+    "id": "modifier_intelligent",
+    "name": "Умный",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "+5 к уровню монстра.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [{ "type": "MONSTER_BONUS", "value": 5 }]
+  },
+  {
+    "id": "modifier_humongous",
+    "name": "Здоровенный",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "+10 к уровню монстра. +2 сокровища.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [
+      { "type": "MONSTER_BONUS", "value": 10 },
+      { "type": "EXTRA_TREASURE", "count": 2 }
+    ]
+  },
+  {
+    "id": "modifier_mate",
+    "name": "Приятель",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "+5 к уровню монстра. +1 сокровище.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [
+      { "type": "MONSTER_BONUS", "value": 5 },
+      { "type": "EXTRA_TREASURE", "count": 1 }
+    ]
+  },
+  {
+    "id": "modifier_plague",
+    "name": "Чумной",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "+3 к уровню монстра.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [{ "type": "MONSTER_BONUS", "value": 3 }]
+  },
+  {
+    "id": "modifier_hoard",
+    "name": "Стражник Сокровищ",
+    "deck": "DOOR",
+    "type": "MODIFIER",
+    "description": "+2 сокровища.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [{ "type": "EXTRA_TREASURE", "count": 2 }]
+  }
+]

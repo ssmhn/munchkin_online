@@ -42,3 +42,12 @@
 - Slots: rightHand, leftHand, twoHands, head, body, feet
 - Conditional effects (helmet_of_courage), isBig items, race/class/gender requirements
 - Values 100-800 gold. 6 tests validate structure, CONDITIONAL, two-handed, big items
+
+## TASK-008 — Remaining card data (races, classes, oneshots, modifiers, curses, special)
+- races.json: 4 races (Elf with ON_HELPER_VICTORY, Dwarf with EXTRA_BIG_ITEM, Halfling with ESCAPE_BONUS, Human)
+- classes.json: 4 classes (Warrior IGNORE_WEAPON_RESTRICTIONS, Wizard, Cleric, Thief)
+- oneshots.json: 15 potions/spells (combat bonuses, auto-escape, level gain, curse removal)
+- modifiers.json: 8 monster modifiers (+3 to +10 bonus, penalties, extra treasures)
+- curses.json: 10 curses (lose class/race/gender, equipment removal, level loss, lasting curses)
+- special.json: 5 specials (Doppelganger CLONE_MONSTER, Wandering Monster ADD_MONSTER, etc.)
+- 13 tests verify key cards and their effects

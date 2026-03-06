@@ -1,0 +1,48 @@
+[
+  {
+    "id": "special_doppelganger",
+    "name": "Доппельгангер",
+    "deck": "DOOR",
+    "type": "SPECIAL",
+    "description": "Клонирует монстра. При нескольких монстрах — игрок выбирает цель.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [{ "type": "CLONE_MONSTER", "instanceId": "CHOSEN" }]
+  },
+  {
+    "id": "special_wandering_monster",
+    "name": "Бродячий Монстр",
+    "deck": "DOOR",
+    "type": "SPECIAL",
+    "description": "Добавляет монстра из руки в текущий бой.",
+    "playableFrom": ["ANY_COMBAT", "REACTION"],
+    "effects": [{ "type": "ADD_MONSTER", "source": "HAND" }]
+  },
+  {
+    "id": "special_divine_intervention",
+    "name": "Божественное Вмешательство",
+    "deck": "TREASURE",
+    "type": "SPECIAL",
+    "description": "Только для Клирика. +3 уровня.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT"],
+    "requirements": [{ "type": "CLASS", "value": "CLERIC" }],
+    "effects": [{ "type": "MODIFY_LEVEL", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "special_cheat",
+    "name": "Шулерство!",
+    "deck": "TREASURE",
+    "type": "SPECIAL",
+    "description": "Используй любой предмет, игнорируя ограничения.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "YOUR_TURN_COMBAT"],
+    "effects": [{ "type": "APPLY_STATUS", "status": "IGNORE_WEAPON_RESTRICTIONS", "target": "SELF" }]
+  },
+  {
+    "id": "special_illusion",
+    "name": "Иллюзия",
+    "deck": "DOOR",
+    "type": "SPECIAL",
+    "description": "Сбрось монстра из боя и замени на карту из руки.",
+    "playableFrom": ["ANY_COMBAT"],
+    "effects": [{ "type": "ADD_MONSTER", "source": "HAND" }]
+  }
+]

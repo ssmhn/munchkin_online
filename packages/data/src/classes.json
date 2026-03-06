@@ -1,0 +1,49 @@
+[
+  {
+    "id": "class_warrior",
+    "name": "Воин",
+    "deck": "DOOR",
+    "type": "CLASS",
+    "description": "Воин может использовать любое оружие независимо от ограничений.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [
+      { "type": "APPLY_STATUS", "status": "IGNORE_WEAPON_RESTRICTIONS", "target": "SELF" }
+    ],
+    "triggers": []
+  },
+  {
+    "id": "class_wizard",
+    "name": "Волшебник",
+    "deck": "DOOR",
+    "type": "CLASS",
+    "description": "Может сбросить карты для отмены проклятия.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [],
+    "triggers": [
+      {
+        "event": "ON_CURSE_RECEIVED",
+        "effects": [{ "type": "DRAW_CARDS", "count": 1, "deck": "DOOR", "target": "SELF" }]
+      }
+    ]
+  },
+  {
+    "id": "class_cleric",
+    "name": "Клирик",
+    "deck": "DOOR",
+    "type": "CLASS",
+    "description": "Может сбросить карту для повышения уровня в бою.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [],
+    "triggers": []
+  },
+  {
+    "id": "class_thief",
+    "name": "Вор",
+    "deck": "DOOR",
+    "type": "CLASS",
+    "description": "Может красть предмет у другого игрока.",
+    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "effects": [],
+    "triggers": []
+  }
+]
