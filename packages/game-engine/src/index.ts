@@ -1,1 +1,1 @@
-export { MUNCHKIN_VERSION } from '@munchkin/shared';
+export type { GameState, PlayerState, CombatState } from '@munchkin/shared';

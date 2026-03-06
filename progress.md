@@ -5,3 +5,10 @@
 - All packages have package.json, tsconfig.json, and skeleton src/index.ts
 - `pnpm install` and `pnpm turbo build` pass without errors
 - @munchkin/shared is importable from game-engine, server, client, and data
+
+## TASK-002 — Game state TypeScript types
+- Created packages/shared/src/types/state.ts with all interfaces from spec section 2.1
+- GameState, PlayerState, CombatState, EquippedItems, PendingAction, LogEntry, etc.
+- All types exported from shared/src/index.ts
+- Tests in __tests__/types.test.ts verify type correctness (5 tests pass)
+- tsc --noEmit passes, cross-package import works
