@@ -12,3 +12,8 @@
 - All types exported from shared/src/index.ts
 - Tests in __tests__/types.test.ts verify type correctness (5 tests pass)
 - tsc --noEmit passes, cross-package import works
+
+## TASK-003 — Card system TypeScript types
+- Created packages/shared/src/types/card.ts with CardDefinition, CardEffect (all 28 variants), CardCondition (AND/OR/NOT), CardTrigger, BadStuff, CardDb
+- CLONE_MONSTER has instanceId: 'CHOSEN' | 'CURRENT'
+- 6 tests verify Sword, Helmet (CONDITIONAL), Doppelganger, Dragon badStuff, nested conditions, Elf triggers
