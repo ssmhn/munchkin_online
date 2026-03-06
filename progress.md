@@ -279,3 +279,12 @@
 - Playable cards have gold border, forbidden have muted border + 0.6 opacity
 - TestCardHandPage at /test-card-hand
 - 5 Playwright E2E tests: render, hover GSAP, play+remove, forbidden shake, border styles
+
+## TASK-039 — Doppelganger clone animation
+- Created DoppelgangerAnimation: shadow separation, blur materialization, SVG arc
+- Auto-clone: shadow separates right with blur 20px→0, opacity 0→1, scale 0.8→1
+- SVG arc between original and clone via strokeDashoffset animation
+- Choose mode: multiple monsters pulsate (scale:1.05, yoyo, repeat:-1)
+- After choice: pulsation killed, clone animation plays, chosen gets gold glow
+- TestDoppelgangerPage at /test-doppelganger
+- 3 Playwright E2E tests: auto-clone blur, choose pulsation, choose+clone
