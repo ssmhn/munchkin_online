@@ -233,3 +233,12 @@
 - Receive mode: shows incoming offer rewards, accept/decline/counter-offer buttons
 - TestNegotiationPage at /test-negotiation with mode switching
 - 7 Playwright E2E tests: send with targets/cards, send offer, cancel, receive offer, accept, decline, timer
+
+## TASK-032 — Integration tests
+- Created packages/server/__tests__/integration.test.ts with 8 integration tests
+- setupTestGame(n) creates n players with hands, decks, correct state
+- Full cycle test: kick door → loot room → end turn → next player's turn
+- Non-active player rejection, phase validation, card ownership validation
+- State projection: own hand visible, other hands hidden
+- diceRoll range validation (1-6), reconnect state reflection
+- Run 3 times consecutively — 0 flaky tests
