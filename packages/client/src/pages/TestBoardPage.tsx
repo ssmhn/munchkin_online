@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GameBoard } from '../components/GameBoard';
-import type { GameState, PlayerState, EquippedItems } from '@munchkin/shared';
+import { CombatZone } from '../components/CombatZone';
+import type { GameState, EquippedItems, CombatState } from '@munchkin/shared';
 
 function createEquipped(): EquippedItems {
   return { head: null, body: null, feet: null, leftHand: null, rightHand: null, twoHands: null, extras: [] };
@@ -39,8 +40,25 @@ function createMockState(): GameState {
   };
 }
 
+function createCombatState(): CombatState {
+  return {
+    phase: 'ACTIVE',
+    monsters: [
+      { cardId: 'Big Rat', modifiers: [], instanceId: 'inst-1' },
+    ],
+    activePlayerId: 'p1',
+    helpers: [],
+    appliedCards: [],
+    reactionWindow: null,
+    helpOffer: null,
+    runAttempts: 0,
+    resolved: false,
+  };
+}
+
 export function TestBoardPage() {
   const [state, setState] = useState(createMockState);
+  const [combat, setCombat] = useState<CombatState | null>(null);
 
   const bumpLevel = () => {
     setState(prev => ({
@@ -52,10 +70,34 @@ export function TestBoardPage() {
     }));
   };
 
+  const startCombat = () => {
+    setCombat(createCombatState());
+  };
+
+  const addClone = () => {
+    setCombat(prev => prev ? {
+      ...prev,
+      monsters: [
+        ...prev.monsters,
+        { cardId: 'Big Rat Clone', modifiers: [], instanceId: `inst-${prev.monsters.length + 1}` },
+      ],
+    } : null);
+  };
+
   return (
     <div>
       <button data-testid="bump-level" onClick={bumpLevel}>Bump Level</button>
+      <button data-testid="start-combat" onClick={startCombat}>Start Combat</button>
+      <button data-testid="add-clone" onClick={addClone}>Add Clone</button>
       <GameBoard state={state} selfPlayerId="p1" />
+      {combat && (
+        <CombatZone
+          combat={combat}
+          isActivePlayer={true}
+          playerPower={5}
+          monsterPower={3}
+        />
+      )}
     </div>
   );
 }

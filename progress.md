@@ -106,6 +106,13 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-027 — CombatZone UI
+- Created CombatZone: monsters with names, combat powers, action buttons, helpers
+- GSAP animations: zone scale-in, monster slide-in, button stagger
+- Buttons disabled when not active player
+- TestCombatPage for non-active player testing
+- 6 Playwright E2E tests: combat appear, clone add, buttons disabled/enabled, powers, panel
+
 ## TASK-026 — Game board UI components
 - Created PlayerArea: level, name, race, class, gender, card count, GSAP level animation
 - CardHand: own hand shows real cards, other hands show backs, GSAP stagger entry animation
