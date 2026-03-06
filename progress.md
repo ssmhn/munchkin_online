@@ -315,3 +315,12 @@
 - Play Again button appears after 2s delay with gsap.from opacity:0, y:30
 - TestVictoryPage at /test-victory
 - 4 Playwright E2E tests: 100+ confetti, letter count, trophy, button delay+navigate
+
+## TASK-033 — Docker deploy
+- Created packages/server/Dockerfile: multi-stage build (deps → builder → runner on node:20-alpine)
+- Created packages/client/Dockerfile: multi-stage build (deps → builder → nginx:alpine)
+- Created packages/client/nginx.conf: SPA fallback, /lobby and /ws proxy to server, static asset caching
+- Created docker-compose.prod.yml: server, client, Redis 7, PostgreSQL 16
+- Environment variables: DATABASE_URL, REDIS_URL, JWT_SECRET, PORT
+- Health checks for all 4 services (wget, redis-cli ping, pg_isready)
+- .dockerignore to exclude node_modules, .git, test artifacts
