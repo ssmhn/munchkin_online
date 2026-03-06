@@ -298,3 +298,11 @@
 - Fail (<5): red glow + screen shake x:[0,-5,5,-5,0] + "Failed!" label
 - TestDiceRollPage at /test-dice-roll
 - 4 Playwright E2E tests: spin duration, success glow, fail glow, result number
+
+## TASK-041 — Ambient effects
+- Created AmbientParticles: 20-30 floating dust particles, GSAP repeat:-1 yoyo motion + opacity flicker
+- ActivePlayerGlow: pulsating gold boxShadow for active player, smooth removal on deactivation
+- AnimatedTitle: letters appear with gsap.from y:40, opacity:0, stagger:0.05 with back.out ease
+- Performance: only transform and opacity animated, no width/height/top/left
+- TestAmbientPage at /test-ambient
+- 4 Playwright E2E tests: title letters, particle count, glow switching, transform-only animation

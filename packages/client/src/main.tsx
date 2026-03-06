@@ -16,6 +16,7 @@ import { TestCombatResultPage } from './pages/TestCombatResultPage';
 import { TestCardHandPage } from './pages/TestCardHandPage';
 import { TestDoppelgangerPage } from './pages/TestDoppelgangerPage';
 import { TestDiceRollPage } from './pages/TestDiceRollPage';
+import { TestAmbientPage } from './pages/TestAmbientPage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/test-card-hand" element={<TestCardHandPage />} />
         <Route path="/test-doppelganger" element={<TestDoppelgangerPage />} />
         <Route path="/test-dice-roll" element={<TestDiceRollPage />} />
+        <Route path="/test-ambient" element={<TestAmbientPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
