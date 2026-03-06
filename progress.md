@@ -269,3 +269,13 @@
 - Escape: player runs off-screen left (x:-600), returns from right, "ESCAPED!" label
 - TestCombatResultPage at /test-combat-result
 - 3 Playwright E2E tests: victory+confetti, defeat+overlay, escape+return
+
+## TASK-038 — Card hand interactions
+- Created InteractiveCardHand: hover lift, play card fly, forbidden shake
+- Hover: GSAP y:-20, scale:1.1 (no CSS transition)
+- Play: card flies to center with rotation, fades out, remaining cards re-layout with stagger
+- Forbidden: shake x:[0,-5,5,-5,0] + red border flash, card stays in hand
+- Touch events mapped for mobile compatibility
+- Playable cards have gold border, forbidden have muted border + 0.6 opacity
+- TestCardHandPage at /test-card-hand
+- 5 Playwright E2E tests: render, hover GSAP, play+remove, forbidden shake, border styles
