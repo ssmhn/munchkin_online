@@ -106,6 +106,12 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-018 — Charity phase
+- Created packages/game-engine/src/charity.ts with handleCharityDiscard and needsCharity
+- >5 cards → CHARITY phase; excess cards go to lowest-level player round-robin
+- If no other players, cards are discarded to treasure pile
+- 3 tests: CHARITY transition, give cards, skip when ≤5 cards
+
 ## TASK-017 — Sell items for levels
 - Created packages/game-engine/src/sell.ts with handleSellItems
 - Sells items from hand/carried for gold, 1000 gold = +1 level

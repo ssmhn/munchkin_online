@@ -13,3 +13,4 @@ export { handleEquipItemFull } from './equipment';
 export { applyCurseCard, removeCurse } from './curses';
 export { handleOfferHelp, handleAcceptHelp, handleDeclineHelp, handleCounterOffer } from './negotiation';
 export { handleSellItems } from './sell';
+export { handleCharityDiscard, needsCharity } from './charity';
