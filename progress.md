@@ -106,6 +106,16 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-025 — Client skeleton
+- React 18 + React Router + Zustand + GSAP 3 + @gsap/react installed
+- LobbyPage: room list, create room, join room with player name input
+- GamePage: WS connection with auto-reconnect, FULL_SYNC/STATE_PATCH handling
+- useGameStore: Zustand store with applyFullSync, applyStatePatch
+- GameWsClient: exponential backoff reconnect (up to 10 attempts)
+- AnimationQueue: GSAP animation queue, STATE_PATCH applied after animation completes
+- useGsapTimeline hook for reusable timelines
+- Playwright config + 4 E2E tests: lobby render, input, no console errors, game loading state
+
 ## TASK-024 — Reconnect
 - Created reconnect.ts with handleReconnect, handleDisconnect, applyDisconnectedTimeout
 - Reconnect sends FULL_SYNC, marks player connected, notifies others with PLAYER_RECONNECTED
