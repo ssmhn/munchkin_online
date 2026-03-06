@@ -51,3 +51,11 @@
 - curses.json: 10 curses (lose class/race/gender, equipment removal, level loss, lasting curses)
 - special.json: 5 specials (Doppelganger CLONE_MONSTER, Wandering Monster ADD_MONSTER, etc.)
 - 13 tests verify key cards and their effects
+
+## TASK-009 — Combat calculation system
+- Created packages/game-engine/src/combat.ts
+- calculatePlayerPower: level + equipment + applied cards + helpers - curses, with CONDITIONAL resolution
+- calculateMonsterPower: sum of baseLevel + modifiers for all monsters
+- calculateCombatResult: strict inequality (player > monster), Math.max(0, total)
+- evaluateCondition: supports PLAYER_CLASS, PLAYER_RACE, PLAYER_GENDER, PLAYER_LEVEL, AND/OR/NOT
+- 7 tests cover WIN/LOSE, draw-is-loss, helpers, conditional bonuses, modifiers, non-negative power
