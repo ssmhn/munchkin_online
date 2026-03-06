@@ -225,3 +225,11 @@
 - LevelBadge: circular badge with GSAP scale+elastic animation on level change
 - TestDesignPage at /test-design with all components
 - 7 Playwright E2E tests: button variants, no CSS transition, card types, level badge, CSS vars, font
+
+## TASK-029 — NegotiationModal UI
+- Created NegotiationModal: send mode (select target player + reward cards) and receive mode (accept/decline/counter)
+- GSAP animations: overlay scale-in, progress bar countdown (30s timeout)
+- Send mode: player target buttons, toggleable reward card selection, send/cancel actions
+- Receive mode: shows incoming offer rewards, accept/decline/counter-offer buttons
+- TestNegotiationPage at /test-negotiation with mode switching
+- 7 Playwright E2E tests: send with targets/cards, send offer, cancel, receive offer, accept, decline, timer

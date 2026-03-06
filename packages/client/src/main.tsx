@@ -9,6 +9,7 @@ import { TestCombatPage } from './pages/TestCombatPage';
 import { TestReactionPage } from './pages/TestReactionPage';
 import { TestChoicePage } from './pages/TestChoicePage';
 import { TestDesignPage } from './pages/TestDesignPage';
+import { TestNegotiationPage } from './pages/TestNegotiationPage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/test-reaction" element={<TestReactionPage />} />
         <Route path="/test-choice" element={<TestChoicePage />} />
         <Route path="/test-design" element={<TestDesignPage />} />
+        <Route path="/test-negotiation" element={<TestNegotiationPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
