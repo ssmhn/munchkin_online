@@ -242,3 +242,11 @@
 - State projection: own hand visible, other hands hidden
 - diceRoll range validation (1-6), reconnect state reflection
 - Run 3 times consecutively — 0 flaky tests
+
+## TASK-035 — Card draw animation
+- Created CardDrawAnimation: GSAP flight from deck to hand with flip effect
+- Cards fly from deck getBoundingClientRect to hand area with stagger 0.15s
+- Flip: rotateY 0→90 (hides back), swap content, rotateY 90→0 (shows face)
+- State not updated until animation completes (AnimationQueue pattern)
+- TestCardDrawPage at /test-card-draw with draw 1 / draw 3 buttons
+- 4 Playwright E2E tests: draw+appear, 3-card stagger, state-pending, button-disabled
