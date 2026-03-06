@@ -67,3 +67,10 @@
 - Win condition: level >= winLevel (10) → END_GAME phase, winner set
 - Treasure distribution: helpers get agreed rewards, rest to active player
 - 4 tests: 2-monster victory, Elf helper trigger, win at level 10, discard after combat
+
+## TASK-011 — Combat defeat (Bad Stuff, run away)
+- Created packages/game-engine/src/combat-defeat.ts with handleRunAwayFull
+- Escape: diceRoll + escapeBonus >= 5 (Halfling gets +1 from race)
+- Bad Stuff on failure: MODIFY_LEVEL, SET_LEVEL, REMOVE_EQUIPMENT (ALL/BEST/specific), DISCARD_HAND
+- Dragon death: level=1, all equipment removed, hand discarded
+- 4 tests: failed escape, successful escape, Dragon death, Halfling escape bonus
