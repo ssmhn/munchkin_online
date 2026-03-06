@@ -260,3 +260,12 @@
 - Timeline ref for cancellation on reconnect
 - TestDoorKickPage at /test-door-kick with 3 card type buttons
 - 4 Playwright E2E tests: monster elastic, equipment bounce, curse flash, door panel
+
+## TASK-037 — Combat result animation
+- Created CombatResultAnimation: GSAP timelines for victory, defeat, escape outcomes
+- Clash: player+monster move toward center then bounce back
+- Victory: 80 confetti particles with random colors/positions, monster flies to discard, "VICTORY!" label
+- Defeat: dark overlay opacity→0.7, player shake x:[0,-10,10,-10,0], "DEFEAT" label
+- Escape: player runs off-screen left (x:-600), returns from right, "ESCAPED!" label
+- TestCombatResultPage at /test-combat-result
+- 3 Playwright E2E tests: victory+confetti, defeat+overlay, escape+return
