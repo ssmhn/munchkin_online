@@ -78,8 +78,15 @@ export interface CombatState {
   helpers: CombatHelper[];
   appliedCards: AppliedCard[];
   reactionWindow: ReactionWindow | null;
+  helpOffer: HelpOffer | null;
   runAttempts: number;
   resolved: boolean;
+}
+
+export interface HelpOffer {
+  fromPlayerId: string;
+  toPlayerId: string;
+  rewardCardIds: CardId[];
 }
 
 export interface CombatMonster {

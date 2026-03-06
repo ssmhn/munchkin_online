@@ -98,6 +98,14 @@
 - Requirements: CLASS, RACE, GENDER, NOT_CLASS, NOT_RACE
 - 5 tests: equip, duplicate slot, two-handed blocking, big item limit, Dwarf exception
 
+## TASK-014 — Help negotiation
+- Created packages/game-engine/src/negotiation.ts with OFFER_HELP, ACCEPT_HELP, DECLINE_HELP, COUNTER_OFFER
+- Added HelpOffer interface to CombatState in shared types
+- Active player offers help during combat → NEGOTIATION phase
+- Target can accept (adds helper with agreedReward), decline, or counter-offer (swaps direction)
+- Engine stubs replaced with real implementations
+- 5 tests: offer, accept, decline, counter-offer, reward verification
+
 ## TASK-016 — Curses system
 - Created packages/game-engine/src/curses.ts with applyCurseCard and removeCurse
 - Immediate effects: REMOVE_CLASS, REMOVE_RACE, CHANGE_GENDER, MODIFY_LEVEL, REMOVE_EQUIPMENT

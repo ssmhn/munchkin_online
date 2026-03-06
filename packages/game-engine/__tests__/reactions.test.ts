@@ -23,6 +23,7 @@ function createCombatState() {
       helpers: [],
       appliedCards: [],
       reactionWindow: null,
+      helpOffer: null,
       runAttempts: 0,
       resolved: false,
     },

@@ -3,6 +3,12 @@ import type { GameAction, GameEvent } from '@munchkin/shared';
 import { InvalidActionError } from './errors';
 import { validateAction } from './validate';
 import { deepClone, getNextPlayer } from './helpers';
+import {
+  handleOfferHelp as offerHelp,
+  handleAcceptHelp as acceptHelp,
+  handleDeclineHelp as declineHelp,
+  handleCounterOffer as counterOffer,
+} from './negotiation';
 
 export interface ActionResult {
   state: GameState;
@@ -152,30 +158,26 @@ function handleEquipItem(
 
 function handleOfferHelp(
   state: GameState,
-  _action: { type: 'OFFER_HELP'; targetPlayerId: string; rewardCardIds: string[] },
-  _playerId: string
+  action: { type: 'OFFER_HELP'; targetPlayerId: string; rewardCardIds: string[] },
+  playerId: string
 ): [GameState, GameEvent[]] {
-  // Stub — full implementation in TASK-014
-  return [state, []];
+  return offerHelp(state, action, playerId);
 }
 
-function handleAcceptHelp(state: GameState, _playerId: string): [GameState, GameEvent[]] {
-  // Stub — full implementation in TASK-014
-  return [state, []];
+function handleAcceptHelp(state: GameState, playerId: string): [GameState, GameEvent[]] {
+  return acceptHelp(state, playerId);
 }
 
-function handleDeclineHelp(state: GameState, _playerId: string): [GameState, GameEvent[]] {
-  // Stub — full implementation in TASK-014
-  return [state, []];
+function handleDeclineHelp(state: GameState, playerId: string): [GameState, GameEvent[]] {
+  return declineHelp(state, playerId);
 }
 
 function handleCounterOffer(
   state: GameState,
-  _action: { type: 'COUNTER_OFFER'; rewardCardIds: string[] },
-  _playerId: string
+  action: { type: 'COUNTER_OFFER'; rewardCardIds: string[] },
+  playerId: string
 ): [GameState, GameEvent[]] {
-  // Stub — full implementation in TASK-014
-  return [state, []];
+  return counterOffer(state, action, playerId);
 }
 
 function handleRunAway(

@@ -11,3 +11,4 @@ export { handleDoppelganger, handleChooseMonsterToClone } from './doppelganger';
 export { openReactionWindow, handleReactionPass, handleReactionPlayCard, isReactionWindowOpen, applyAutoPassForDisconnected } from './reactions';
 export { handleEquipItemFull } from './equipment';
 export { applyCurseCard, removeCurse } from './curses';
+export { handleOfferHelp, handleAcceptHelp, handleDeclineHelp, handleCounterOffer } from './negotiation';
