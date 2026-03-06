@@ -1,5 +1,6 @@
 import type { GameState, CardId } from '@munchkin/shared';
 import type { GameAction, GameEvent } from '@munchkin/shared';
+import type { CardDb } from '@munchkin/shared';
 import { InvalidActionError } from './errors';
 import { validateAction } from './validate';
 import { deepClone, getNextPlayer } from './helpers';
@@ -9,6 +10,7 @@ import {
   handleDeclineHelp as declineHelp,
   handleCounterOffer as counterOffer,
 } from './negotiation';
+import { handleSellItems as sellItems } from './sell';
 
 export interface ActionResult {
   state: GameState;
@@ -18,13 +20,14 @@ export interface ActionResult {
 export function applyAction(
   state: GameState,
   action: GameAction,
-  playerId: string
+  playerId: string,
+  cardDb?: CardDb
 ): ActionResult {
   validateAction(state, action, playerId);
   const nextState = deepClone(state);
   const events: GameEvent[] = [];
 
-  const [resultState, actionEvents] = reduce(nextState, action, playerId);
+  const [resultState, actionEvents] = reduce(nextState, action, playerId, cardDb);
   events.push(...actionEvents);
 
   const [finalState, autoEvents] = runAutoTransitions(resultState);
@@ -36,7 +39,8 @@ export function applyAction(
 function reduce(
   state: GameState,
   action: GameAction,
-  playerId: string
+  playerId: string,
+  cardDb?: CardDb
 ): [GameState, GameEvent[]] {
   switch (action.type) {
     case 'KICK_DOOR':
@@ -60,7 +64,7 @@ function reduce(
     case 'REACT_PASS':
       return handleReactPass(state, playerId);
     case 'SELL_ITEMS':
-      return handleSellItems(state, action, playerId);
+      return handleSellItems(state, action, playerId, cardDb);
     case 'CHOOSE_OPTION':
       return handleChooseOption(state, action, playerId);
     default:
@@ -223,11 +227,14 @@ function handleReactPass(state: GameState, _playerId: string): [GameState, GameE
 
 function handleSellItems(
   state: GameState,
-  _action: { type: 'SELL_ITEMS'; cardIds: string[] },
-  _playerId: string
+  action: { type: 'SELL_ITEMS'; cardIds: string[] },
+  playerId: string,
+  cardDb?: CardDb
 ): [GameState, GameEvent[]] {
-  // Stub — full implementation in TASK-017
-  return [state, []];
+  if (!cardDb) {
+    throw new InvalidActionError('cardDb required for SELL_ITEMS');
+  }
+  return sellItems(state, playerId, action.cardIds, cardDb);
 }
 
 function handleChooseOption(

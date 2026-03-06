@@ -106,6 +106,13 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-017 — Sell items for levels
+- Created packages/game-engine/src/sell.ts with handleSellItems
+- Sells items from hand/carried for gold, 1000 gold = +1 level
+- Cannot sell to reach level 10, cannot sell during combat
+- Cards discarded to appropriate deck, added cardDb param to applyAction
+- 3 tests: sell for levels, level 10 restriction, combat restriction
+
 ## TASK-016 — Curses system
 - Created packages/game-engine/src/curses.ts with applyCurseCard and removeCurse
 - Immediate effects: REMOVE_CLASS, REMOVE_RACE, CHANGE_GENDER, MODIFY_LEVEL, REMOVE_EQUIPMENT
