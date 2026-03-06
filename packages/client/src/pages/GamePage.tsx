@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useGameStore } from '../stores/useGameStore';
 import { GameWsClient } from '../ws/WsClient';
+import { GameBoard } from '../components/GameBoard';
 import type { S2C_Message } from '@munchkin/shared';
 
 export function GamePage() {
@@ -50,12 +51,7 @@ export function GamePage() {
 
   return (
     <div data-testid="game-page">
-      <h2>Game: {roomId}</h2>
-      <div data-testid="game-phase">Phase: {state.phase}</div>
-      <div data-testid="game-turn">Turn: {state.turn}</div>
-      <div data-testid="player-count">
-        Players: {Object.keys(state.players).length}
-      </div>
+      <GameBoard state={state} />
     </div>
   );
 }

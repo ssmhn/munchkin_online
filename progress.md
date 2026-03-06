@@ -106,6 +106,15 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-026 — Game board UI components
+- Created PlayerArea: level, name, race, class, gender, card count, GSAP level animation
+- CardHand: own hand shows real cards, other hands show backs, GSAP stagger entry animation
+- DeckArea: door and treasure deck with card counts
+- GameLog: last 20 entries with GSAP slideIn animation
+- GameBoard: composes all components with self-player identification
+- TestBoardPage: test harness with mock state and level bump button
+- 9 Playwright E2E tests: player areas, levels, cards, decks, log, active highlight, reactive updates
+
 ## TASK-025 — Client skeleton
 - React 18 + React Router + Zustand + GSAP 3 + @gsap/react installed
 - LobbyPage: room list, create room, join room with player name input
