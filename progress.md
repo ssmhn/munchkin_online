@@ -106,6 +106,13 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-022 — GameRoom with state projection
+- Created GameRoom: loads state from Redis, applies action, saves via compareAndSet, broadcasts
+- stateProjector hides other players' hands (HIDDEN[]) and decks
+- Each client gets their own projected view of state
+- InvalidActionError → ERROR to client, race condition → FULL_SYNC re-sync
+- 3 tests: own hand visible, decks hidden, different projections per player
+
 ## TASK-021 — WebSocket server
 - Created Fastify + @fastify/websocket server with JWT auth
 - WsClient wraps WebSocket with send(), ping(), playerId, roomId
