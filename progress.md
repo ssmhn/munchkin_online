@@ -17,3 +17,9 @@
 - Created packages/shared/src/types/card.ts with CardDefinition, CardEffect (all 28 variants), CardCondition (AND/OR/NOT), CardTrigger, BadStuff, CardDb
 - CLONE_MONSTER has instanceId: 'CHOSEN' | 'CURRENT'
 - 6 tests verify Sword, Helmet (CONDITIONAL), Doppelganger, Dragon badStuff, nested conditions, Elf triggers
+
+## TASK-004 — WS protocol types
+- Created packages/shared/src/types/ws.ts with GameAction, GameEvent, C2S_Message, S2C_Message, JsonPatch
+- GameAction is exhaustive discriminated union (12 variants)
+- S2C_Message covers all 12 message types from spec
+- 4 tests verify exhaustive switch, FULL_SYNC construction, C2S messages
