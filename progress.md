@@ -81,3 +81,11 @@
 - Clone inherits all modifiers (independent copies)
 - handleChooseMonsterToClone resolves pending action and adds clone
 - 4 tests: auto-clone, pending action creation, choice resolution, modifier inheritance
+
+## TASK-013 — Reaction Window system
+- Created packages/game-engine/src/reactions.ts
+- openReactionWindow: creates window with trigger, responses for all connected players
+- handleReactionPass/handleReactionPlayCard: collect responses, check completion
+- Stack resolves in reverse order (LIFO like MTG)
+- applyAutoPassForDisconnected for timeout handling
+- 3 tests: open window, all-pass closure, reverse stack resolution
