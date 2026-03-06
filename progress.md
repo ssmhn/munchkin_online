@@ -89,3 +89,11 @@
 - Stack resolves in reverse order (LIFO like MTG)
 - applyAutoPassForDisconnected for timeout handling
 - 3 tests: open window, all-pass closure, reverse stack resolution
+
+## TASK-015 — Equipment system
+- Created packages/game-engine/src/equipment.ts with handleEquipItemFull
+- Slot validation (no duplicate slots), two-handed blocks both hands
+- Big item limit (1 normally, 2 for Dwarf with EXTRA_BIG_ITEM status)
+- Warrior IGNORE_WEAPON_RESTRICTIONS bypasses requirements
+- Requirements: CLASS, RACE, GENDER, NOT_CLASS, NOT_RACE
+- 5 tests: equip, duplicate slot, two-handed blocking, big item limit, Dwarf exception

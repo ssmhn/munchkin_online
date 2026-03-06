@@ -9,3 +9,4 @@ export type { CombatConfig } from './combat-resolution';
 export { handleRunAwayFull } from './combat-defeat';
 export { handleDoppelganger, handleChooseMonsterToClone } from './doppelganger';
 export { openReactionWindow, handleReactionPass, handleReactionPlayCard, isReactionWindowOpen, applyAutoPassForDisconnected } from './reactions';
+export { handleEquipItemFull } from './equipment';
