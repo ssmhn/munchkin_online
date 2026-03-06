@@ -106,6 +106,13 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-028 — ReactionBar
+- Created ReactionBar: trigger text, countdown timer, pass button, reaction card buttons
+- GSAP animations: slide-in from bottom, timer progress bar linear decrease
+- Pass disables button and changes text to "Passed"
+- Closes when reaction window closes
+- 5 Playwright E2E tests: appear, pass/disable, cards visible, close, timer
+
 ## TASK-027 — CombatZone UI
 - Created CombatZone: monsters with names, combat powers, action buttons, helpers
 - GSAP animations: zone scale-in, monster slide-in, button stagger

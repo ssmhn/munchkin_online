@@ -5,6 +5,7 @@ import { LobbyPage } from './pages/LobbyPage';
 import { GamePage } from './pages/GamePage';
 import { TestBoardPage } from './pages/TestBoardPage';
 import { TestCombatPage } from './pages/TestCombatPage';
+import { TestReactionPage } from './pages/TestReactionPage';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/game/:roomId" element={<GamePage />} />
         <Route path="/test-board" element={<TestBoardPage />} />
         <Route path="/test-combat" element={<TestCombatPage />} />
+        <Route path="/test-reaction" element={<TestReactionPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
