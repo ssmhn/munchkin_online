@@ -6,6 +6,7 @@ import type { RedisGameStore } from '../store/redis-game-store';
 import type { WsClient } from '../ws/ws-client';
 import type { GameRoomHandler } from '../ws/message-router';
 import { projectStateForPlayer } from './state-projector';
+import { validateActionServer, ValidationError } from './action-validator';
 
 export class GameRoom implements GameRoomHandler {
   readonly roomId: string;
@@ -41,6 +42,7 @@ export class GameRoom implements GameRoomHandler {
       return;
     }
 
+    // playerId ALWAYS comes from JWT (via WsClient), never from action payload
     const action = message.payload;
     const stored = await this.store.getState(this.roomId);
     if (!stored) {
@@ -49,6 +51,20 @@ export class GameRoom implements GameRoomHandler {
         payload: { code: 'NO_GAME', message: 'Game not found' },
       });
       return;
+    }
+
+    // Server-side validation: card ownership, dice range, trade cards
+    try {
+      validateActionServer(stored.state, action, client.playerId);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        client.send({
+          type: 'ERROR',
+          payload: { code: err.code, message: err.message },
+        });
+        return;
+      }
+      throw err;
     }
 
     let result;

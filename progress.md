@@ -205,3 +205,14 @@
 - Dynamic title based on action type, option buttons with data-testid
 - TestChoicePage: test harness with mock PendingAction and choice callback
 - 3 Playwright E2E tests: overlay with options visible, choice closes overlay, timer bar exists
+
+## TASK-031 — Server-side validation
+- Created packages/server/src/game/action-validator.ts with validateActionServer
+- playerId always from JWT (WsClient), never from action payload
+- PLAY_CARD: validates card in hand, carried, or equipped
+- SELL_ITEMS: validates all cards owned by player
+- OFFER_HELP/COUNTER_OFFER: validates reward cards belong to offering player, target exists
+- RUN_AWAY: diceRoll must be integer 1-6
+- Unknown player → INVALID_PLAYER error
+- Integrated into GameRoom.handleAction before engine call
+- 10 tests: card ownership, JWT playerId, diceRoll range, trade cards, unknown player
