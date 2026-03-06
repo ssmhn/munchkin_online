@@ -36,3 +36,9 @@
 - BadStuff uses CardEffect types (MODIFY_LEVEL, REMOVE_EQUIPMENT, DISCARD_HAND, SET_LEVEL)
 - Tags: UNDEAD, DEMON, DRAGON. Conditional effects on Amazon (+2 vs males)
 - 6 tests validate structure, level ranges, effect types, key monster presence
+
+## TASK-007 — Equipment JSON data
+- Created packages/data/src/equipment.json with 41 unique items
+- Slots: rightHand, leftHand, twoHands, head, body, feet
+- Conditional effects (helmet_of_courage), isBig items, race/class/gender requirements
+- Values 100-800 gold. 6 tests validate structure, CONDITIONAL, two-handed, big items

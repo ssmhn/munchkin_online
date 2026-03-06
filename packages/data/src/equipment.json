@@ -1,0 +1,448 @@
+[
+  {
+    "id": "sword_of_slaying",
+    "name": "Меч Рубки",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою",
+    "slots": ["rightHand"],
+    "value": 300,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "broad_sword",
+    "name": "Широкий Меч",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для женщин.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "requirements": [{ "type": "GENDER", "value": "FEMALE" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "hammer_of_kneecapping",
+    "name": "Молот Коленных Чашечек",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+4 к бою. Только для Дварфов.",
+    "slots": ["rightHand"],
+    "value": 600,
+    "requirements": [{ "type": "RACE", "value": "DWARF" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+  },
+  {
+    "id": "mace_of_sharpness",
+    "name": "Булава Остроты",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+4 к бою. Только для Клирика.",
+    "slots": ["rightHand"],
+    "value": 600,
+    "requirements": [{ "type": "CLASS", "value": "CLERIC" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+  },
+  {
+    "id": "rapier_of_unfairness",
+    "name": "Рапира Несправедливости",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для Эльфов.",
+    "slots": ["rightHand"],
+    "value": 600,
+    "requirements": [{ "type": "RACE", "value": "ELF" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "staff_of_napalm",
+    "name": "Посох Напалма",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+5 к бою. Только для Волшебника.",
+    "slots": ["rightHand"],
+    "value": 800,
+    "requirements": [{ "type": "CLASS", "value": "WIZARD" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 5, "target": "SELF" }]
+  },
+  {
+    "id": "swiss_army_polearm",
+    "name": "Швейцарский Алебардо-Нож",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+4 к бою. Большой. Двуручный.",
+    "slots": ["twoHands"],
+    "value": 600,
+    "isBig": true,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+  },
+  {
+    "id": "chainsaw_of_bloody_dismemberment",
+    "name": "Бензопила Кровавого Расчленения",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Большой. Двуручный.",
+    "slots": ["twoHands"],
+    "value": 600,
+    "isBig": true,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "huge_rock",
+    "name": "Огромный Камень",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Большой. Двуручный.",
+    "slots": ["twoHands"],
+    "value": 300,
+    "isBig": true,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "eleven_foot_pole",
+    "name": "Шест в 3.5 метра",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою.",
+    "slots": ["twoHands"],
+    "value": 200,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "rat_on_a_stick",
+    "name": "Крыса на Палке",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою.",
+    "slots": ["rightHand"],
+    "value": 100,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "dagger_of_treachery",
+    "name": "Кинжал Предательства",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для Вора.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "requirements": [{ "type": "CLASS", "value": "THIEF" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "singing_and_dancing_sword",
+    "name": "Поющий и Танцующий Меч",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою. Не для Вора.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "requirements": [{ "type": "NOT_CLASS", "value": "THIEF" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+  },
+  {
+    "id": "shield_of_ubiquity",
+    "name": "Щит Вездесущности",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+4 к бою. Только для Воина.",
+    "slots": ["leftHand"],
+    "value": 600,
+    "requirements": [{ "type": "CLASS", "value": "WARRIOR" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+  },
+  {
+    "id": "buckler_of_swashing",
+    "name": "Баклер Бахвальства",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою.",
+    "slots": ["leftHand"],
+    "value": 400,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+  },
+  {
+    "id": "short_wide_armor",
+    "name": "Короткая Широкая Броня",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для Дварфов.",
+    "slots": ["body"],
+    "value": 400,
+    "requirements": [{ "type": "RACE", "value": "DWARF" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "flaming_armor",
+    "name": "Пылающая Броня",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою.",
+    "slots": ["body"],
+    "value": 400,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+  },
+  {
+    "id": "mithril_armor",
+    "name": "Мифриловая Броня",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Большой предмет.",
+    "slots": ["body"],
+    "value": 600,
+    "isBig": true,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "leather_armor",
+    "name": "Кожаная Броня",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою.",
+    "slots": ["body"],
+    "value": 200,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "slimy_armor",
+    "name": "Слизистая Броня",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою.",
+    "slots": ["body"],
+    "value": 200,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "helmet_of_courage",
+    "name": "Шлем Смелости",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою (+4 для Воина)",
+    "slots": ["head"],
+    "value": 400,
+    "effects": [
+      {
+        "type": "CONDITIONAL",
+        "condition": { "type": "PLAYER_CLASS", "class": "WARRIOR" },
+        "then": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }],
+        "else": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+      }
+    ]
+  },
+  {
+    "id": "bad_ass_bandana",
+    "name": "Крутая Бандана",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для людей.",
+    "slots": ["head"],
+    "value": 400,
+    "requirements": [{ "type": "RACE", "value": "HUMAN" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "horned_helmet",
+    "name": "Рогатый Шлем",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою.",
+    "slots": ["head"],
+    "value": 200,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "helm_of_peripheral_vision",
+    "name": "Шлем Периферийного Зрения",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою.",
+    "slots": ["head"],
+    "value": 400,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+  },
+  {
+    "id": "boots_of_running_really_fast",
+    "name": "Ботинки Быстрого Бега",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к побегу. Большой предмет.",
+    "slots": ["feet"],
+    "value": 400,
+    "isBig": true,
+    "effects": [{ "type": "ESCAPE_BONUS", "value": 2 }]
+  },
+  {
+    "id": "boots_of_butt_kicking",
+    "name": "Ботинки Пинков",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою.",
+    "slots": ["feet"],
+    "value": 400,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+  },
+  {
+    "id": "sandals_of_protection",
+    "name": "Сандалии Защиты",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою.",
+    "slots": ["feet"],
+    "value": 200,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "sneaky_bastard_sword",
+    "name": "Подлый Полуторный Меч",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+  },
+  {
+    "id": "pointy_hat_of_power",
+    "name": "Остроконечная Шляпа Силы",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для Волшебника.",
+    "slots": ["head"],
+    "value": 400,
+    "requirements": [{ "type": "CLASS", "value": "WIZARD" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "bow_with_ribbons",
+    "name": "Лук с Ленточками",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+4 к бою. Только для Эльфов. Двуручный.",
+    "slots": ["twoHands"],
+    "value": 800,
+    "requirements": [{ "type": "RACE", "value": "ELF" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+  },
+  {
+    "id": "cloak_of_obscurity",
+    "name": "Плащ Неприметности",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+4 к бою. Только для Вора.",
+    "slots": ["body"],
+    "value": 600,
+    "requirements": [{ "type": "CLASS", "value": "THIEF" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+  },
+  {
+    "id": "limburger_and_anchovy_sandwich",
+    "name": "Бутерброд с Сыром и Анчоусами",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для Хоббитов.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "requirements": [{ "type": "RACE", "value": "HALFLING" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "pantyhose_of_giant_strength",
+    "name": "Колготки Гигантской Силы",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Не для Воина.",
+    "slots": ["feet"],
+    "value": 600,
+    "requirements": [{ "type": "NOT_CLASS", "value": "WARRIOR" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "kneepads_of_allure",
+    "name": "Наколенники Соблазна",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою. Не для Клирика.",
+    "slots": ["feet"],
+    "value": 200,
+    "requirements": [{ "type": "NOT_CLASS", "value": "CLERIC" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "spiky_knees",
+    "name": "Шипастые Коленки",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою.",
+    "slots": ["feet"],
+    "value": 200,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+  },
+  {
+    "id": "tuba_of_charm",
+    "name": "Туба Очарования",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Большой предмет.",
+    "slots": ["rightHand"],
+    "value": 300,
+    "isBig": true,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "gentleman_club",
+    "name": "Дубинка Джентльмена",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для мужчин.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "requirements": [{ "type": "GENDER", "value": "MALE" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "cheese_grater_of_peace",
+    "name": "Тёрка Мира",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Только для Клирика.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "requirements": [{ "type": "CLASS", "value": "CLERIC" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "stepladder",
+    "name": "Стремянка",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+3 к бою. Большой. Только для Хоббитов.",
+    "slots": ["rightHand"],
+    "value": 400,
+    "isBig": true,
+    "requirements": [{ "type": "RACE", "value": "HALFLING" }],
+    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+  },
+  {
+    "id": "boil_an_anthill",
+    "name": "Муравьиный Кипятильник",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+2 к бою.",
+    "slots": ["rightHand"],
+    "value": 200,
+    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+  },
+  {
+    "id": "helm_of_courage",
+    "name": "Шлем Храбрости",
+    "deck": "TREASURE",
+    "type": "EQUIPMENT",
+    "description": "+1 к бою. +1 к побегу.",
+    "slots": ["head"],
+    "value": 200,
+    "effects": [
+      { "type": "COMBAT_BONUS", "value": 1, "target": "SELF" },
+      { "type": "ESCAPE_BONUS", "value": 1 }
+    ]
+  }
+]
