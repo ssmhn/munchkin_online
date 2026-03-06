@@ -106,6 +106,12 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-023 — Lobby HTTP API
+- Created lobby-routes.ts with POST /lobby/rooms, GET /lobby/rooms, POST /lobby/rooms/:id/join
+- Room creation returns roomId, join returns JWT with playerId + roomId + playerName
+- Max 6 players per room, cannot join started game
+- 3 tests: create room, 7th player rejected, JWT payload verification
+
 ## TASK-022 — GameRoom with state projection
 - Created GameRoom: loads state from Redis, applies action, saves via compareAndSet, broadcasts
 - stateProjector hides other players' hands (HIDDEN[]) and decks
