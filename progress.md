@@ -59,3 +59,11 @@
 - calculateCombatResult: strict inequality (player > monster), Math.max(0, total)
 - evaluateCondition: supports PLAYER_CLASS, PLAYER_RACE, PLAYER_GENDER, PLAYER_LEVEL, AND/OR/NOT
 - 7 tests cover WIN/LOSE, draw-is-loss, helpers, conditional bonuses, modifiers, non-negative power
+
+## TASK-010 — Combat victory handling
+- Created packages/game-engine/src/combat-resolution.ts with resolveCombatVictory
+- +1 level per monster killed, treasure draw (sum of monster treasures + EXTRA_TREASURE)
+- ON_KILL_MONSTER and ON_HELPER_VICTORY triggers fire correctly (Elf gets +1 level)
+- Win condition: level >= winLevel (10) → END_GAME phase, winner set
+- Treasure distribution: helpers get agreed rewards, rest to active player
+- 4 tests: 2-monster victory, Elf helper trigger, win at level 10, discard after combat
