@@ -29,3 +29,10 @@
 - State machine: KICK_DOOR→LOOT_ROOM, LOOT_ROOM→END_TURN→KICK_DOOR (next player) or CHARITY
 - Action handlers stubbed for future tasks (combat, help, sell, etc.)
 - 11 tests cover phase transitions, validation, immutability, diceRoll range check
+
+## TASK-006 — Monster JSON data
+- Created packages/data/src/monsters.json with 25 unique monsters (levels 1-20)
+- Key monsters: big_rat (lv1), orc (lv4), plutonium_dragon (lv20, DRAGON tag)
+- BadStuff uses CardEffect types (MODIFY_LEVEL, REMOVE_EQUIPMENT, DISCARD_HAND, SET_LEVEL)
+- Tags: UNDEAD, DEMON, DRAGON. Conditional effects on Amazon (+2 vs males)
+- 6 tests validate structure, level ranges, effect types, key monster presence

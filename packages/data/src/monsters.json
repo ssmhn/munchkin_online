@@ -1,0 +1,393 @@
+[
+  {
+    "id": "monster_big_rat",
+    "name": "Крыса Большая",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 1. Жалкая крыса.",
+    "baseLevel": 1,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй уровень",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_maul_rat",
+    "name": "Крыса-Молот",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 1. Маленькая, но злобная.",
+    "baseLevel": 1,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй уровень",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_lame_goblin",
+    "name": "Хромой Гоблин",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 1. Совсем не страшный.",
+    "baseLevel": 1,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй уровень",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_potted_plant",
+    "name": "Горшочное Растение",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 1. Даже не двигается.",
+    "baseLevel": 1,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Ничего не происходит",
+      "effects": []
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_drooling_slime",
+    "name": "Слюнявая Слизь",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 1. Противная, но слабая.",
+    "baseLevel": 1,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Сбрось снаряжение с ног",
+      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "feet", "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_flying_frogs",
+    "name": "Летучие Лягушки",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 2. Стая противных лягушек.",
+    "baseLevel": 2,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 2 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_pit_bull",
+    "name": "Питбуль",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 2. Злой пёс.",
+    "baseLevel": 2,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 2 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_undead_horse",
+    "name": "Мёртвая Лошадь",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 4. Нежить.",
+    "baseLevel": 4,
+    "treasures": 2,
+    "tags": ["UNDEAD"],
+    "badStuff": {
+      "description": "Потеряй 2 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_orc",
+    "name": "Орк",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 4. Классический противник.",
+    "baseLevel": 4,
+    "treasures": 2,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 2 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_harpies",
+    "name": "Гарпии",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 4. Крылатые ведьмы.",
+    "baseLevel": 4,
+    "treasures": 2,
+    "tags": [],
+    "badStuff": {
+      "description": "Сбрось шлем",
+      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "head", "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_snails_on_speed",
+    "name": "Улитки на Скорости",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 4. Быстрые, несмотря на всё.",
+    "baseLevel": 4,
+    "treasures": 2,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 1 уровень за каждый предмет",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_3872_orcs",
+    "name": "3872 Орка",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 10. Орда!",
+    "baseLevel": 10,
+    "treasures": 3,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 3 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -3, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_floating_nose",
+    "name": "Парящий Нос",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 6. Летает и пугает.",
+    "baseLevel": 6,
+    "treasures": 2,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 3 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -3, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_face_sucker",
+    "name": "Лицехват",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 8. Прилипает к лицу.",
+    "baseLevel": 8,
+    "treasures": 2,
+    "tags": [],
+    "badStuff": {
+      "description": "Сбрось шлем",
+      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "head", "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_wight_brothers",
+    "name": "Братья Вайт",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 8. Нежить.",
+    "baseLevel": 8,
+    "treasures": 2,
+    "tags": ["UNDEAD"],
+    "badStuff": {
+      "description": "Потеряй 2 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_ghoulfiends",
+    "name": "Гульфинды",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 8. Нежить.",
+    "baseLevel": 8,
+    "treasures": 2,
+    "tags": ["UNDEAD"],
+    "badStuff": {
+      "description": "Потеряй 2 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_wannabe_vampire",
+    "name": "Недовампир",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 6. Нежить. Не очень-то и страшный.",
+    "baseLevel": 6,
+    "treasures": 2,
+    "tags": ["UNDEAD"],
+    "badStuff": {
+      "description": "Потеряй 3 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -3, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_tongue_demon",
+    "name": "Демон Языка",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 12. Демон.",
+    "baseLevel": 12,
+    "treasures": 3,
+    "tags": ["DEMON"],
+    "badStuff": {
+      "description": "Сбрось 2 карты из руки",
+      "effects": [{ "type": "DISCARD_HAND", "count": 2, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_stoned_golem",
+    "name": "Каменный Голем",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 14. Очень твёрдый.",
+    "baseLevel": 14,
+    "treasures": 4,
+    "tags": [],
+    "badStuff": {
+      "description": "Сбрось всё снаряжение",
+      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_amazon",
+    "name": "Амазонка",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 8. +2 против мужчин.",
+    "baseLevel": 8,
+    "treasures": 2,
+    "tags": [],
+    "badStuff": {
+      "description": "Сбрось своё лучшее снаряжение",
+      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "BEST", "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": [
+      {
+        "type": "CONDITIONAL",
+        "condition": { "type": "PLAYER_GENDER", "gender": "MALE" },
+        "then": [{ "type": "MONSTER_BONUS", "value": 2 }]
+      }
+    ]
+  },
+  {
+    "id": "monster_insurance_salesman",
+    "name": "Страховой Агент",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 14. Никто не может убежать!",
+    "baseLevel": 14,
+    "treasures": 4,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 4 уровня",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -4, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": [
+      { "type": "PREVENT_ESCAPE", "target": "ACTIVE_PLAYER" }
+    ]
+  },
+  {
+    "id": "monster_large_angry_chicken",
+    "name": "Большая Злая Курица",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 2. Кудахтает яростно.",
+    "baseLevel": 2,
+    "treasures": 1,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй 1 уровень",
+      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_net_troll",
+    "name": "Сетевой Тролль",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 10. Токсичный и неуязвимый.",
+    "baseLevel": 10,
+    "treasures": 3,
+    "tags": [],
+    "badStuff": {
+      "description": "Потеряй всё своё снаряжение",
+      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" }]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_squidzilla",
+    "name": "Кальмарзилла",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 18. Монстр из глубин.",
+    "baseLevel": 18,
+    "treasures": 4,
+    "tags": [],
+    "badStuff": {
+      "description": "Умри",
+      "effects": [
+        { "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" },
+        { "type": "DISCARD_HAND", "count": "ALL", "target": "ACTIVE_PLAYER" },
+        { "type": "SET_LEVEL", "value": 1, "target": "ACTIVE_PLAYER" }
+      ]
+    },
+    "effects": []
+  },
+  {
+    "id": "monster_plutonium_dragon",
+    "name": "Плутониевый Дракон",
+    "deck": "DOOR",
+    "type": "MONSTER",
+    "description": "Уровень 20. Самый сильный монстр.",
+    "baseLevel": 20,
+    "treasures": 5,
+    "tags": ["DRAGON"],
+    "badStuff": {
+      "description": "Умри",
+      "effects": [
+        { "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" },
+        { "type": "DISCARD_HAND", "count": "ALL", "target": "ACTIVE_PLAYER" },
+        { "type": "SET_LEVEL", "value": 1, "target": "ACTIVE_PLAYER" }
+      ]
+    },
+    "effects": []
+  }
+]
