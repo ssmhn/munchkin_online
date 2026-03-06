@@ -250,3 +250,13 @@
 - State not updated until animation completes (AnimationQueue pattern)
 - TestCardDrawPage at /test-card-draw with draw 1 / draw 3 buttons
 - 4 Playwright E2E tests: draw+appear, 3-card stagger, state-pending, button-disabled
+
+## TASK-036 — Door kick animation
+- Created DoorKickAnimation: GSAP timeline with door opening and card reveal
+- Door rotateY 0→-110° on hinge, perspective 3D effect
+- Monster: elastic.out scale+rotation appearance
+- Equipment: bounce.out drop from above
+- Curse: red flash overlay opacity 0→0.4→0, then card appears
+- Timeline ref for cancellation on reconnect
+- TestDoorKickPage at /test-door-kick with 3 card type buttons
+- 4 Playwright E2E tests: monster elastic, equipment bounce, curse flash, door panel
