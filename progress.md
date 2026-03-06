@@ -288,3 +288,13 @@
 - After choice: pulsation killed, clone animation plays, chosen gets gold glow
 - TestDoppelgangerPage at /test-doppelganger
 - 3 Playwright E2E tests: auto-clone blur, choose pulsation, choose+clone
+
+## TASK-040 — Dice roll animation
+- Created DiceRollOverlay: 3D-rotating dice with flickering numbers
+- GSAP rotationX:720+, rotationY:540+, power4.out over 1.5s
+- Random number flicker during spin (80ms interval), settles to result
+- Scale pulse 1.3→1 on landing with elastic ease
+- Success (>=5): green glow drop-shadow + "Success!" label
+- Fail (<5): red glow + screen shake x:[0,-5,5,-5,0] + "Failed!" label
+- TestDiceRollPage at /test-dice-roll
+- 4 Playwright E2E tests: spin duration, success glow, fail glow, result number
