@@ -7,9 +7,19 @@ export interface GameRoomHandler {
 
 export class MessageRouter {
   private handler: GameRoomHandler | null = null;
+  /** All connected clients, keyed by playerId */
+  private clients: Map<string, WsClient> = new Map();
 
   setHandler(handler: GameRoomHandler): void {
     this.handler = handler;
+  }
+
+  registerClient(client: WsClient): void {
+    this.clients.set(client.playerId, client);
+  }
+
+  unregisterClient(playerId: string): void {
+    this.clients.delete(playerId);
   }
 
   route(client: WsClient, raw: string): void {
@@ -34,6 +44,70 @@ export class MessageRouter {
 
     if (parsed.type === 'PING') {
       client.send({ type: 'PONG' });
+      return;
+    }
+
+    // --- Voice signaling relay ---
+    if (parsed.type === 'VOICE_OFFER') {
+      const target = this.clients.get(parsed.payload.targetPlayerId);
+      if (target) {
+        target.send({
+          type: 'VOICE_OFFER',
+          payload: {
+            targetPlayerId: parsed.payload.targetPlayerId,
+            sdp: parsed.payload.sdp,
+            fromPlayerId: client.playerId,
+          },
+        });
+      }
+      return;
+    }
+
+    if (parsed.type === 'VOICE_ANSWER') {
+      const target = this.clients.get(parsed.payload.targetPlayerId);
+      if (target) {
+        target.send({
+          type: 'VOICE_ANSWER',
+          payload: {
+            targetPlayerId: parsed.payload.targetPlayerId,
+            sdp: parsed.payload.sdp,
+            fromPlayerId: client.playerId,
+          },
+        });
+      }
+      return;
+    }
+
+    if (parsed.type === 'VOICE_ICE_CANDIDATE') {
+      const target = this.clients.get(parsed.payload.targetPlayerId);
+      if (target) {
+        target.send({
+          type: 'VOICE_ICE_CANDIDATE',
+          payload: {
+            targetPlayerId: parsed.payload.targetPlayerId,
+            candidate: parsed.payload.candidate,
+            sdpMid: parsed.payload.sdpMid,
+            sdpMLineIndex: parsed.payload.sdpMLineIndex,
+            fromPlayerId: client.playerId,
+          },
+        });
+      }
+      return;
+    }
+
+    if (parsed.type === 'VOICE_STATE') {
+      // Broadcast mute/unmute state to all other clients in the same room
+      for (const [playerId, target] of this.clients) {
+        if (playerId !== client.playerId && target.roomId === client.roomId) {
+          target.send({
+            type: 'VOICE_STATE',
+            payload: {
+              muted: parsed.payload.muted,
+              playerId: client.playerId,
+            },
+          });
+        }
+      }
       return;
     }
 

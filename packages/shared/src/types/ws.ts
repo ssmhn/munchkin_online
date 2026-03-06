@@ -51,14 +51,41 @@ export interface JsonPatch {
 
 export type GameStateProjection = GameState;
 
-// --- Client → Server messages ---
+// --- Voice Chat Signaling ---
+
+export interface VoiceOffer {
+  targetPlayerId: string;
+  sdp: string;
+}
+
+export interface VoiceAnswer {
+  targetPlayerId: string;
+  sdp: string;
+}
+
+export interface VoiceIceCandidate {
+  targetPlayerId: string;
+  candidate: string;
+  sdpMid: string | null;
+  sdpMLineIndex: number | null;
+}
+
+export interface VoiceState {
+  muted: boolean;
+}
+
+// --- Client -> Server messages ---
 
 export type C2S_Message =
   | { type: 'GAME_ACTION'; payload: GameAction }
   | { type: 'PING' }
-  | { type: 'RECONNECT'; token: string };
+  | { type: 'RECONNECT'; token: string }
+  | { type: 'VOICE_OFFER'; payload: VoiceOffer }
+  | { type: 'VOICE_ANSWER'; payload: VoiceAnswer }
+  | { type: 'VOICE_ICE_CANDIDATE'; payload: VoiceIceCandidate }
+  | { type: 'VOICE_STATE'; payload: VoiceState };
 
-// --- Server → Client messages ---
+// --- Server -> Client messages ---
 
 export type S2C_Message =
   | { type: 'FULL_SYNC'; payload: { gameState: GameStateProjection; cardDb: CardDb } }
@@ -72,4 +99,8 @@ export type S2C_Message =
   | { type: 'PLAYER_RECONNECTED'; payload: { playerId: string } }
   | { type: 'ERROR'; payload: { code: string; message: string } }
   | { type: 'GAME_OVER'; payload: { winnerId: string } }
-  | { type: 'PONG' };
+  | { type: 'PONG' }
+  | { type: 'VOICE_OFFER'; payload: VoiceOffer & { fromPlayerId: string } }
+  | { type: 'VOICE_ANSWER'; payload: VoiceAnswer & { fromPlayerId: string } }
+  | { type: 'VOICE_ICE_CANDIDATE'; payload: VoiceIceCandidate & { fromPlayerId: string } }
+  | { type: 'VOICE_STATE'; payload: VoiceState & { playerId: string } };

@@ -40,11 +40,15 @@ export function createServer(config: ServerConfig) {
 
       const client = new WsClient(socket, payload.playerId, payload.roomId);
 
+      // Register with the router so voice signaling can find this client
+      router.registerClient(client);
+
       socket.on('message', (data: Buffer) => {
         router.route(client, data.toString());
       });
 
       socket.on('close', () => {
+        router.unregisterClient(client.playerId);
         // Connection cleanup handled by GameRoom
       });
     });
