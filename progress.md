@@ -106,6 +106,11 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-019 — Passive race/class abilities
+- Verified all passive abilities already implemented: Elf ON_HELPER_VICTORY, Halfling ESCAPE_BONUS, Dwarf EXTRA_BIG_ITEM
+- Created packages/game-engine/__tests__/passive-abilities.test.ts consolidating 3 integration tests
+- Triggers fire automatically via combat-resolution, combat-defeat, and equipment modules
+
 ## TASK-018 — Charity phase
 - Created packages/game-engine/src/charity.ts with handleCharityDiscard and needsCharity
 - >5 cards → CHARITY phase; excess cards go to lowest-level player round-robin
