@@ -106,6 +106,13 @@
 - Engine stubs replaced with real implementations
 - 5 tests: offer, accept, decline, counter-offer, reward verification
 
+## TASK-024 — Reconnect
+- Created reconnect.ts with handleReconnect, handleDisconnect, applyDisconnectedTimeout
+- Reconnect sends FULL_SYNC, marks player connected, notifies others with PLAYER_RECONNECTED
+- Disconnect marks player offline, sends PLAYER_LEFT to others
+- Timeout removes pending actions for disconnected players
+- 3 tests: FULL_SYNC on reconnect, disconnect notification, timeout cleanup
+
 ## TASK-023 — Lobby HTTP API
 - Created lobby-routes.ts with POST /lobby/rooms, GET /lobby/rooms, POST /lobby/rooms/:id/join
 - Room creation returns roomId, join returns JWT with playerId + roomId + playerName
