@@ -141,6 +141,7 @@ export interface CardDefinition {
   deck: 'DOOR' | 'TREASURE';
   type: CardType;
   subtype?: CardSubtype;
+  set?: string;
   description: string;
   imageUrl?: string;
   playableFrom?: PlayContext[];

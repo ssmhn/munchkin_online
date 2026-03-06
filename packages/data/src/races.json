@@ -5,14 +5,24 @@
     "deck": "DOOR",
     "type": "RACE",
     "description": "Каждый раз, когда ты помогаешь победить монстра, получаешь уровень.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
+    ],
     "effects": [],
     "triggers": [
       {
         "event": "ON_HELPER_VICTORY",
-        "effects": [{ "type": "MODIFY_LEVEL", "value": 1, "target": "SELF" }]
+        "effects": [
+          {
+            "type": "MODIFY_LEVEL",
+            "value": 1,
+            "target": "SELF"
+          }
+        ]
       }
-    ]
+    ],
+    "set": "base"
   },
   {
     "id": "race_dwarf",
@@ -20,11 +30,19 @@
     "deck": "DOOR",
     "type": "RACE",
     "description": "Можешь нести дополнительный Большой предмет.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
-    "effects": [
-      { "type": "APPLY_STATUS", "status": "EXTRA_BIG_ITEM", "target": "SELF" }
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
     ],
-    "triggers": []
+    "effects": [
+      {
+        "type": "APPLY_STATUS",
+        "status": "EXTRA_BIG_ITEM",
+        "target": "SELF"
+      }
+    ],
+    "triggers": [],
+    "set": "base"
   },
   {
     "id": "race_halfling",
@@ -32,11 +50,18 @@
     "deck": "DOOR",
     "type": "RACE",
     "description": "+1 к побегу. Можешь продать предмет за двойную цену раз в ход.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
-    "effects": [
-      { "type": "ESCAPE_BONUS", "value": 1 }
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
     ],
-    "triggers": []
+    "effects": [
+      {
+        "type": "ESCAPE_BONUS",
+        "value": 1
+      }
+    ],
+    "triggers": [],
+    "set": "base"
   },
   {
     "id": "race_human",
@@ -44,8 +69,12 @@
     "deck": "DOOR",
     "type": "RACE",
     "description": "Нет особых способностей, но нет и ограничений.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
+    ],
     "effects": [],
-    "triggers": []
+    "triggers": [],
+    "set": "base"
   }
 ]

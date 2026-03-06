@@ -5,9 +5,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+5 к бою для одной стороны.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 300,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 5, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 5,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_flaming_poison_potion",
@@ -15,9 +24,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+3 к бою для одной стороны.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_friendship_potion",
@@ -25,9 +43,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+2 к бою.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_potion_of_halitosis",
@@ -35,9 +62,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+2 к бою.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 100,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_sleep_potion",
@@ -45,9 +81,16 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "Автоматический побег из боя.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 100,
-    "effects": [{ "type": "AUTO_ESCAPE" }]
+    "effects": [
+      {
+        "type": "AUTO_ESCAPE"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_electric_radioactive_acid_potion",
@@ -55,9 +98,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+5 к бою.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 5, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 5,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_instant_wall",
@@ -65,9 +117,16 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "Автоматический побег.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 300,
-    "effects": [{ "type": "AUTO_ESCAPE" }]
+    "effects": [
+      {
+        "type": "AUTO_ESCAPE"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_transferral_potion",
@@ -75,9 +134,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+1 к бою.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 100,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_yuppie_water",
@@ -85,9 +153,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+2 к бою.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 100,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_loaded_die",
@@ -95,9 +172,17 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+3 к побегу.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 300,
-    "effects": [{ "type": "ESCAPE_BONUS", "value": 3 }]
+    "effects": [
+      {
+        "type": "ESCAPE_BONUS",
+        "value": 3
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_pollymorph_potion",
@@ -105,9 +190,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "Сбрось монстра. Взяти сокровища.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 99, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 99,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_wishing_ring",
@@ -115,9 +209,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "Отмени любое проклятие.",
-    "playableFrom": ["REACTION", "ANYTIME"],
+    "playableFrom": [
+      "REACTION",
+      "ANYTIME"
+    ],
     "value": 500,
-    "effects": [{ "type": "REMOVE_CURSE", "target": "SELF" }]
+    "effects": [
+      {
+        "type": "REMOVE_CURSE",
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_steal_a_level",
@@ -125,9 +228,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+1 уровень.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT"],
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT"
+    ],
     "value": 100,
-    "effects": [{ "type": "MODIFY_LEVEL", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "MODIFY_LEVEL",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_nasty_looking_knife",
@@ -135,9 +247,18 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+3 к бою.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "oneshot_cotion_of_ponfusion",
@@ -145,8 +266,17 @@
     "deck": "TREASURE",
     "type": "ONE_SHOT",
     "description": "+3 к бою.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "value": 100,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   }
 ]

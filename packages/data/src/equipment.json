@@ -5,9 +5,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 300,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "broad_sword",
@@ -15,10 +24,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для женщин.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
-    "requirements": [{ "type": "GENDER", "value": "FEMALE" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "GENDER",
+        "value": "FEMALE"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "hammer_of_kneecapping",
@@ -26,10 +49,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Дварфов.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 600,
-    "requirements": [{ "type": "RACE", "value": "DWARF" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "RACE",
+        "value": "DWARF"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 4,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "mace_of_sharpness",
@@ -37,10 +74,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Клирика.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 600,
-    "requirements": [{ "type": "CLASS", "value": "CLERIC" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "CLASS",
+        "value": "CLERIC"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 4,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "rapier_of_unfairness",
@@ -48,10 +99,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Эльфов.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 600,
-    "requirements": [{ "type": "RACE", "value": "ELF" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "RACE",
+        "value": "ELF"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "staff_of_napalm",
@@ -59,10 +124,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+5 к бою. Только для Волшебника.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 800,
-    "requirements": [{ "type": "CLASS", "value": "WIZARD" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 5, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "CLASS",
+        "value": "WIZARD"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 5,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "swiss_army_polearm",
@@ -70,10 +149,19 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+4 к бою. Большой. Двуручный.",
-    "slots": ["twoHands"],
+    "slots": [
+      "twoHands"
+    ],
     "value": 600,
     "isBig": true,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 4,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "chainsaw_of_bloody_dismemberment",
@@ -81,10 +169,19 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Большой. Двуручный.",
-    "slots": ["twoHands"],
+    "slots": [
+      "twoHands"
+    ],
     "value": 600,
     "isBig": true,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "huge_rock",
@@ -92,10 +189,19 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Большой. Двуручный.",
-    "slots": ["twoHands"],
+    "slots": [
+      "twoHands"
+    ],
     "value": 300,
     "isBig": true,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "eleven_foot_pole",
@@ -103,9 +209,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
-    "slots": ["twoHands"],
+    "slots": [
+      "twoHands"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "rat_on_a_stick",
@@ -113,9 +228,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 100,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "dagger_of_treachery",
@@ -123,10 +247,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Вора.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
-    "requirements": [{ "type": "CLASS", "value": "THIEF" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "CLASS",
+        "value": "THIEF"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "singing_and_dancing_sword",
@@ -134,10 +272,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою. Не для Вора.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
-    "requirements": [{ "type": "NOT_CLASS", "value": "THIEF" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "NOT_CLASS",
+        "value": "THIEF"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "shield_of_ubiquity",
@@ -145,10 +297,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Воина.",
-    "slots": ["leftHand"],
+    "slots": [
+      "leftHand"
+    ],
     "value": 600,
-    "requirements": [{ "type": "CLASS", "value": "WARRIOR" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "CLASS",
+        "value": "WARRIOR"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 4,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "buckler_of_swashing",
@@ -156,9 +322,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
-    "slots": ["leftHand"],
+    "slots": [
+      "leftHand"
+    ],
     "value": 400,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "short_wide_armor",
@@ -166,10 +341,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Дварфов.",
-    "slots": ["body"],
+    "slots": [
+      "body"
+    ],
     "value": 400,
-    "requirements": [{ "type": "RACE", "value": "DWARF" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "RACE",
+        "value": "DWARF"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "flaming_armor",
@@ -177,9 +366,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
-    "slots": ["body"],
+    "slots": [
+      "body"
+    ],
     "value": 400,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "mithril_armor",
@@ -187,10 +385,19 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Большой предмет.",
-    "slots": ["body"],
+    "slots": [
+      "body"
+    ],
     "value": 600,
     "isBig": true,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "leather_armor",
@@ -198,9 +405,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
-    "slots": ["body"],
+    "slots": [
+      "body"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "slimy_armor",
@@ -208,9 +424,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
-    "slots": ["body"],
+    "slots": [
+      "body"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "helmet_of_courage",
@@ -218,16 +443,34 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою (+4 для Воина)",
-    "slots": ["head"],
+    "slots": [
+      "head"
+    ],
     "value": 400,
     "effects": [
       {
         "type": "CONDITIONAL",
-        "condition": { "type": "PLAYER_CLASS", "class": "WARRIOR" },
-        "then": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }],
-        "else": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+        "condition": {
+          "type": "PLAYER_CLASS",
+          "class": "WARRIOR"
+        },
+        "then": [
+          {
+            "type": "COMBAT_BONUS",
+            "value": 4,
+            "target": "SELF"
+          }
+        ],
+        "else": [
+          {
+            "type": "COMBAT_BONUS",
+            "value": 2,
+            "target": "SELF"
+          }
+        ]
       }
-    ]
+    ],
+    "set": "base"
   },
   {
     "id": "bad_ass_bandana",
@@ -235,10 +478,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для людей.",
-    "slots": ["head"],
+    "slots": [
+      "head"
+    ],
     "value": 400,
-    "requirements": [{ "type": "RACE", "value": "HUMAN" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "RACE",
+        "value": "HUMAN"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "horned_helmet",
@@ -246,9 +503,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
-    "slots": ["head"],
+    "slots": [
+      "head"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "helm_of_peripheral_vision",
@@ -256,9 +522,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
-    "slots": ["head"],
+    "slots": [
+      "head"
+    ],
     "value": 400,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "boots_of_running_really_fast",
@@ -266,10 +541,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к побегу. Большой предмет.",
-    "slots": ["feet"],
+    "slots": [
+      "feet"
+    ],
     "value": 400,
     "isBig": true,
-    "effects": [{ "type": "ESCAPE_BONUS", "value": 2 }]
+    "effects": [
+      {
+        "type": "ESCAPE_BONUS",
+        "value": 2
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "boots_of_butt_kicking",
@@ -277,9 +560,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
-    "slots": ["feet"],
+    "slots": [
+      "feet"
+    ],
     "value": 400,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "sandals_of_protection",
@@ -287,9 +579,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
-    "slots": ["feet"],
+    "slots": [
+      "feet"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "sneaky_bastard_sword",
@@ -297,9 +598,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "pointy_hat_of_power",
@@ -307,10 +617,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Волшебника.",
-    "slots": ["head"],
+    "slots": [
+      "head"
+    ],
     "value": 400,
-    "requirements": [{ "type": "CLASS", "value": "WIZARD" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "CLASS",
+        "value": "WIZARD"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "bow_with_ribbons",
@@ -318,10 +642,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Эльфов. Двуручный.",
-    "slots": ["twoHands"],
+    "slots": [
+      "twoHands"
+    ],
     "value": 800,
-    "requirements": [{ "type": "RACE", "value": "ELF" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "RACE",
+        "value": "ELF"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 4,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "cloak_of_obscurity",
@@ -329,10 +667,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Вора.",
-    "slots": ["body"],
+    "slots": [
+      "body"
+    ],
     "value": 600,
-    "requirements": [{ "type": "CLASS", "value": "THIEF" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 4, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "CLASS",
+        "value": "THIEF"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 4,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "limburger_and_anchovy_sandwich",
@@ -340,10 +692,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Хоббитов.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
-    "requirements": [{ "type": "RACE", "value": "HALFLING" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "RACE",
+        "value": "HALFLING"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "pantyhose_of_giant_strength",
@@ -351,10 +717,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Не для Воина.",
-    "slots": ["feet"],
+    "slots": [
+      "feet"
+    ],
     "value": 600,
-    "requirements": [{ "type": "NOT_CLASS", "value": "WARRIOR" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "NOT_CLASS",
+        "value": "WARRIOR"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "kneepads_of_allure",
@@ -362,10 +742,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою. Не для Клирика.",
-    "slots": ["feet"],
+    "slots": [
+      "feet"
+    ],
     "value": 200,
-    "requirements": [{ "type": "NOT_CLASS", "value": "CLERIC" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "NOT_CLASS",
+        "value": "CLERIC"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "spiky_knees",
@@ -373,9 +767,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
-    "slots": ["feet"],
+    "slots": [
+      "feet"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 1, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "tuba_of_charm",
@@ -383,10 +786,19 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Большой предмет.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 300,
     "isBig": true,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "gentleman_club",
@@ -394,10 +806,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для мужчин.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
-    "requirements": [{ "type": "GENDER", "value": "MALE" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "GENDER",
+        "value": "MALE"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "cheese_grater_of_peace",
@@ -405,10 +831,24 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Клирика.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
-    "requirements": [{ "type": "CLASS", "value": "CLERIC" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "CLASS",
+        "value": "CLERIC"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "stepladder",
@@ -416,11 +856,25 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+3 к бою. Большой. Только для Хоббитов.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 400,
     "isBig": true,
-    "requirements": [{ "type": "RACE", "value": "HALFLING" }],
-    "effects": [{ "type": "COMBAT_BONUS", "value": 3, "target": "SELF" }]
+    "requirements": [
+      {
+        "type": "RACE",
+        "value": "HALFLING"
+      }
+    ],
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 3,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "boil_an_anthill",
@@ -428,9 +882,18 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
-    "slots": ["rightHand"],
+    "slots": [
+      "rightHand"
+    ],
     "value": 200,
-    "effects": [{ "type": "COMBAT_BONUS", "value": 2, "target": "SELF" }]
+    "effects": [
+      {
+        "type": "COMBAT_BONUS",
+        "value": 2,
+        "target": "SELF"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "helm_of_courage",
@@ -438,11 +901,21 @@
     "deck": "TREASURE",
     "type": "EQUIPMENT",
     "description": "+1 к бою. +1 к побегу.",
-    "slots": ["head"],
+    "slots": [
+      "head"
+    ],
     "value": 200,
     "effects": [
-      { "type": "COMBAT_BONUS", "value": 1, "target": "SELF" },
-      { "type": "ESCAPE_BONUS", "value": 1 }
-    ]
+      {
+        "type": "COMBAT_BONUS",
+        "value": 1,
+        "target": "SELF"
+      },
+      {
+        "type": "ESCAPE_BONUS",
+        "value": 1
+      }
+    ],
+    "set": "base"
   }
 ]

@@ -5,11 +5,19 @@
     "deck": "DOOR",
     "type": "CLASS",
     "description": "Воин может использовать любое оружие независимо от ограничений.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
-    "effects": [
-      { "type": "APPLY_STATUS", "status": "IGNORE_WEAPON_RESTRICTIONS", "target": "SELF" }
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
     ],
-    "triggers": []
+    "effects": [
+      {
+        "type": "APPLY_STATUS",
+        "status": "IGNORE_WEAPON_RESTRICTIONS",
+        "target": "SELF"
+      }
+    ],
+    "triggers": [],
+    "set": "base"
   },
   {
     "id": "class_wizard",
@@ -17,14 +25,25 @@
     "deck": "DOOR",
     "type": "CLASS",
     "description": "Может сбросить карты для отмены проклятия.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
+    ],
     "effects": [],
     "triggers": [
       {
         "event": "ON_CURSE_RECEIVED",
-        "effects": [{ "type": "DRAW_CARDS", "count": 1, "deck": "DOOR", "target": "SELF" }]
+        "effects": [
+          {
+            "type": "DRAW_CARDS",
+            "count": 1,
+            "deck": "DOOR",
+            "target": "SELF"
+          }
+        ]
       }
-    ]
+    ],
+    "set": "base"
   },
   {
     "id": "class_cleric",
@@ -32,9 +51,13 @@
     "deck": "DOOR",
     "type": "CLASS",
     "description": "Может сбросить карту для повышения уровня в бою.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
+    ],
     "effects": [],
-    "triggers": []
+    "triggers": [],
+    "set": "base"
   },
   {
     "id": "class_thief",
@@ -42,8 +65,12 @@
     "deck": "DOOR",
     "type": "CLASS",
     "description": "Может красть предмет у другого игрока.",
-    "playableFrom": ["YOUR_TURN_PRECOMBAT", "ANYTIME"],
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
+    ],
     "effects": [],
-    "triggers": []
+    "triggers": [],
+    "set": "base"
   }
 ]

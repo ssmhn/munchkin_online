@@ -5,8 +5,16 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "+5 к уровню монстра",
-    "playableFrom": ["ANY_COMBAT"],
-    "effects": [{ "type": "MONSTER_BONUS", "value": 5 }]
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
+    "effects": [
+      {
+        "type": "MONSTER_BONUS",
+        "value": 5
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "modifier_ancient",
@@ -14,11 +22,20 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "+10 к уровню монстра. +2 сокровища.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "effects": [
-      { "type": "MONSTER_BONUS", "value": 10 },
-      { "type": "EXTRA_TREASURE", "count": 2 }
-    ]
+      {
+        "type": "MONSTER_BONUS",
+        "value": 10
+      },
+      {
+        "type": "EXTRA_TREASURE",
+        "count": 2
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "modifier_baby",
@@ -26,8 +43,16 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "-5 к уровню монстра.",
-    "playableFrom": ["ANY_COMBAT"],
-    "effects": [{ "type": "MONSTER_PENALTY", "value": 5 }]
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
+    "effects": [
+      {
+        "type": "MONSTER_PENALTY",
+        "value": 5
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "modifier_intelligent",
@@ -35,8 +60,16 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "+5 к уровню монстра.",
-    "playableFrom": ["ANY_COMBAT"],
-    "effects": [{ "type": "MONSTER_BONUS", "value": 5 }]
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
+    "effects": [
+      {
+        "type": "MONSTER_BONUS",
+        "value": 5
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "modifier_humongous",
@@ -44,11 +77,20 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "+10 к уровню монстра. +2 сокровища.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "effects": [
-      { "type": "MONSTER_BONUS", "value": 10 },
-      { "type": "EXTRA_TREASURE", "count": 2 }
-    ]
+      {
+        "type": "MONSTER_BONUS",
+        "value": 10
+      },
+      {
+        "type": "EXTRA_TREASURE",
+        "count": 2
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "modifier_mate",
@@ -56,11 +98,20 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "+5 к уровню монстра. +1 сокровище.",
-    "playableFrom": ["ANY_COMBAT"],
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
     "effects": [
-      { "type": "MONSTER_BONUS", "value": 5 },
-      { "type": "EXTRA_TREASURE", "count": 1 }
-    ]
+      {
+        "type": "MONSTER_BONUS",
+        "value": 5
+      },
+      {
+        "type": "EXTRA_TREASURE",
+        "count": 1
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "modifier_plague",
@@ -68,8 +119,16 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "+3 к уровню монстра.",
-    "playableFrom": ["ANY_COMBAT"],
-    "effects": [{ "type": "MONSTER_BONUS", "value": 3 }]
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
+    "effects": [
+      {
+        "type": "MONSTER_BONUS",
+        "value": 3
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "modifier_hoard",
@@ -77,7 +136,15 @@
     "deck": "DOOR",
     "type": "MODIFIER",
     "description": "+2 сокровища.",
-    "playableFrom": ["ANY_COMBAT"],
-    "effects": [{ "type": "EXTRA_TREASURE", "count": 2 }]
+    "playableFrom": [
+      "ANY_COMBAT"
+    ],
+    "effects": [
+      {
+        "type": "EXTRA_TREASURE",
+        "count": 2
+      }
+    ],
+    "set": "base"
   }
 ]

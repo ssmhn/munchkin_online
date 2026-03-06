@@ -5,8 +5,16 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Ты теряешь свой класс.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "REMOVE_CLASS", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "REMOVE_CLASS",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_lose_race",
@@ -14,8 +22,16 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Ты теряешь свою расу.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "REMOVE_RACE", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "REMOVE_RACE",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_change_gender",
@@ -23,8 +39,16 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Твой пол меняется.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "CHANGE_GENDER", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "CHANGE_GENDER",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_lose_level",
@@ -32,8 +56,17 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Потеряй 1 уровень.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "MODIFY_LEVEL",
+        "value": -1,
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_lose_headgear",
@@ -41,8 +74,17 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Потеряй свой головной убор.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "head", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "REMOVE_EQUIPMENT",
+        "slot": "head",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_lose_footgear",
@@ -50,8 +92,17 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Потеряй свою обувь.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "feet", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "REMOVE_EQUIPMENT",
+        "slot": "feet",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_lose_armor",
@@ -59,8 +110,17 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Потеряй свою броню.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "body", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "REMOVE_EQUIPMENT",
+        "slot": "body",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_lose_small_item",
@@ -68,8 +128,17 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Потеряй самый маленький предмет.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "BEST", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "REMOVE_EQUIPMENT",
+        "slot": "BEST",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_combat_minus2",
@@ -77,8 +146,17 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "-2 к бою до конца следующего боя.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "APPLY_CURSE", "curseId": "curse_combat_minus2", "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "APPLY_CURSE",
+        "curseId": "curse_combat_minus2",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "curse_duck_of_doom",
@@ -86,7 +164,16 @@
     "deck": "DOOR",
     "type": "CURSE",
     "description": "Потеряй 2 уровня.",
-    "playableFrom": ["REACTION"],
-    "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+    "playableFrom": [
+      "REACTION"
+    ],
+    "effects": [
+      {
+        "type": "MODIFY_LEVEL",
+        "value": -2,
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   }
 ]

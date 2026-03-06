@@ -10,9 +10,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй уровень",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -1,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_maul_rat",
@@ -25,9 +32,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй уровень",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -1,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_lame_goblin",
@@ -40,9 +54,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй уровень",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -1,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_potted_plant",
@@ -57,7 +78,8 @@
       "description": "Ничего не происходит",
       "effects": []
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_drooling_slime",
@@ -70,9 +92,16 @@
     "tags": [],
     "badStuff": {
       "description": "Сбрось снаряжение с ног",
-      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "feet", "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "feet",
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_flying_frogs",
@@ -85,9 +114,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 2 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -2,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_pit_bull",
@@ -100,9 +136,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 2 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -2,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_undead_horse",
@@ -112,12 +155,21 @@
     "description": "Уровень 4. Нежить.",
     "baseLevel": 4,
     "treasures": 2,
-    "tags": ["UNDEAD"],
+    "tags": [
+      "UNDEAD"
+    ],
     "badStuff": {
       "description": "Потеряй 2 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -2,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_orc",
@@ -130,9 +182,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 2 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -2,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_harpies",
@@ -145,9 +204,16 @@
     "tags": [],
     "badStuff": {
       "description": "Сбрось шлем",
-      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "head", "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "head",
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_snails_on_speed",
@@ -160,9 +226,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 1 уровень за каждый предмет",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -1,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_3872_orcs",
@@ -175,9 +248,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 3 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -3, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -3,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_floating_nose",
@@ -190,9 +270,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 3 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -3, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -3,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_face_sucker",
@@ -205,9 +292,16 @@
     "tags": [],
     "badStuff": {
       "description": "Сбрось шлем",
-      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "head", "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "head",
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_wight_brothers",
@@ -217,12 +311,21 @@
     "description": "Уровень 8. Нежить.",
     "baseLevel": 8,
     "treasures": 2,
-    "tags": ["UNDEAD"],
+    "tags": [
+      "UNDEAD"
+    ],
     "badStuff": {
       "description": "Потеряй 2 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -2,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_ghoulfiends",
@@ -232,12 +335,21 @@
     "description": "Уровень 8. Нежить.",
     "baseLevel": 8,
     "treasures": 2,
-    "tags": ["UNDEAD"],
+    "tags": [
+      "UNDEAD"
+    ],
     "badStuff": {
       "description": "Потеряй 2 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -2, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -2,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_wannabe_vampire",
@@ -247,12 +359,21 @@
     "description": "Уровень 6. Нежить. Не очень-то и страшный.",
     "baseLevel": 6,
     "treasures": 2,
-    "tags": ["UNDEAD"],
+    "tags": [
+      "UNDEAD"
+    ],
     "badStuff": {
       "description": "Потеряй 3 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -3, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -3,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_tongue_demon",
@@ -262,12 +383,21 @@
     "description": "Уровень 12. Демон.",
     "baseLevel": 12,
     "treasures": 3,
-    "tags": ["DEMON"],
+    "tags": [
+      "DEMON"
+    ],
     "badStuff": {
       "description": "Сбрось 2 карты из руки",
-      "effects": [{ "type": "DISCARD_HAND", "count": 2, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "DISCARD_HAND",
+          "count": 2,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_stoned_golem",
@@ -280,9 +410,16 @@
     "tags": [],
     "badStuff": {
       "description": "Сбрось всё снаряжение",
-      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "ALL",
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_amazon",
@@ -295,15 +432,30 @@
     "tags": [],
     "badStuff": {
       "description": "Сбрось своё лучшее снаряжение",
-      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "BEST", "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "BEST",
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
     "effects": [
       {
         "type": "CONDITIONAL",
-        "condition": { "type": "PLAYER_GENDER", "gender": "MALE" },
-        "then": [{ "type": "MONSTER_BONUS", "value": 2 }]
+        "condition": {
+          "type": "PLAYER_GENDER",
+          "gender": "MALE"
+        },
+        "then": [
+          {
+            "type": "MONSTER_BONUS",
+            "value": 2
+          }
+        ]
       }
-    ]
+    ],
+    "set": "base"
   },
   {
     "id": "monster_insurance_salesman",
@@ -316,11 +468,21 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 4 уровня",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -4, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -4,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
     "effects": [
-      { "type": "PREVENT_ESCAPE", "target": "ACTIVE_PLAYER" }
-    ]
+      {
+        "type": "PREVENT_ESCAPE",
+        "target": "ACTIVE_PLAYER"
+      }
+    ],
+    "set": "base"
   },
   {
     "id": "monster_large_angry_chicken",
@@ -333,9 +495,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй 1 уровень",
-      "effects": [{ "type": "MODIFY_LEVEL", "value": -1, "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "MODIFY_LEVEL",
+          "value": -1,
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_net_troll",
@@ -348,9 +517,16 @@
     "tags": [],
     "badStuff": {
       "description": "Потеряй всё своё снаряжение",
-      "effects": [{ "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" }]
+      "effects": [
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "ALL",
+          "target": "ACTIVE_PLAYER"
+        }
+      ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_squidzilla",
@@ -364,12 +540,25 @@
     "badStuff": {
       "description": "Умри",
       "effects": [
-        { "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" },
-        { "type": "DISCARD_HAND", "count": "ALL", "target": "ACTIVE_PLAYER" },
-        { "type": "SET_LEVEL", "value": 1, "target": "ACTIVE_PLAYER" }
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "ALL",
+          "target": "ACTIVE_PLAYER"
+        },
+        {
+          "type": "DISCARD_HAND",
+          "count": "ALL",
+          "target": "ACTIVE_PLAYER"
+        },
+        {
+          "type": "SET_LEVEL",
+          "value": 1,
+          "target": "ACTIVE_PLAYER"
+        }
       ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   },
   {
     "id": "monster_plutonium_dragon",
@@ -379,15 +568,30 @@
     "description": "Уровень 20. Самый сильный монстр.",
     "baseLevel": 20,
     "treasures": 5,
-    "tags": ["DRAGON"],
+    "tags": [
+      "DRAGON"
+    ],
     "badStuff": {
       "description": "Умри",
       "effects": [
-        { "type": "REMOVE_EQUIPMENT", "slot": "ALL", "target": "ACTIVE_PLAYER" },
-        { "type": "DISCARD_HAND", "count": "ALL", "target": "ACTIVE_PLAYER" },
-        { "type": "SET_LEVEL", "value": 1, "target": "ACTIVE_PLAYER" }
+        {
+          "type": "REMOVE_EQUIPMENT",
+          "slot": "ALL",
+          "target": "ACTIVE_PLAYER"
+        },
+        {
+          "type": "DISCARD_HAND",
+          "count": "ALL",
+          "target": "ACTIVE_PLAYER"
+        },
+        {
+          "type": "SET_LEVEL",
+          "value": 1,
+          "target": "ACTIVE_PLAYER"
+        }
       ]
     },
-    "effects": []
+    "effects": [],
+    "set": "base"
   }
 ]
