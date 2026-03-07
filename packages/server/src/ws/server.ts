@@ -14,7 +14,12 @@ export interface JwtPayload {
   roomId: string;
 }
 
-export function createServer(config: ServerConfig) {
+export interface ConnectionCallbacks {
+  onConnect?: (client: WsClient) => void;
+  onDisconnect?: (client: WsClient) => void;
+}
+
+export function createServer(config: ServerConfig, callbacks?: ConnectionCallbacks) {
   const app = Fastify({ logger: false });
   const router = new MessageRouter();
 
@@ -42,6 +47,7 @@ export function createServer(config: ServerConfig) {
 
       // Register with the router so voice signaling can find this client
       router.registerClient(client);
+      callbacks?.onConnect?.(client);
 
       socket.on('message', (data: Buffer) => {
         router.route(client, data.toString());
@@ -49,7 +55,7 @@ export function createServer(config: ServerConfig) {
 
       socket.on('close', () => {
         router.unregisterClient(client.playerId);
-        // Connection cleanup handled by GameRoom
+        callbacks?.onDisconnect?.(client);
       });
     });
   });

@@ -86,41 +86,29 @@ export function CardDrawAnimation({ cards, deckType, deckRef, handRef, onComplet
     };
   }, [cards, deckRef, handRef, onComplete]);
 
-  const bgColor = deckType === 'DOOR' ? 'var(--color-info, #7c3aed)' : 'var(--color-gold, #d97706)';
-
   return (
     <div
       ref={containerRef}
       data-testid={rest['data-testid'] ?? 'card-draw-animation'}
-      style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 50 }}
+      className="fixed inset-0 pointer-events-none z-50"
     >
       {cards.map((card) => (
         <div
           key={card.id}
           data-draw-card={card.id}
           data-testid={`draw-card-${card.id}`}
+          className={`absolute w-[100px] h-[140px] rounded-lg flex items-center justify-center text-[11px] font-fantasy text-munch-text shadow-card opacity-0 p-2 text-center ${
+            flippedCards.has(card.id)
+              ? 'bg-munch-surface border-2 border-munch-gold'
+              : deckType === 'DOOR'
+              ? 'bg-munch-monster border-2 border-white/30'
+              : 'border-2 border-white/30'
+          }`}
           style={{
-            position: 'absolute',
-            width: '100px',
-            height: '140px',
-            borderRadius: 'var(--radius-md, 8px)',
-            background: flippedCards.has(card.id)
-              ? 'var(--color-surface, #2a1f10)'
-              : bgColor,
-            border: flippedCards.has(card.id)
-              ? '2px solid var(--color-gold, #c9a84c)'
-              : '2px solid rgba(255,255,255,0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '11px',
-            fontFamily: 'var(--font-fantasy, serif)',
-            color: 'var(--color-text, #fff)',
-            boxShadow: 'var(--shadow-card, 0 4px 12px rgba(0,0,0,0.5))',
-            opacity: 0,
             backfaceVisibility: 'hidden',
-            padding: '8px',
-            textAlign: 'center',
+            ...(!flippedCards.has(card.id) && deckType === 'TREASURE'
+              ? { background: 'var(--color-munch-gold)' }
+              : {}),
           }}
         >
           {flippedCards.has(card.id) ? card.label : deckType === 'DOOR' ? 'Door' : 'Treasure'}

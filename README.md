@@ -54,6 +54,15 @@ cp .env.example .env
 ```
 
 Edit `.env` and set `JWT_SECRET` to any random string:
+```bash
+openssl rand -base64 32
+```
+
+OR
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
 
 ```
 JWT_SECRET=my-dev-secret-change-me

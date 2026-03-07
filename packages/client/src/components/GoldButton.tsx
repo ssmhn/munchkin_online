@@ -14,7 +14,6 @@ export function GoldButton({ children, onClick, disabled, variant = 'primary', .
 
   const handleMouseEnter = useCallback(() => {
     if (disabled || !btnRef.current) return;
-    const color = variant === 'danger' ? 'var(--color-danger)' : 'var(--color-gold)';
     gsap.to(btnRef.current, {
       scale: 1.05,
       boxShadow: `0 0 16px ${variant === 'danger' ? 'rgba(220, 38, 38, 0.5)' : 'rgba(201, 168, 76, 0.5)'}`,
@@ -33,9 +32,6 @@ export function GoldButton({ children, onClick, disabled, variant = 'primary', .
     });
   }, []);
 
-  const bg = variant === 'danger' ? 'var(--color-danger)' : 'var(--color-gold)';
-  const color = variant === 'danger' ? 'var(--color-text)' : 'var(--color-bg)';
-
   return (
     <button
       ref={btnRef}
@@ -44,19 +40,11 @@ export function GoldButton({ children, onClick, disabled, variant = 'primary', .
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       data-testid={rest['data-testid']}
-      style={{
-        padding: '10px 20px',
-        background: bg,
-        color,
-        border: 'none',
-        borderRadius: 'var(--radius-md)',
-        fontFamily: 'var(--font-fantasy)',
-        fontWeight: 700,
-        fontSize: '14px',
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
-        letterSpacing: '0.5px',
-      }}
+      className={`px-5 py-2.5 border-none rounded-lg font-fantasy font-bold text-sm tracking-wide ${
+        variant === 'danger'
+          ? 'bg-munch-danger text-munch-text'
+          : 'bg-munch-gold text-munch-bg'
+      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
     >
       {children}
     </button>

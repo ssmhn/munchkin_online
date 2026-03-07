@@ -51,14 +51,14 @@ function hashPassword(password: string): string {
   return crypto.createHash('sha256').update(password).digest('hex');
 }
 
-export function createLobbyRoutes(config: LobbyConfig) {
+export function createLobbyRoutes(config: LobbyConfig, onGameStart?: (roomId: string, players: RoomPlayer[]) => void | Promise<void>) {
   const rooms = new Map<string, Room>();
   const invites = new Map<string, Invite>();
   const maxPlayers = config.maxPlayers ?? 6;
 
   function registerRoutes(app: FastifyInstance) {
     // Create room
-    app.post<{ Body: { name?: string; isPublic?: boolean; password?: string } }>(
+    app.post<{ Body: { name?: string; isPublic?: boolean; password?: string; maxPlayers?: number } }>(
       '/lobby/rooms',
       async (req, reply) => {
         const user = extractUser(req, config.jwtSecret);
@@ -69,13 +69,14 @@ export function createLobbyRoutes(config: LobbyConfig) {
         const body = req.body as any || {};
         const roomId = crypto.randomUUID().slice(0, 8);
         const password = body.password || null;
+        const roomMaxPlayers = Math.min(6, Math.max(2, Number(body.maxPlayers) || maxPlayers));
 
         const room: Room = {
           id: roomId,
           name: body.name || `Room ${roomId}`,
           players: [],
           phase: 'WAITING',
-          maxPlayers,
+          maxPlayers: roomMaxPlayers,
           adminUserId: user.userId,
           isPublic: body.isPublic !== false,
           passwordHash: password ? hashPassword(password) : null,
@@ -237,6 +238,63 @@ export function createLobbyRoutes(config: LobbyConfig) {
 
         room.players.splice(targetIdx, 1);
         return reply.send({ ok: true });
+      }
+    );
+
+    // Start game (admin only, requires at least 2 players)
+    app.post<{ Params: { id: string } }>(
+      '/lobby/rooms/:id/start',
+      async (req, reply) => {
+        const user = extractUser(req, config.jwtSecret);
+        if (!user) {
+          return reply.code(401).send({ error: 'Not authenticated' });
+        }
+
+        const room = rooms.get(req.params.id);
+        if (!room) {
+          return reply.code(404).send({ error: 'Room not found' });
+        }
+
+        if (room.adminUserId !== user.userId) {
+          return reply.code(403).send({ error: 'Only admin can start the game' });
+        }
+
+        if (room.players.length < 2) {
+          return reply.code(400).send({ error: 'Need at least 2 players to start' });
+        }
+
+        room.phase = 'PLAYING';
+        if (onGameStart) {
+          await onGameStart(req.params.id, room.players);
+        }
+        return reply.send({ ok: true });
+      }
+    );
+
+    // Leave room (admin leaving closes the room)
+    app.post<{ Params: { id: string } }>(
+      '/lobby/rooms/:id/leave',
+      async (req, reply) => {
+        const user = extractUser(req, config.jwtSecret);
+        if (!user) {
+          return reply.code(401).send({ error: 'Not authenticated' });
+        }
+
+        const room = rooms.get(req.params.id);
+        if (!room) {
+          return reply.code(404).send({ error: 'Room not found' });
+        }
+
+        if (room.adminUserId === user.userId) {
+          rooms.delete(req.params.id);
+          return reply.send({ ok: true, closed: true });
+        }
+
+        const idx = room.players.findIndex(p => p.userId === user.userId);
+        if (idx !== -1) {
+          room.players.splice(idx, 1);
+        }
+        return reply.send({ ok: true, closed: false });
       }
     );
 

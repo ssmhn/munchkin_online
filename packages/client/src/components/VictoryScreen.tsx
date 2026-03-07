@@ -21,7 +21,7 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
     const tl = gsap.timeline();
 
     // Fade in overlay
-    tl.from(containerRef.current, { opacity: 0, duration: 0.3 });
+    tl.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
 
     // Confetti burst (100+ particles)
     if (confettiRef.current) {
@@ -52,8 +52,8 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
 
     // Trophy drops with bounce
     if (trophyRef.current) {
-      tl.from(trophyRef.current, {
-        y: -200,
+      tl.fromTo(trophyRef.current, { y: -200 }, {
+        y: 0,
         duration: 0.8,
         ease: 'bounce.out',
       }, 0.3);
@@ -71,10 +71,10 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
     // Winner name: letter-by-letter stagger
     if (nameRef.current) {
       const letters = nameRef.current.querySelectorAll<HTMLSpanElement>('[data-letter]');
-      tl.from(letters, {
-        y: -50,
-        opacity: 0,
-        scale: 0,
+      tl.fromTo(letters, { y: -50, opacity: 0, scale: 0 }, {
+        y: 0,
+        opacity: 1,
+        scale: 1,
         stagger: 0.05,
         duration: 0.5,
         ease: 'back.out(2)',
@@ -91,7 +91,7 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
 
   useEffect(() => {
     if (showButton && btnRef.current) {
-      gsap.from(btnRef.current, { opacity: 0, y: 30, duration: 0.4, ease: 'power2.out' });
+      gsap.fromTo(btnRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
     }
   }, [showButton]);
 
@@ -99,27 +99,18 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
     <div
       ref={containerRef}
       data-testid={rest['data-testid'] ?? 'victory-screen'}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.85)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 200,
-      }}
+      className="fixed inset-0 bg-black/85 flex flex-col items-center justify-center z-[200]"
     >
       <div
         ref={confettiRef}
         data-testid="victory-confetti-container"
-        style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}
+        className="absolute inset-0 pointer-events-none overflow-hidden"
       />
 
       <div
         ref={trophyRef}
         data-testid="victory-trophy"
-        style={{ fontSize: '80px', marginBottom: '16px' }}
+        className="text-[80px] mb-4"
       >
         🏆
       </div>
@@ -127,18 +118,11 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
       <div
         ref={nameRef}
         data-testid="winner-name"
-        style={{
-          fontFamily: 'var(--font-fantasy, serif)',
-          fontSize: '42px',
-          fontWeight: 700,
-          color: 'var(--color-gold, #c9a84c)',
-          textShadow: '0 0 20px rgba(201, 168, 76, 0.5)',
-          marginBottom: '8px',
-          display: 'flex',
-        }}
+        className="font-fantasy text-[42px] font-bold text-munch-gold mb-2 flex"
+        style={{ textShadow: '0 0 20px rgba(201, 168, 76, 0.5)' }}
       >
         {winnerName.split('').map((char, i) => (
-          <span key={i} data-letter style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : undefined }}>
+          <span key={i} data-letter className={`inline-block ${char === ' ' ? 'whitespace-pre' : ''}`}>
             {char}
           </span>
         ))}
@@ -146,12 +130,7 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
 
       <div
         data-testid="victory-subtitle"
-        style={{
-          fontFamily: 'var(--font-fantasy, serif)',
-          fontSize: '20px',
-          color: 'var(--color-text-muted, #a39880)',
-          marginBottom: '32px',
-        }}
+        className="font-fantasy text-xl text-munch-text-muted mb-8"
       >
         Wins the Game!
       </div>
@@ -161,17 +140,7 @@ export function VictoryScreen({ winnerName, onPlayAgain, ...rest }: Props) {
           ref={btnRef}
           data-testid="play-again-btn"
           onClick={onPlayAgain}
-          style={{
-            padding: '12px 32px',
-            background: 'var(--color-gold, #c9a84c)',
-            color: 'var(--color-bg, #1a1208)',
-            border: 'none',
-            borderRadius: 'var(--radius-md, 8px)',
-            fontFamily: 'var(--font-fantasy, serif)',
-            fontWeight: 700,
-            fontSize: '16px',
-            cursor: 'pointer',
-          }}
+          className="py-3 px-8 bg-munch-gold text-munch-bg border-none rounded-lg font-fantasy font-bold text-base cursor-pointer"
         >
           Play Again
         </button>

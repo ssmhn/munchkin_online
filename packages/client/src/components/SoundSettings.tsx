@@ -26,72 +26,35 @@ export function SoundSettings() {
 
   return (
     <div
-      style={{
-        background: 'var(--color-surface)',
-        border: '1px solid var(--color-border)',
-        borderRadius: 'var(--radius-md)',
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
-        fontFamily: 'var(--font-body)',
-        minWidth: '220px',
-      }}
+      className="bg-munch-surface border border-munch-border rounded-lg p-4 flex flex-col gap-3 font-body min-w-[220px]"
     >
       <div
-        style={{
-          fontFamily: 'var(--font-fantasy)',
-          fontSize: '14px',
-          color: 'var(--color-gold)',
-          fontWeight: 700,
-          letterSpacing: '0.5px',
-        }}
+        className="font-fantasy text-sm text-munch-gold font-bold tracking-wide"
       >
         Sound Settings
       </div>
 
       {/* Enable / Disable */}
       <label
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          fontSize: '13px',
-          color: 'var(--color-text)',
-          cursor: 'pointer',
-        }}
+        className="flex items-center gap-2 text-[13px] text-munch-text cursor-pointer"
       >
         <input
           type="checkbox"
           checked={enabled}
           onChange={handleToggleEnabled}
-          style={{ accentColor: 'var(--color-gold)' }}
+          className="accent-munch-gold"
           data-testid="sound-enabled-checkbox"
         />
         Sound Effects
       </label>
 
       {/* Volume + Mute row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', opacity: enabled ? 1 : 0.4 }}>
+      <div className={`flex items-center gap-2 ${enabled ? 'opacity-100' : 'opacity-40'}`}>
         <button
           onClick={handleToggleMute}
           disabled={!enabled}
           data-testid="sound-mute-btn"
-          style={{
-            background: 'none',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-sm)',
-            color: 'var(--color-text)',
-            fontSize: '18px',
-            width: '32px',
-            height: '32px',
-            cursor: enabled ? 'pointer' : 'not-allowed',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 0,
-            lineHeight: 1,
-          }}
+          className={`bg-transparent border border-munch-border rounded text-munch-text text-lg w-8 h-8 flex items-center justify-center p-0 leading-none ${enabled ? 'cursor-pointer' : 'cursor-not-allowed'}`}
           title={muted ? 'Unmute' : 'Mute'}
         >
           {speakerIcon}
@@ -106,20 +69,11 @@ export function SoundSettings() {
           onChange={handleVolumeChange}
           disabled={!enabled || muted}
           data-testid="sound-volume-slider"
-          style={{
-            flex: 1,
-            accentColor: 'var(--color-gold)',
-            cursor: enabled && !muted ? 'pointer' : 'not-allowed',
-          }}
+          className={`flex-1 accent-munch-gold ${enabled && !muted ? 'cursor-pointer' : 'cursor-not-allowed'}`}
         />
 
         <span
-          style={{
-            fontSize: '12px',
-            color: 'var(--color-text-muted)',
-            minWidth: '32px',
-            textAlign: 'right',
-          }}
+          className="text-xs text-munch-text-muted min-w-[32px] text-right"
         >
           {muted ? '0' : Math.round(volume * 100)}%
         </span>
@@ -153,28 +107,13 @@ export function SoundToggleButton() {
   );
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="relative">
       <button
         onClick={handleClick}
         onContextMenu={handleContextMenu}
         data-testid="sound-toggle-btn"
         title={isSilent ? 'Enable sound' : 'Mute sound (right-click for settings)'}
-        style={{
-          background: 'var(--color-surface)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 'var(--radius-sm)',
-          color: 'var(--color-text)',
-          fontSize: '18px',
-          width: '36px',
-          height: '36px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 0,
-          lineHeight: 1,
-          transition: 'border-color 0.2s',
-        }}
+        className="bg-munch-surface border border-munch-border rounded text-munch-text text-lg w-9 h-9 cursor-pointer flex items-center justify-center p-0 leading-none transition-[border-color] duration-200"
       >
         {icon}
       </button>
@@ -183,21 +122,11 @@ export function SoundToggleButton() {
         <>
           {/* Backdrop to close panel */}
           <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 999,
-            }}
+            className="fixed inset-0 z-[999]"
             onClick={() => setShowPanel(false)}
           />
           <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              marginTop: '8px',
-              zIndex: 1000,
-            }}
+            className="absolute top-full right-0 mt-2 z-[1000]"
           >
             <SoundSettings />
           </div>

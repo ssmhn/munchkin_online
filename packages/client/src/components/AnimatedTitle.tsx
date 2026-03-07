@@ -13,13 +13,10 @@ export function AnimatedTitle({ text, ...rest }: Props) {
     if (!containerRef.current) return;
 
     const letters = containerRef.current.querySelectorAll<HTMLSpanElement>('[data-letter]');
-    gsap.from(letters, {
-      y: 40,
-      opacity: 0,
-      stagger: 0.05,
-      duration: 0.6,
-      ease: 'back.out(1.5)',
-    });
+    gsap.fromTo(letters,
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, stagger: 0.05, duration: 0.6, ease: 'back.out(1.5)' }
+    );
   }, [text]);
 
   return (

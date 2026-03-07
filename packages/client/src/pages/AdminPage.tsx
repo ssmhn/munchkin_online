@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/useAuthStore';
 import { GoldButton } from '../components/GoldButton';
@@ -37,6 +37,10 @@ interface CardSet {
   types: Record<string, number>;
 }
 
+const inputClasses = "py-2 px-3 bg-munch-bg text-munch-text border border-munch-border rounded-md text-[13px] outline-none";
+const selectClasses = `${inputClasses} cursor-pointer`;
+const rowClasses = "flex items-center gap-2 py-2 px-3 bg-munch-surface rounded-sm text-[13px]";
+
 export function AdminPage() {
   const navigate = useNavigate();
   const token = useAuthStore((s) => s.token);
@@ -59,44 +63,34 @@ export function AdminPage() {
   };
 
   if (authorized === null) {
-    return <div style={{ padding: '32px', color: 'var(--color-text)' }}>Checking admin access...</div>;
+    return <div className="p-8 text-munch-text">Checking admin access...</div>;
   }
 
   if (!authorized) {
     return (
-      <div style={{ padding: '32px', textAlign: 'center' }}>
-        <h2 style={{ color: 'var(--color-danger)', fontFamily: 'var(--font-fantasy)' }}>Access Denied</h2>
-        <p style={{ color: 'var(--color-text-muted)' }}>You don't have admin privileges.</p>
+      <div className="p-8 text-center">
+        <h2 className="text-munch-danger font-fantasy">Access Denied</h2>
+        <p className="text-munch-text-muted">You don't have admin privileges.</p>
         <GoldButton onClick={() => navigate('/')}>Back to Lobby</GoldButton>
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <h1 style={{ color: 'var(--color-gold)', fontFamily: 'var(--font-fantasy)', margin: 0 }}>
+    <div className="min-h-screen p-6 max-w-[1200px] mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-munch-gold font-fantasy m-0">
           Admin Panel
         </h1>
         <GoldButton variant="danger" onClick={() => navigate('/')}>Back to Lobby</GoldButton>
       </div>
 
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+      <div className="flex gap-2 mb-6">
         {(['cards', 'users', 'sessions'] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
-            style={{
-              padding: '8px 20px',
-              background: tab === t ? 'var(--color-gold)' : 'transparent',
-              color: tab === t ? 'var(--color-bg)' : 'var(--color-text-muted)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-md)',
-              fontFamily: 'var(--font-fantasy)',
-              fontWeight: 700,
-              cursor: 'pointer',
-              textTransform: 'capitalize',
-            }}
+            className={`py-2 px-5 border border-munch-border rounded-md font-fantasy font-bold cursor-pointer capitalize ${tab === t ? 'bg-munch-gold text-munch-bg' : 'bg-transparent text-munch-text-muted'}`}
           >
             {t}
           </button>
@@ -177,20 +171,12 @@ function CardsTab({ token }: { token: string }) {
   return (
     <div>
       {/* Sets overview */}
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '16px' }}>
+      <div className="flex gap-3 flex-wrap mb-4">
         {Object.entries(sets).map(([name, info]) => (
           <div
             key={name}
             onClick={() => setFilterSet(filterSet === name ? '' : name)}
-            style={{
-              padding: '8px 14px',
-              background: filterSet === name ? 'var(--color-gold)' : 'var(--color-surface)',
-              color: filterSet === name ? 'var(--color-bg)' : 'var(--color-text)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer',
-              fontSize: '13px',
-            }}
+            className={`py-2 px-3.5 border border-munch-border rounded-md cursor-pointer text-[13px] ${filterSet === name ? 'bg-munch-gold text-munch-bg' : 'bg-munch-surface text-munch-text'}`}
           >
             <strong>{name}</strong> ({info.count} cards)
           </div>
@@ -198,11 +184,11 @@ function CardsTab({ token }: { token: string }) {
       </div>
 
       {/* Filters */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+      <div className="flex gap-2 mb-4 flex-wrap">
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          style={selectStyle}
+          className={selectClasses}
         >
           <option value="">All types</option>
           {cardTypes.map(t => <option key={t} value={t}>{t}</option>)}
@@ -212,22 +198,22 @@ function CardsTab({ token }: { token: string }) {
           placeholder="Search by name or ID..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ ...inputStyle, flex: 1, minWidth: '200px' }}
+          className={`${inputClasses} flex-1 min-w-[200px]`}
         />
         <GoldButton onClick={() => { setCreating(true); setCreateJson(JSON.stringify({ id: '', name: '', deck: 'DOOR', type: 'MONSTER', set: 'base', description: '', effects: [] }, null, 2)); }}>
           + New Card
         </GoldButton>
       </div>
 
-      {error && <div style={{ color: 'var(--color-danger)', marginBottom: '8px', fontSize: '13px' }}>{error}</div>}
+      {error && <div className="text-munch-danger mb-2 text-[13px]">{error}</div>}
 
       {/* Create modal */}
       {creating && (
-        <div style={modalOverlay}>
-          <div style={modalContent}>
-            <h3 style={modalTitle}>Create Card</h3>
-            <textarea value={createJson} onChange={(e) => setCreateJson(e.target.value)} style={textareaStyle} />
-            <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
+          <div className="bg-munch-surface p-6 rounded-lg border border-munch-border flex flex-col gap-3 w-[600px] max-h-[80vh]">
+            <h3 className="text-munch-gold font-fantasy m-0">Create Card</h3>
+            <textarea value={createJson} onChange={(e) => setCreateJson(e.target.value)} className="p-2.5 bg-munch-bg text-munch-text border border-munch-border rounded-md text-xs font-mono min-h-[300px] resize-y outline-none" />
+            <div className="flex gap-2">
               <GoldButton onClick={createCard}>Create</GoldButton>
               <GoldButton variant="danger" onClick={() => setCreating(false)}>Cancel</GoldButton>
             </div>
@@ -237,11 +223,11 @@ function CardsTab({ token }: { token: string }) {
 
       {/* Edit modal */}
       {editing && (
-        <div style={modalOverlay}>
-          <div style={modalContent}>
-            <h3 style={modalTitle}>Edit: {editing.name}</h3>
-            <textarea value={editJson} onChange={(e) => setEditJson(e.target.value)} style={textareaStyle} />
-            <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
+          <div className="bg-munch-surface p-6 rounded-lg border border-munch-border flex flex-col gap-3 w-[600px] max-h-[80vh]">
+            <h3 className="text-munch-gold font-fantasy m-0">Edit: {editing.name}</h3>
+            <textarea value={editJson} onChange={(e) => setEditJson(e.target.value)} className="p-2.5 bg-munch-bg text-munch-text border border-munch-border rounded-md text-xs font-mono min-h-[300px] resize-y outline-none" />
+            <div className="flex gap-2">
               <GoldButton onClick={saveCard}>Save</GoldButton>
               <GoldButton variant="danger" onClick={() => setEditing(null)}>Cancel</GoldButton>
             </div>
@@ -250,30 +236,30 @@ function CardsTab({ token }: { token: string }) {
       )}
 
       {/* Card list */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-        <div style={{ ...rowStyle, fontWeight: 700, color: 'var(--color-gold)', background: 'none', borderBottom: '1px solid var(--color-border)' }}>
-          <span style={{ width: '200px' }}>ID</span>
-          <span style={{ width: '200px' }}>Name</span>
-          <span style={{ width: '100px' }}>Type</span>
-          <span style={{ width: '80px' }}>Set</span>
-          <span style={{ width: '60px' }}>Deck</span>
-          <span style={{ flex: 1 }}>Actions</span>
+      <div className="flex flex-col gap-1">
+        <div className={`${rowClasses} font-bold text-munch-gold !bg-transparent border-b border-munch-border`}>
+          <span className="w-[200px]">ID</span>
+          <span className="w-[200px]">Name</span>
+          <span className="w-[100px]">Type</span>
+          <span className="w-[80px]">Set</span>
+          <span className="w-[60px]">Deck</span>
+          <span className="flex-1">Actions</span>
         </div>
         {cards.map((card) => (
-          <div key={card.id} style={rowStyle}>
-            <span style={{ width: '200px', fontSize: '12px', color: 'var(--color-text-muted)' }}>{card.id}</span>
-            <span style={{ width: '200px', color: 'var(--color-text)' }}>{card.name}</span>
-            <span style={{ width: '100px', fontSize: '12px', color: 'var(--color-text-muted)' }}>{card.type}</span>
-            <span style={{ width: '80px', fontSize: '12px', color: 'var(--color-gold)' }}>{card.set || '-'}</span>
-            <span style={{ width: '60px', fontSize: '12px', color: 'var(--color-text-muted)' }}>{card.deck}</span>
-            <span style={{ flex: 1, display: 'flex', gap: '4px' }}>
+          <div key={card.id} className={rowClasses}>
+            <span className="w-[200px] text-xs text-munch-text-muted">{card.id}</span>
+            <span className="w-[200px] text-munch-text">{card.name}</span>
+            <span className="w-[100px] text-xs text-munch-text-muted">{card.type}</span>
+            <span className="w-[80px] text-xs text-munch-gold">{card.set || '-'}</span>
+            <span className="w-[60px] text-xs text-munch-text-muted">{card.deck}</span>
+            <span className="flex-1 flex gap-1">
               <GoldButton onClick={() => { setEditing(card); setEditJson(JSON.stringify(card, null, 2)); }}>Edit</GoldButton>
               <GoldButton variant="danger" onClick={() => deleteCard(card.id)}>Del</GoldButton>
             </span>
           </div>
         ))}
         {cards.length === 0 && (
-          <div style={{ color: 'var(--color-text-muted)', padding: '16px' }}>No cards found.</div>
+          <div className="text-munch-text-muted p-4">No cards found.</div>
         )}
       </div>
     </div>
@@ -307,25 +293,25 @@ function UsersTab({ token }: { token: string }) {
 
   return (
     <div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-        <div style={{ ...rowStyle, fontWeight: 700, color: 'var(--color-gold)', background: 'none', borderBottom: '1px solid var(--color-border)' }}>
-          <span style={{ width: '250px' }}>Email</span>
-          <span style={{ width: '150px' }}>Name</span>
-          <span style={{ width: '80px' }}>Admin</span>
-          <span style={{ width: '180px' }}>Registered</span>
-          <span style={{ flex: 1 }}>Actions</span>
+      <div className="flex flex-col gap-1">
+        <div className={`${rowClasses} font-bold text-munch-gold !bg-transparent border-b border-munch-border`}>
+          <span className="w-[250px]">Email</span>
+          <span className="w-[150px]">Name</span>
+          <span className="w-[80px]">Admin</span>
+          <span className="w-[180px]">Registered</span>
+          <span className="flex-1">Actions</span>
         </div>
         {users.map((u) => (
-          <div key={u.id} style={rowStyle}>
-            <span style={{ width: '250px', color: 'var(--color-text)', fontSize: '13px' }}>{u.email}</span>
-            <span style={{ width: '150px', color: 'var(--color-text)' }}>{u.name}</span>
-            <span style={{ width: '80px', color: u.isAdmin ? 'var(--color-gold)' : 'var(--color-text-muted)' }}>
+          <div key={u.id} className={rowClasses}>
+            <span className="w-[250px] text-munch-text text-[13px]">{u.email}</span>
+            <span className="w-[150px] text-munch-text">{u.name}</span>
+            <span className={`w-[80px] ${u.isAdmin ? 'text-munch-gold' : 'text-munch-text-muted'}`}>
               {u.isAdmin ? 'Yes' : 'No'}
             </span>
-            <span style={{ width: '180px', fontSize: '12px', color: 'var(--color-text-muted)' }}>
+            <span className="w-[180px] text-xs text-munch-text-muted">
               {new Date(u.createdAt).toLocaleDateString()}
             </span>
-            <span style={{ flex: 1, display: 'flex', gap: '4px' }}>
+            <span className="flex-1 flex gap-1">
               <GoldButton onClick={() => toggleAdmin(u.id, u.isAdmin)}>
                 {u.isAdmin ? 'Revoke Admin' : 'Make Admin'}
               </GoldButton>
@@ -352,95 +338,28 @@ function SessionsTab({ token }: { token: string }) {
 
   return (
     <div>
-      <div style={{ marginBottom: '12px' }}>
+      <div className="mb-3">
         <GoldButton onClick={fetchSessions}>Refresh</GoldButton>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-        <div style={{ ...rowStyle, fontWeight: 700, color: 'var(--color-gold)', background: 'none', borderBottom: '1px solid var(--color-border)' }}>
-          <span style={{ width: '200px' }}>Room Name</span>
-          <span style={{ width: '120px' }}>Phase</span>
-          <span style={{ width: '100px' }}>Players</span>
-          <span style={{ width: '150px' }}>Admin</span>
+      <div className="flex flex-col gap-1">
+        <div className={`${rowClasses} font-bold text-munch-gold !bg-transparent border-b border-munch-border`}>
+          <span className="w-[200px]">Room Name</span>
+          <span className="w-[120px]">Phase</span>
+          <span className="w-[100px]">Players</span>
+          <span className="w-[150px]">Admin</span>
         </div>
         {sessions.map((s) => (
-          <div key={s.id} style={rowStyle}>
-            <span style={{ width: '200px', color: 'var(--color-text)' }}>{s.name}</span>
-            <span style={{ width: '120px', color: s.phase === 'PLAYING' ? 'var(--color-gold)' : 'var(--color-text-muted)' }}>{s.phase}</span>
-            <span style={{ width: '100px', color: 'var(--color-text)' }}>{s.playerCount}</span>
-            <span style={{ width: '150px', color: 'var(--color-text-muted)' }}>{s.adminName}</span>
+          <div key={s.id} className={rowClasses}>
+            <span className="w-[200px] text-munch-text">{s.name}</span>
+            <span className={`w-[120px] ${s.phase === 'PLAYING' ? 'text-munch-gold' : 'text-munch-text-muted'}`}>{s.phase}</span>
+            <span className="w-[100px] text-munch-text">{s.playerCount}</span>
+            <span className="w-[150px] text-munch-text-muted">{s.adminName}</span>
           </div>
         ))}
         {sessions.length === 0 && (
-          <div style={{ color: 'var(--color-text-muted)', padding: '16px' }}>No active sessions.</div>
+          <div className="text-munch-text-muted p-4">No active sessions.</div>
         )}
       </div>
     </div>
   );
 }
-
-// --- Styles ---
-const inputStyle: React.CSSProperties = {
-  padding: '8px 12px',
-  background: 'var(--color-bg)',
-  color: 'var(--color-text)',
-  border: '1px solid var(--color-border)',
-  borderRadius: 'var(--radius-md)',
-  fontSize: '13px',
-  outline: 'none',
-};
-
-const selectStyle: React.CSSProperties = {
-  ...inputStyle,
-  cursor: 'pointer',
-};
-
-const rowStyle: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  padding: '8px 12px',
-  background: 'var(--color-surface)',
-  borderRadius: 'var(--radius-sm)',
-  fontSize: '13px',
-};
-
-const modalOverlay: React.CSSProperties = {
-  position: 'fixed',
-  inset: 0,
-  background: 'rgba(0,0,0,0.7)',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  zIndex: 100,
-};
-
-const modalContent: React.CSSProperties = {
-  background: 'var(--color-surface)',
-  padding: '24px',
-  borderRadius: 'var(--radius-lg)',
-  border: '1px solid var(--color-border)',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  width: '600px',
-  maxHeight: '80vh',
-};
-
-const modalTitle: React.CSSProperties = {
-  color: 'var(--color-gold)',
-  fontFamily: 'var(--font-fantasy)',
-  margin: 0,
-};
-
-const textareaStyle: React.CSSProperties = {
-  padding: '10px',
-  background: 'var(--color-bg)',
-  color: 'var(--color-text)',
-  border: '1px solid var(--color-border)',
-  borderRadius: 'var(--radius-md)',
-  fontSize: '12px',
-  fontFamily: 'monospace',
-  minHeight: '300px',
-  resize: 'vertical',
-  outline: 'none',
-};

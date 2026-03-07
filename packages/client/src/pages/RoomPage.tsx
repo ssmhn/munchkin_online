@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/useAuthStore';
 import { GoldButton } from '../components/GoldButton';
@@ -31,7 +31,7 @@ export function RoomPage() {
 
   useEffect(() => {
     fetchRoom();
-    const interval = setInterval(fetchRoom, 3000);
+    const interval = setInterval(fetchRoom, 1500);
     return () => clearInterval(interval);
   }, [roomId]);
 
@@ -48,8 +48,44 @@ export function RoomPage() {
       });
       if (res.ok) {
         setRoom(await res.json());
+      } else if (res.status === 404) {
+        navigate('/');
       }
     } catch {}
+  };
+
+  const leaveRoom = async () => {
+    try {
+      await fetch(`/lobby/rooms/${roomId}/leave`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({}),
+      });
+    } catch {}
+    navigate('/');
+  };
+
+  const startGame = async () => {
+    setError('');
+    try {
+      const res = await fetch(`/lobby/rooms/${roomId}/start`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({}),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || 'Failed to start game');
+      }
+    } catch {
+      setError('Network error');
+    }
   };
 
   const kickPlayer = async (playerId: string) => {
@@ -103,60 +139,46 @@ export function RoomPage() {
 
   if (!room) {
     return (
-      <div style={{ padding: '32px', color: 'var(--color-text)' }}>Loading room...</div>
+      <div className="p-8 text-munch-text">Loading room...</div>
     );
   }
 
   return (
     <div
       data-testid="room-page"
-      style={{
-        minHeight: '100vh',
-        padding: '32px',
-        position: 'relative',
-        maxWidth: '600px',
-        margin: '0 auto',
-      }}
+      className="min-h-screen p-8 relative max-w-[600px] mx-auto"
     >
       <AmbientParticles count={10} />
 
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div className="relative z-1">
         <h1
           data-testid="room-name"
-          style={{ color: 'var(--color-gold)', fontFamily: 'var(--font-fantasy)', marginBottom: '4px' }}
+          className="text-munch-gold font-fantasy mb-1"
         >
           {room.name}
         </h1>
-        <p style={{ color: 'var(--color-text-muted)', margin: '0 0 24px' }}>
+        <p className="text-munch-text-muted m-0 mb-6">
           Waiting for players... ({room.playerCount}/{room.maxPlayers})
         </p>
 
         {error && (
-          <div data-testid="room-error" style={{ color: 'var(--color-danger)', marginBottom: '12px', fontSize: '13px' }}>
+          <div data-testid="room-error" className="text-munch-danger mb-3 text-[13px]">
             {error}
           </div>
         )}
 
         {/* Players list */}
-        <div data-testid="player-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
+        <div data-testid="player-list" className="flex flex-col gap-2 mb-6">
           {room.players.map((p) => (
             <div
               key={p.id}
               data-testid={`player-${p.id}`}
-              style={{
-                background: 'var(--color-surface)',
-                padding: '12px 16px',
-                borderRadius: 'var(--radius-md)',
-                border: `1px solid ${p.isAdmin ? 'var(--color-gold)' : 'var(--color-border)'}`,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
+              className={`bg-munch-surface py-3 px-4 rounded-md flex justify-between items-center border ${p.isAdmin ? 'border-munch-gold' : 'border-munch-border'}`}
             >
               <div>
-                <span style={{ color: 'var(--color-text)', fontWeight: 600 }}>{p.name}</span>
+                <span className="text-munch-text font-semibold">{p.name}</span>
                 {p.isAdmin && (
-                  <span style={{ color: 'var(--color-gold)', fontSize: '12px', marginLeft: '8px' }}>
+                  <span className="text-munch-gold text-xs ml-2">
                     ADMIN
                   </span>
                 )}
@@ -176,7 +198,13 @@ export function RoomPage() {
 
         {/* Admin controls */}
         {room.isAdmin && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+          <div className="flex flex-col gap-3 mb-6">
+            {room.playerCount >= 2 && (
+              <GoldButton data-testid="btn-start-game" onClick={startGame}>
+                Start Game
+              </GoldButton>
+            )}
+
             <GoldButton data-testid="btn-invite" onClick={createInvite}>
               Generate Invite Link
             </GoldButton>
@@ -184,31 +212,17 @@ export function RoomPage() {
             {inviteUrl && (
               <div
                 data-testid="invite-section"
-                style={{
-                  background: 'var(--color-surface)',
-                  padding: '12px',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--color-border)',
-                }}
+                className="bg-munch-surface p-3 rounded-md border border-munch-border"
               >
-                <div style={{ fontSize: '12px', color: 'var(--color-text-muted)', marginBottom: '4px' }}>
+                <div className="text-xs text-munch-text-muted mb-1">
                   Invite link (one-time, expires in 5 min):
                 </div>
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <div className="flex gap-2 items-center">
                   <input
                     data-testid="invite-url"
                     readOnly
                     value={inviteUrl}
-                    style={{
-                      flex: 1,
-                      padding: '8px 10px',
-                      background: 'var(--color-bg)',
-                      color: 'var(--color-text)',
-                      border: '1px solid var(--color-border)',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '12px',
-                      outline: 'none',
-                    }}
+                    className="flex-1 py-2 px-2.5 bg-munch-bg text-munch-text border border-munch-border rounded-sm text-xs outline-none"
                   />
                   <GoldButton data-testid="btn-copy-invite" onClick={copyInvite}>
                     {copyMsg || 'Copy'}
@@ -222,9 +236,9 @@ export function RoomPage() {
         <GoldButton
           variant="danger"
           data-testid="btn-leave"
-          onClick={() => navigate('/')}
+          onClick={leaveRoom}
         >
-          Leave Room
+          {room.isAdmin ? 'Close Room' : 'Leave Room'}
         </GoldButton>
       </div>
     </div>

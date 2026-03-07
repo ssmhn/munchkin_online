@@ -85,36 +85,23 @@ export function DoorKickAnimation({ cardType, cardTitle, onComplete, ...rest }: 
   }, [cardType, onComplete]);
 
   const borderColor = cardType === 'MONSTER'
-    ? 'var(--color-danger, #dc2626)'
+    ? 'var(--color-munch-danger)'
     : cardType === 'EQUIPMENT'
-    ? 'var(--color-gold, #c9a84c)'
+    ? 'var(--color-munch-gold)'
     : '#7c3aed';
 
   return (
     <div
       data-testid={rest['data-testid'] ?? 'door-kick-animation'}
-      style={{
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '240px',
-        perspective: '800px',
-      }}
+      className="relative flex items-center justify-center min-h-[240px]"
+      style={{ perspective: '800px' }}
     >
       {/* Curse red flash overlay */}
       {cardType === 'CURSE' && (
         <div
           ref={flashRef}
           data-testid="curse-flash"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'var(--color-danger, #dc2626)',
-            opacity: 0,
-            pointerEvents: 'none',
-            zIndex: 60,
-          }}
+          className="fixed inset-0 bg-munch-danger opacity-0 pointer-events-none z-[60]"
         />
       )}
 
@@ -122,21 +109,9 @@ export function DoorKickAnimation({ cardType, cardTitle, onComplete, ...rest }: 
       <div
         ref={doorRef}
         data-testid="door-panel"
+        className="w-[120px] h-[180px] rounded-lg absolute flex items-center justify-center text-munch-text font-fantasy font-bold text-base shadow-card z-10"
         style={{
-          width: '120px',
-          height: '180px',
           background: 'linear-gradient(135deg, #5b3a1a, #8b6914)',
-          borderRadius: '8px',
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--color-text, #fff)',
-          fontFamily: 'var(--font-fantasy, serif)',
-          fontWeight: 700,
-          fontSize: '16px',
-          boxShadow: 'var(--shadow-card)',
-          zIndex: 10,
           transformStyle: 'preserve-3d',
         }}
       >
@@ -148,26 +123,10 @@ export function DoorKickAnimation({ cardType, cardTitle, onComplete, ...rest }: 
         ref={contentRef}
         data-testid="revealed-card"
         data-card-type={cardType}
-        style={{
-          width: '120px',
-          height: '180px',
-          background: 'var(--color-surface, #2a1f10)',
-          border: `2px solid ${borderColor}`,
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          color: 'var(--color-text, #fff)',
-          fontFamily: 'var(--font-fantasy, serif)',
-          fontSize: '14px',
-          boxShadow: 'var(--shadow-card)',
-          opacity: 0,
-          padding: '12px',
-          textAlign: 'center',
-        }}
+        className="w-[120px] h-[180px] bg-munch-surface rounded-lg flex items-center justify-center flex-col text-munch-text font-fantasy text-sm shadow-card opacity-0 p-3 text-center"
+        style={{ border: `2px solid ${borderColor}` }}
       >
-        <div style={{ fontSize: '10px', color: borderColor, marginBottom: '4px' }}>{cardType}</div>
+        <div className="text-[10px] mb-1" style={{ color: borderColor }}>{cardType}</div>
         {cardTitle}
       </div>
     </div>

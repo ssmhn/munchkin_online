@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/useAuthStore';
 import { GoldButton } from '../components/GoldButton';
 import { AnimatedTitle } from '../components/AnimatedTitle';
 import { AmbientParticles } from '../components/AmbientParticles';
+
+const inputClasses = "px-3.5 py-2.5 bg-munch-bg text-munch-text border border-munch-border rounded-lg text-sm outline-none";
 
 interface RoomInfo {
   id: string;
@@ -21,6 +23,7 @@ export function LobbyPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [roomName, setRoomName] = useState('');
   const [isPublic, setIsPublic] = useState(true);
+  const [maxPlayers, setMaxPlayers] = useState(6);
   const [roomPassword, setRoomPassword] = useState('');
   const [joinPassword, setJoinPassword] = useState('');
   const [joiningRoomId, setJoiningRoomId] = useState<string | null>(null);
@@ -52,6 +55,7 @@ export function LobbyPage() {
         body: JSON.stringify({
           name: roomName || undefined,
           isPublic,
+          maxPlayers,
           password: roomPassword || undefined,
         }),
       });
@@ -109,20 +113,14 @@ export function LobbyPage() {
   return (
     <div
       data-testid="lobby-page"
-      style={{
-        minHeight: '100vh',
-        padding: '32px',
-        position: 'relative',
-        maxWidth: '800px',
-        margin: '0 auto',
-      }}
+      className="min-h-screen p-8 relative max-w-[800px] mx-auto"
     >
       <AmbientParticles count={15} />
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', zIndex: 1, position: 'relative' }}>
+      <div className="flex justify-between items-center mb-6 z-1 relative">
         <AnimatedTitle text="Munchkin Online" />
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <span data-testid="user-name" style={{ color: 'var(--color-gold)', fontFamily: 'var(--font-fantasy)' }}>
+        <div className="flex gap-3 items-center">
+          <span data-testid="user-name" className="text-munch-gold font-fantasy">
             {user?.name}
           </span>
           {user?.isAdmin && (
@@ -137,13 +135,13 @@ export function LobbyPage() {
       </div>
 
       {error && (
-        <div data-testid="lobby-error" style={{ color: 'var(--color-danger)', marginBottom: '12px', fontSize: '13px' }}>
+        <div data-testid="lobby-error" className="text-munch-danger mb-3 text-[13px]">
           {error}
         </div>
       )}
 
       {/* Create Room */}
-      <div style={{ marginBottom: '24px', zIndex: 1, position: 'relative' }}>
+      <div className="mb-6 z-1 relative">
         {!showCreate ? (
           <GoldButton data-testid="btn-show-create" onClick={() => setShowCreate(true)}>
             Create Room
@@ -151,15 +149,7 @@ export function LobbyPage() {
         ) : (
           <div
             data-testid="create-room-form"
-            style={{
-              background: 'var(--color-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-lg)',
-              border: '1px solid var(--color-border)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-            }}
+            className="bg-munch-surface p-5 rounded-lg border border-munch-border flex flex-col gap-3"
           >
             <input
               data-testid="input-room-name"
@@ -167,15 +157,30 @@ export function LobbyPage() {
               placeholder="Room name (optional)"
               value={roomName}
               onChange={(e) => setRoomName(e.target.value)}
-              style={inputStyle}
+              autoComplete="off"
+              className={inputClasses}
             />
 
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text)', cursor: 'pointer' }}>
+            <label className="flex items-center gap-2 text-munch-text">
+              <span>Max players</span>
+              <input
+                data-testid="input-max-players"
+                type="number"
+                min={2}
+                max={6}
+                value={maxPlayers}
+                onChange={(e) => setMaxPlayers(Math.min(6, Math.max(2, Number(e.target.value))))}
+                autoComplete="off"
+                className={`${inputClasses} w-[70px] text-center`}
+              />
+            </label>
+
+            <label className="flex items-center gap-2 text-munch-text cursor-pointer">
               <input
                 data-testid="input-public"
                 type="checkbox"
                 checked={isPublic}
-                onChange={(e) => setIsPublic(e.target.checked)}
+                onChange={(e) => { setIsPublic(e.target.checked); if (e.target.checked) setRoomPassword(''); }}
               />
               Public room (visible in room list)
             </label>
@@ -184,16 +189,18 @@ export function LobbyPage() {
               data-testid="input-room-password"
               type="password"
               placeholder="Password (optional)"
-              value={roomPassword}
+              value={isPublic ? '' : roomPassword}
               onChange={(e) => setRoomPassword(e.target.value)}
-              style={inputStyle}
+              disabled={isPublic}
+              autoComplete="new-password"
+              className={`${inputClasses} ${isPublic ? 'opacity-50 cursor-not-allowed' : ''}`}
             />
 
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div className="flex gap-2">
               <GoldButton data-testid="btn-create-room" onClick={createRoom}>
                 Create
               </GoldButton>
-              <GoldButton variant="danger" onClick={() => { setShowCreate(false); setRoomName(''); setRoomPassword(''); }}>
+              <GoldButton variant="danger" onClick={() => { setShowCreate(false); setRoomName(''); setRoomPassword(''); setMaxPlayers(6); }}>
                 Cancel
               </GoldButton>
             </div>
@@ -205,27 +212,10 @@ export function LobbyPage() {
       {joiningRoomId && (
         <div
           data-testid="password-modal"
-          style={{
-            position: 'fixed',
-            inset: 0,
-            background: 'rgba(0,0,0,0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 100,
-          }}
+          className="fixed inset-0 bg-black/70 flex items-center justify-center z-100"
         >
-          <div style={{
-            background: 'var(--color-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--color-border)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            minWidth: '300px',
-          }}>
-            <h3 style={{ color: 'var(--color-gold)', fontFamily: 'var(--font-fantasy)', margin: 0 }}>
+          <div className="bg-munch-surface p-6 rounded-lg border border-munch-border flex flex-col gap-3 min-w-[300px]">
+            <h3 className="text-munch-gold font-fantasy m-0">
               Enter Room Password
             </h3>
             <input
@@ -234,11 +224,11 @@ export function LobbyPage() {
               placeholder="Password"
               value={joinPassword}
               onChange={(e) => setJoinPassword(e.target.value)}
-              style={inputStyle}
+              className={inputClasses}
               autoFocus
               onKeyDown={(e) => e.key === 'Enter' && handlePasswordJoin()}
             />
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div className="flex gap-2">
               <GoldButton data-testid="btn-submit-password" onClick={handlePasswordJoin}>
                 Join
               </GoldButton>
@@ -251,32 +241,24 @@ export function LobbyPage() {
       )}
 
       {/* Room list */}
-      <h2 style={{ color: 'var(--color-gold)', fontFamily: 'var(--font-fantasy)', position: 'relative', zIndex: 1 }}>
+      <h2 className="text-munch-gold font-fantasy relative z-1">
         Open Rooms
       </h2>
-      <div data-testid="room-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px', position: 'relative', zIndex: 1 }}>
+      <div data-testid="room-list" className="flex flex-col gap-2 relative z-1">
         {rooms.map((room) => (
           <div
             key={room.id}
             data-testid={`room-${room.id}`}
-            style={{
-              background: 'var(--color-surface)',
-              padding: '14px 18px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-border)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
+            className="bg-munch-surface py-3.5 px-4.5 rounded-md border border-munch-border flex justify-between items-center"
           >
             <div>
-              <div style={{ color: 'var(--color-text)', fontWeight: 600 }}>
+              <div className="text-munch-text font-semibold">
                 {room.hasPassword && (
-                  <span data-testid={`lock-${room.id}`} style={{ marginRight: '6px' }}>🔒</span>
+                  <span data-testid={`lock-${room.id}`} className="mr-1.5">🔒</span>
                 )}
                 {room.name}
               </div>
-              <div style={{ color: 'var(--color-text-muted)', fontSize: '12px' }}>
+              <div className="text-munch-text-muted text-xs">
                 by {room.adminName} · {room.playerCount}/{room.maxPlayers} players
               </div>
             </div>
@@ -289,7 +271,7 @@ export function LobbyPage() {
           </div>
         ))}
         {rooms.length === 0 && (
-          <div style={{ color: 'var(--color-text-muted)', padding: '16px' }}>
+          <div className="text-munch-text-muted p-4">
             No rooms available. Create one!
           </div>
         )}
@@ -297,13 +279,3 @@ export function LobbyPage() {
     </div>
   );
 }
-
-const inputStyle: React.CSSProperties = {
-  padding: '10px 14px',
-  background: 'var(--color-bg)',
-  color: 'var(--color-text)',
-  border: '1px solid var(--color-border)',
-  borderRadius: 'var(--radius-md)',
-  fontSize: '14px',
-  outline: 'none',
-};

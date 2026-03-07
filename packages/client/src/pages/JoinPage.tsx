@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/useAuthStore';
 import { GoldButton } from '../components/GoldButton';
@@ -72,38 +72,21 @@ export function JoinPage() {
   return (
     <div
       data-testid="join-page"
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-      }}
+      className="min-h-screen flex flex-col items-center justify-center relative"
     >
       <AmbientParticles count={10} />
 
-      <div
-        style={{
-          background: 'var(--color-surface)',
-          padding: '32px',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--color-border)',
-          textAlign: 'center',
-          zIndex: 1,
-          minWidth: '320px',
-        }}
-      >
+      <div className="bg-munch-surface p-8 rounded-lg border border-munch-border text-center z-1 min-w-[320px]">
         {status === 'checking' && (
-          <p style={{ color: 'var(--color-text)' }}>Checking invite...</p>
+          <p className="text-munch-text">Checking invite...</p>
         )}
 
         {status === 'invalid' && (
           <>
-            <h2 style={{ color: 'var(--color-danger)', fontFamily: 'var(--font-fantasy)', marginTop: 0 }}>
+            <h2 className="text-munch-danger font-fantasy mt-0">
               Invalid Invite
             </h2>
-            <p style={{ color: 'var(--color-text-muted)', marginBottom: '16px' }}>
+            <p className="text-munch-text-muted mb-4">
               This invite link is invalid or has expired.
             </p>
             <GoldButton data-testid="btn-go-lobby" onClick={() => navigate('/')}>
@@ -114,14 +97,14 @@ export function JoinPage() {
 
         {status === 'valid' && (
           <>
-            <h2 style={{ color: 'var(--color-gold)', fontFamily: 'var(--font-fantasy)', marginTop: 0 }}>
+            <h2 className="text-munch-gold font-fantasy mt-0">
               Join Room
             </h2>
-            <p data-testid="invite-room-name" style={{ color: 'var(--color-text)', marginBottom: '16px' }}>
+            <p data-testid="invite-room-name" className="text-munch-text mb-4">
               You've been invited to <strong>{roomName}</strong>
             </p>
             {!token && (
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '13px', marginBottom: '12px' }}>
+              <p className="text-munch-text-muted text-[13px] mb-3">
                 You need to log in first.
               </p>
             )}
@@ -132,15 +115,15 @@ export function JoinPage() {
         )}
 
         {status === 'joining' && (
-          <p style={{ color: 'var(--color-text)' }}>Joining room...</p>
+          <p className="text-munch-text">Joining room...</p>
         )}
 
         {status === 'error' && (
           <>
-            <h2 style={{ color: 'var(--color-danger)', fontFamily: 'var(--font-fantasy)', marginTop: 0 }}>
+            <h2 className="text-munch-danger font-fantasy mt-0">
               Error
             </h2>
-            <p data-testid="join-error" style={{ color: 'var(--color-text-muted)', marginBottom: '16px' }}>
+            <p data-testid="join-error" className="text-munch-text-muted mb-4">
               {error}
             </p>
             <GoldButton data-testid="btn-go-lobby" onClick={() => navigate('/')}>

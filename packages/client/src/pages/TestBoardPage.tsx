@@ -89,7 +89,7 @@ export function TestBoardPage() {
       <button data-testid="bump-level" onClick={bumpLevel}>Bump Level</button>
       <button data-testid="start-combat" onClick={startCombat}>Start Combat</button>
       <button data-testid="add-clone" onClick={addClone}>Add Clone</button>
-      <GameBoard state={state} selfPlayerId="p1" />
+      <GameBoard state={state} selfPlayerId="p1" cardDb={null} />
       {combat && (
         <CombatZone
           combat={combat}

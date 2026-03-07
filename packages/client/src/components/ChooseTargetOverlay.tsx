@@ -13,7 +13,7 @@ export function ChooseTargetOverlay({ action, onChoose }: Props) {
 
   useEffect(() => {
     if (overlayRef.current) {
-      gsap.from(overlayRef.current, { opacity: 0, scale: 0.9, duration: 0.3, ease: 'back.out' });
+      gsap.fromTo(overlayRef.current, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.7)' });
     }
   }, []);
 
@@ -40,51 +40,28 @@ export function ChooseTargetOverlay({ action, onChoose }: Props) {
     <div
       ref={overlayRef}
       data-testid="choose-overlay"
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.7)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 100,
-      }}
+      className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100]"
     >
-      <div style={{
-        background: '#1e293b',
-        borderRadius: '12px',
-        padding: '24px',
-        minWidth: '300px',
-        maxWidth: '500px',
-      }}>
-        <h3 data-testid="choose-title" style={{ color: '#fff', marginBottom: '16px' }}>
+      <div className="bg-munch-surface rounded-xl p-6 min-w-[300px] max-w-[500px]">
+        <h3 data-testid="choose-title" className="text-munch-text mb-4">
           {title}
         </h3>
 
-        <div style={{ background: '#334155', height: '4px', borderRadius: '2px', marginBottom: '16px' }}>
+        <div className="bg-munch-surface-light h-1 rounded-sm mb-4">
           <div
             ref={progressRef}
             data-testid="choose-timer"
-            style={{ width: '100%', height: '100%', background: '#f59e0b', borderRadius: '2px' }}
+            className="w-full h-full bg-munch-gold rounded-sm"
           />
         </div>
 
-        <div data-testid="choose-options" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div data-testid="choose-options" className="flex flex-col gap-2">
           {action.options.map((option) => (
             <button
               key={option.id}
               data-testid={`option-${option.id}`}
               onClick={() => onChoose(option.id)}
-              style={{
-                padding: '12px 16px',
-                background: '#374151',
-                color: '#fff',
-                border: '1px solid #4b5563',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                textAlign: 'left',
-                fontSize: '14px',
-              }}
+              className="py-3 px-4 bg-munch-surface-light text-munch-text border border-munch-border rounded-lg cursor-pointer text-left text-sm"
             >
               {option.label}
             </button>

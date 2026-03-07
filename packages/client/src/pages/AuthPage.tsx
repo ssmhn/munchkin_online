@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/useAuthStore';
 import { GoldButton } from '../components/GoldButton';
 import { AnimatedTitle } from '../components/AnimatedTitle';
 import { AmbientParticles } from '../components/AmbientParticles';
+
+const inputClasses = "px-3.5 py-2.5 bg-munch-bg text-munch-text border border-munch-border rounded-lg text-sm font-body outline-none";
 
 export function AuthPage() {
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -57,50 +59,24 @@ export function AuthPage() {
   return (
     <div
       data-testid="auth-page"
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-      }}
+      className="min-h-screen flex flex-col items-center justify-center relative"
     >
       <AmbientParticles count={15} />
 
-      <div style={{ marginBottom: '32px', zIndex: 1 }}>
+      <div className="mb-8 z-1">
         <AnimatedTitle text="Munchkin Online" />
       </div>
 
       <form
         onSubmit={handleSubmit}
-        style={{
-          background: 'var(--color-surface)',
-          padding: '32px',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--color-border)',
-          width: '360px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          zIndex: 1,
-        }}
+        className="bg-munch-surface p-8 rounded-lg border border-munch-border w-[360px] flex flex-col gap-4 z-1"
       >
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+        <div className="flex gap-2 justify-center">
           <button
             type="button"
             data-testid="tab-login"
             onClick={() => { setMode('login'); setError(''); }}
-            style={{
-              padding: '8px 20px',
-              background: mode === 'login' ? 'var(--color-gold)' : 'transparent',
-              color: mode === 'login' ? 'var(--color-bg)' : 'var(--color-text-muted)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-md)',
-              fontFamily: 'var(--font-fantasy)',
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
+            className={`py-2 px-5 border border-munch-border rounded-md font-fantasy font-bold cursor-pointer ${mode === 'login' ? 'bg-munch-gold text-munch-bg' : 'bg-transparent text-munch-text-muted'}`}
           >
             Login
           </button>
@@ -108,16 +84,7 @@ export function AuthPage() {
             type="button"
             data-testid="tab-register"
             onClick={() => { setMode('register'); setError(''); }}
-            style={{
-              padding: '8px 20px',
-              background: mode === 'register' ? 'var(--color-gold)' : 'transparent',
-              color: mode === 'register' ? 'var(--color-bg)' : 'var(--color-text-muted)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-md)',
-              fontFamily: 'var(--font-fantasy)',
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
+            className={`py-2 px-5 border border-munch-border rounded-md font-fantasy font-bold cursor-pointer ${mode === 'register' ? 'bg-munch-gold text-munch-bg' : 'bg-transparent text-munch-text-muted'}`}
           >
             Register
           </button>
@@ -130,7 +97,7 @@ export function AuthPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          style={inputStyle}
+          className={inputClasses}
         />
 
         {mode === 'register' && (
@@ -141,7 +108,7 @@ export function AuthPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            style={inputStyle}
+            className={inputClasses}
           />
         )}
 
@@ -153,11 +120,11 @@ export function AuthPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          style={inputStyle}
+          className={inputClasses}
         />
 
         {error && (
-          <div data-testid="auth-error" style={{ color: 'var(--color-danger)', fontSize: '13px' }}>
+          <div data-testid="auth-error" className="text-munch-danger text-[13px]">
             {error}
           </div>
         )}
@@ -169,14 +136,3 @@ export function AuthPage() {
     </div>
   );
 }
-
-const inputStyle: React.CSSProperties = {
-  padding: '10px 14px',
-  background: 'var(--color-bg)',
-  color: 'var(--color-text)',
-  border: '1px solid var(--color-border)',
-  borderRadius: 'var(--radius-md)',
-  fontSize: '14px',
-  fontFamily: 'var(--font-body)',
-  outline: 'none',
-};

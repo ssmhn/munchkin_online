@@ -24,7 +24,7 @@ export function DiceRollOverlay({ result, successThreshold = 5, onComplete, ...r
 
     // Overlay fade in
     if (overlayRef.current) {
-      tl.from(overlayRef.current, { opacity: 0, duration: 0.2 });
+      tl.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
     }
 
     // Dice spin with random numbers flickering
@@ -65,8 +65,12 @@ export function DiceRollOverlay({ result, successThreshold = 5, onComplete, ...r
     // Fail: screen shake
     if (!isSuccess && overlayRef.current) {
       tl.to(overlayRef.current, {
-        x: [0, -5, 5, -5, 0],
-        duration: 0.3,
+        keyframes: [
+          { x: -5, duration: 0.075 },
+          { x: 5, duration: 0.075 },
+          { x: -5, duration: 0.075 },
+          { x: 0, duration: 0.075 },
+        ],
         ease: 'none',
       }, 2.0);
     }
@@ -84,29 +88,13 @@ export function DiceRollOverlay({ result, successThreshold = 5, onComplete, ...r
     <div
       ref={overlayRef}
       data-testid={rest['data-testid'] ?? 'dice-roll-overlay'}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'rgba(0,0,0,0.6)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        zIndex: 100,
-      }}
+      className="fixed inset-0 bg-black/60 flex items-center justify-center flex-col z-[100]"
     >
       <div
         ref={diceRef}
         data-testid="dice-cube"
+        className="w-[100px] h-[100px] bg-white rounded-2xl flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
         style={{
-          width: '100px',
-          height: '100px',
-          background: '#fff',
-          borderRadius: '16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
           transformStyle: 'preserve-3d',
           perspective: '600px',
         }}
@@ -114,14 +102,11 @@ export function DiceRollOverlay({ result, successThreshold = 5, onComplete, ...r
         <span
           ref={numberRef}
           data-testid="dice-number"
-          style={{
-            fontSize: '48px',
-            fontWeight: 700,
-            fontFamily: 'var(--font-fantasy, serif)',
-            color: settled
-              ? isSuccess ? 'var(--color-success, #16a34a)' : 'var(--color-danger, #dc2626)'
-              : '#333',
-          }}
+          className={`text-5xl font-bold font-fantasy ${
+            settled
+              ? isSuccess ? 'text-munch-success' : 'text-munch-danger'
+              : 'text-gray-700'
+          }`}
         >
           {displayNumber}
         </span>
@@ -130,13 +115,9 @@ export function DiceRollOverlay({ result, successThreshold = 5, onComplete, ...r
       {settled && (
         <div
           data-testid="dice-result-label"
-          style={{
-            marginTop: '16px',
-            fontFamily: 'var(--font-fantasy, serif)',
-            fontSize: '24px',
-            fontWeight: 700,
-            color: isSuccess ? 'var(--color-success, #16a34a)' : 'var(--color-danger, #dc2626)',
-          }}
+          className={`mt-4 font-fantasy text-2xl font-bold ${
+            isSuccess ? 'text-munch-success' : 'text-munch-danger'
+          }`}
         >
           {isSuccess ? 'Success!' : 'Failed!'}
         </div>

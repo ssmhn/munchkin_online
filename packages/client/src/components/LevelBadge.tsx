@@ -24,20 +24,12 @@ export function LevelBadge({ level, size = 48, ...rest }: Props) {
     <div
       ref={badgeRef}
       data-testid={rest['data-testid']}
+      className="rounded-full border-2 border-munch-border flex items-center justify-center font-fantasy font-bold text-munch-bg shadow-card"
       style={{
         width: `${size}px`,
         height: `${size}px`,
-        borderRadius: '50%',
-        background: `radial-gradient(circle at 30% 30%, var(--color-gold-light), var(--color-gold))`,
-        border: '2px solid var(--color-border)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'var(--font-fantasy)',
-        fontWeight: 700,
+        background: 'radial-gradient(circle at 30% 30%, var(--color-munch-gold-light), var(--color-munch-gold))',
         fontSize: `${size * 0.45}px`,
-        color: 'var(--color-bg)',
-        boxShadow: 'var(--shadow-card)',
       }}
     >
       {level}

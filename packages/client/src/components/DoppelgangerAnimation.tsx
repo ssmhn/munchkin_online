@@ -97,14 +97,7 @@ export function DoppelgangerAnimation({
     <div
       ref={containerRef}
       data-testid={rest['data-testid'] ?? 'doppelganger-animation'}
-      style={{
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '200px',
-        gap: '16px',
-      }}
+      className="relative flex items-center justify-center min-h-[200px] gap-4"
     >
       {/* If choosing between multiple monsters */}
       {needsChoice && allMonsters!.map((m) => (
@@ -113,23 +106,7 @@ export function DoppelgangerAnimation({
           data-monster-card={m.instanceId}
           data-testid={`monster-choice-${m.instanceId}`}
           onClick={() => handleChoose(m.instanceId)}
-          style={{
-            width: '100px',
-            height: '140px',
-            background: 'var(--color-surface, #2a1f10)',
-            border: '2px solid var(--color-danger, #dc2626)',
-            borderRadius: 'var(--radius-md, 8px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-text, #fff)',
-            fontFamily: 'var(--font-fantasy, serif)',
-            fontSize: '12px',
-            cursor: 'pointer',
-            boxShadow: 'var(--shadow-card)',
-            textAlign: 'center',
-            padding: '8px',
-          }}
+          className="w-[100px] h-[140px] bg-munch-surface border-2 border-munch-danger rounded-lg flex items-center justify-center text-munch-text font-fantasy text-xs cursor-pointer shadow-card text-center p-2"
         >
           {m.name}
         </div>
@@ -142,36 +119,23 @@ export function DoppelgangerAnimation({
           <div
             ref={originalRef}
             data-testid="original-monster"
-            style={{
-              width: '100px',
-              height: '140px',
-              background: 'var(--color-surface, #2a1f10)',
-              border: `2px solid ${chosen ? 'var(--color-gold, #c9a84c)' : 'var(--color-danger, #dc2626)'}`,
-              borderRadius: 'var(--radius-md, 8px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--color-text, #fff)',
-              fontFamily: 'var(--font-fantasy, serif)',
-              fontSize: '12px',
-              boxShadow: chosen ? 'var(--shadow-glow-gold, 0 0 16px rgba(201, 168, 76, 0.5))' : 'var(--shadow-card)',
-              textAlign: 'center',
-              padding: '8px',
-            }}
+            className={`w-[100px] h-[140px] bg-munch-surface rounded-lg flex items-center justify-center text-munch-text font-fantasy text-xs text-center p-2 ${
+              chosen ? 'border-2 border-munch-gold shadow-glow-gold' : 'border-2 border-munch-danger shadow-card'
+            }`}
           >
             {originalMonster.name}
           </div>
 
           {/* SVG arc */}
           <svg
-            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+            className="absolute top-0 left-0 w-full h-full pointer-events-none"
           >
             <path
               ref={arcRef}
               data-testid="clone-arc"
               d="M 160 100 Q 210 40 260 100"
               fill="none"
-              stroke="var(--color-gold, #c9a84c)"
+              stroke="var(--color-munch-gold)"
               strokeWidth="2"
               opacity="0.6"
             />
@@ -181,26 +145,7 @@ export function DoppelgangerAnimation({
           <div
             ref={cloneRef}
             data-testid="clone-monster"
-            style={{
-              width: '100px',
-              height: '140px',
-              background: 'var(--color-surface, #2a1f10)',
-              border: '2px solid var(--color-danger, #dc2626)',
-              borderRadius: 'var(--radius-md, 8px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--color-text, #fff)',
-              fontFamily: 'var(--font-fantasy, serif)',
-              fontSize: '12px',
-              boxShadow: 'var(--shadow-card)',
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              opacity: 0,
-              textAlign: 'center',
-              padding: '8px',
-            }}
+            className="w-[100px] h-[140px] bg-munch-surface border-2 border-munch-danger rounded-lg flex items-center justify-center text-munch-text font-fantasy text-xs shadow-card absolute left-1/2 -translate-x-1/2 opacity-0 text-center p-2"
           >
             {originalMonster.name}
             <br />

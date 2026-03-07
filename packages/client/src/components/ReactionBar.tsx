@@ -16,7 +16,7 @@ export function ReactionBar({ window: rw, onPass, onPlayCard, hasPassed, reactio
 
   useEffect(() => {
     if (barRef.current) {
-      gsap.from(barRef.current, { y: 100, opacity: 0, duration: 0.4, ease: 'power2.out' });
+      gsap.fromTo(barRef.current, { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
     }
   }, []);
 
@@ -44,43 +44,28 @@ export function ReactionBar({ window: rw, onPass, onPlayCard, hasPassed, reactio
     <div
       ref={barRef}
       data-testid="reaction-bar"
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        background: '#1e293b',
-        borderTop: '2px solid #3b82f6',
-        padding: '12px 16px',
-      }}
+      className="fixed bottom-0 left-0 right-0 bg-munch-surface border-t-2 border-munch-info py-3 px-4"
     >
-      <div data-testid="reaction-trigger" style={{ color: '#93c5fd', marginBottom: '8px' }}>
+      <div data-testid="reaction-trigger" className="text-munch-info mb-2">
         {triggerText}
       </div>
 
-      <div
-        style={{ background: '#334155', height: '4px', borderRadius: '2px', marginBottom: '8px' }}
-      >
+      <div className="bg-munch-surface-light h-1 rounded-sm mb-2">
         <div
           ref={progressRef}
           data-testid="reaction-timer"
-          style={{ width: '100%', height: '100%', background: '#3b82f6', borderRadius: '2px' }}
+          className="w-full h-full bg-munch-info rounded-sm"
         />
       </div>
 
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <div className="flex gap-2 items-center">
         <button
           data-testid="btn-pass"
           onClick={onPass}
           disabled={hasPassed}
-          style={{
-            padding: '8px 16px',
-            background: hasPassed ? '#475569' : '#3b82f6',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: hasPassed ? 'default' : 'pointer',
-          }}
+          className={`py-2 px-4 text-white border-none rounded cursor-pointer ${
+            hasPassed ? 'bg-gray-600 cursor-default' : 'bg-munch-info'
+          }`}
         >
           {hasPassed ? 'Passed' : 'Pass'}
         </button>
@@ -91,13 +76,7 @@ export function ReactionBar({ window: rw, onPass, onPlayCard, hasPassed, reactio
             data-testid={`reaction-card-${cardId}`}
             onClick={() => onPlayCard?.(cardId)}
             disabled={hasPassed}
-            style={{
-              padding: '8px 12px',
-              background: '#7c3aed',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '4px',
-            }}
+            className="py-2 px-3 bg-munch-monster text-white border-none rounded"
           >
             Play {cardId}
           </button>

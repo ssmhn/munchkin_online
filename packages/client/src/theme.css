@@ -1,26 +1,28 @@
-:root {
-  --color-bg: #1a1208;
-  --color-surface: #2a1f10;
-  --color-surface-light: #3a2f1a;
-  --color-gold: #c9a84c;
-  --color-gold-light: #e0c96a;
-  --color-danger: #dc2626;
-  --color-danger-light: #f87171;
-  --color-success: #16a34a;
-  --color-info: #3b82f6;
-  --color-text: #f5f0e6;
-  --color-text-muted: #a39880;
-  --color-border: #4a3f2a;
+@import "tailwindcss";
 
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-glow-gold: 0 0 16px rgba(201, 168, 76, 0.5);
+@theme {
+  /* Colors */
+  --color-munch-bg: #1a1208;
+  --color-munch-surface: #2a1f10;
+  --color-munch-surface-light: #3a2f1a;
+  --color-munch-gold: #c9a84c;
+  --color-munch-gold-light: #e0c96a;
+  --color-munch-danger: #dc2626;
+  --color-munch-danger-light: #f87171;
+  --color-munch-success: #16a34a;
+  --color-munch-info: #3b82f6;
+  --color-munch-text: #f5f0e6;
+  --color-munch-text-muted: #a39880;
+  --color-munch-border: #4a3f2a;
+  --color-munch-monster: #7c3aed;
 
+  /* Fonts */
   --font-fantasy: 'Cinzel', serif;
   --font-body: 'Inter', sans-serif;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Shadows */
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-glow-gold: 0 0 16px rgba(201, 168, 76, 0.5);
 }
 
 *,
@@ -31,8 +33,19 @@
 
 body {
   margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--color-munch-bg);
+  color: var(--color-munch-text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Keyframe for loading spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Combat pulse animation for PhaseBar */
+@keyframes combatPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(220, 38, 38, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.6); }
 }

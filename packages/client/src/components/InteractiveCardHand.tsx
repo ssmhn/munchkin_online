@@ -28,9 +28,14 @@ export function InteractiveCardHand({ cards, onPlayCard, ...rest }: Props) {
     if (!card.playable) {
       // Shake + red flash for forbidden card
       const tl = gsap.timeline();
-      tl.to(el, { x: [0, -5, 5, -5, 0], duration: 0.3, ease: 'none' });
-      tl.to(el, { borderColor: 'var(--color-danger, #dc2626)', duration: 0.1 }, 0);
-      tl.to(el, { borderColor: 'var(--color-border, #4a3f2a)', duration: 0.3 }, 0.2);
+      tl.to(el, { keyframes: [
+        { x: -5, duration: 0.075 },
+        { x: 5, duration: 0.075 },
+        { x: -5, duration: 0.075 },
+        { x: 0, duration: 0.075 },
+      ], ease: 'none' });
+      tl.to(el, { borderColor: 'var(--color-munch-danger)', duration: 0.1 }, 0);
+      tl.to(el, { borderColor: 'var(--color-munch-border)', duration: 0.3 }, 0.2);
       return;
     }
 
@@ -69,13 +74,7 @@ export function InteractiveCardHand({ cards, onPlayCard, ...rest }: Props) {
     <div
       ref={containerRef}
       data-testid={rest['data-testid'] ?? 'interactive-hand'}
-      style={{
-        display: 'flex',
-        gap: '8px',
-        justifyContent: 'center',
-        padding: '16px',
-        position: 'relative',
-      }}
+      className="flex gap-2 justify-center p-4 relative"
     >
       {cards.map((card) => (
         <div
@@ -88,26 +87,11 @@ export function InteractiveCardHand({ cards, onPlayCard, ...rest }: Props) {
           onTouchStart={(e) => handleMouseEnter(e as unknown as React.MouseEvent<HTMLDivElement>)}
           onTouchEnd={(e) => handleMouseLeave(e as unknown as React.MouseEvent<HTMLDivElement>)}
           onClick={(e) => handleClick(card, e.currentTarget)}
-          style={{
-            width: '100px',
-            height: '140px',
-            background: 'var(--color-surface, #2a1f10)',
-            border: `2px solid ${card.playable ? 'var(--color-gold, #c9a84c)' : 'var(--color-border, #4a3f2a)'}`,
-            borderRadius: 'var(--radius-md, 8px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-text, #fff)',
-            fontFamily: 'var(--font-fantasy, serif)',
-            fontSize: '12px',
-            cursor: card.playable ? 'pointer' : 'not-allowed',
-            boxShadow: 'var(--shadow-card)',
-            position: 'relative',
-            zIndex: 1,
-            padding: '8px',
-            textAlign: 'center',
-            opacity: card.playable ? 1 : 0.6,
-          }}
+          className={`w-[100px] h-[140px] bg-munch-surface rounded-lg flex items-center justify-center text-munch-text font-fantasy text-xs shadow-card relative z-[1] p-2 text-center border-2 ${
+            card.playable
+              ? 'border-munch-gold cursor-pointer opacity-100'
+              : 'border-munch-border cursor-not-allowed opacity-60'
+          }`}
         >
           {card.label}
         </div>

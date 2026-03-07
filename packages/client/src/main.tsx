@@ -31,7 +31,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   const { token, loading } = useAuthStore();
 
   if (loading) {
-    return <div style={{ padding: '32px', color: 'var(--color-text)' }}>Loading...</div>;
+    return <div className="p-8 text-munch-text">Loading...</div>;
   }
 
   if (!token) {
@@ -59,7 +59,7 @@ function AuthRedirect() {
   }, [token, loading, navigate]);
 
   if (loading) {
-    return <div style={{ padding: '32px', color: 'var(--color-text)' }}>Loading...</div>;
+    return <div className="p-8 text-munch-text">Loading...</div>;
   }
 
   if (token) {

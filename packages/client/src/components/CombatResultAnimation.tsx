@@ -86,8 +86,12 @@ export function CombatResultAnimation({ outcome, onComplete, ...rest }: Props) {
       // Player shake
       if (playerRef.current) {
         tl.to(playerRef.current, {
-          x: [0, -10, 10, -10, 0],
-          duration: 0.4,
+          keyframes: [
+            { x: -10, duration: 0.1 },
+            { x: 10, duration: 0.1 },
+            { x: -10, duration: 0.1 },
+            { x: 0, duration: 0.1 },
+          ],
           ease: 'none',
         }, 0.5);
       }
@@ -126,64 +130,36 @@ export function CombatResultAnimation({ outcome, onComplete, ...rest }: Props) {
 
   const labelText = outcome === 'VICTORY' ? 'VICTORY!' : outcome === 'DEFEAT' ? 'DEFEAT' : 'ESCAPED!';
   const labelColor = outcome === 'VICTORY'
-    ? 'var(--color-gold, #c9a84c)'
+    ? 'var(--color-munch-gold)'
     : outcome === 'DEFEAT'
-    ? 'var(--color-danger, #dc2626)'
-    : 'var(--color-success, #16a34a)';
+    ? 'var(--color-munch-danger)'
+    : 'var(--color-munch-success)';
 
   return (
     <div
       ref={containerRef}
       data-testid={rest['data-testid'] ?? 'combat-result-animation'}
-      style={{
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '280px',
-        overflow: 'hidden',
-      }}
+      className="relative flex items-center justify-center min-h-[280px] overflow-hidden"
     >
       {/* Defeat overlay */}
       <div
         ref={overlayRef}
         data-testid="defeat-overlay"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: '#000',
-          opacity: 0,
-          pointerEvents: 'none',
-          zIndex: 5,
-        }}
+        className="absolute inset-0 bg-black opacity-0 pointer-events-none z-[5]"
       />
 
       {/* Confetti container */}
       <div
         ref={confettiRef}
         data-testid="confetti-container"
-        style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 20 }}
+        className="absolute inset-0 pointer-events-none z-20"
       />
 
       {/* Player card */}
       <div
         ref={playerRef}
         data-testid="combat-player"
-        style={{
-          width: '100px',
-          height: '140px',
-          background: 'var(--color-surface, #2a1f10)',
-          border: '2px solid var(--color-gold, #c9a84c)',
-          borderRadius: 'var(--radius-md, 8px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--color-text, #fff)',
-          fontFamily: 'var(--font-fantasy, serif)',
-          fontSize: '14px',
-          marginRight: '40px',
-          zIndex: 10,
-        }}
+        className="w-[100px] h-[140px] bg-munch-surface border-2 border-munch-gold rounded-lg flex items-center justify-center text-munch-text font-fantasy text-sm mr-10 z-10"
       >
         Player
       </div>
@@ -192,20 +168,7 @@ export function CombatResultAnimation({ outcome, onComplete, ...rest }: Props) {
       <div
         ref={monsterRef}
         data-testid="combat-monster"
-        style={{
-          width: '100px',
-          height: '140px',
-          background: 'var(--color-surface, #2a1f10)',
-          border: '2px solid var(--color-danger, #dc2626)',
-          borderRadius: 'var(--radius-md, 8px)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'var(--color-text, #fff)',
-          fontFamily: 'var(--font-fantasy, serif)',
-          fontSize: '14px',
-          zIndex: 10,
-        }}
+        className="w-[100px] h-[140px] bg-munch-surface border-2 border-munch-danger rounded-lg flex items-center justify-center text-munch-text font-fantasy text-sm z-10"
       >
         Monster
       </div>
@@ -214,19 +177,11 @@ export function CombatResultAnimation({ outcome, onComplete, ...rest }: Props) {
       <div
         ref={labelRef}
         data-testid="result-label"
+        className="absolute top-1/2 left-1/2 font-fantasy text-[32px] font-bold z-30 opacity-0 whitespace-nowrap"
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
           transform: 'translate(-50%, -50%) scale(0)',
-          fontFamily: 'var(--font-fantasy, serif)',
-          fontSize: '32px',
-          fontWeight: 700,
           color: labelColor,
           textShadow: '0 2px 8px rgba(0,0,0,0.8)',
-          zIndex: 30,
-          opacity: 0,
-          whiteSpace: 'nowrap',
         }}
       >
         {labelText}

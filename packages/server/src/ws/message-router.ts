@@ -6,12 +6,13 @@ export interface GameRoomHandler {
 }
 
 export class MessageRouter {
-  private handler: GameRoomHandler | null = null;
+  /** Per-room game handlers */
+  private handlers: Map<string, GameRoomHandler> = new Map();
   /** All connected clients, keyed by playerId */
   private clients: Map<string, WsClient> = new Map();
 
-  setHandler(handler: GameRoomHandler): void {
-    this.handler = handler;
+  setHandler(roomId: string, handler: GameRoomHandler): void {
+    this.handlers.set(roomId, handler);
   }
 
   registerClient(client: WsClient): void {
@@ -111,14 +112,15 @@ export class MessageRouter {
       return;
     }
 
-    if (!this.handler) {
+    const handler = this.handlers.get(client.roomId);
+    if (!handler) {
       client.send({
         type: 'ERROR',
-        payload: { code: 'NO_HANDLER', message: 'No game room handler' },
+        payload: { code: 'NO_HANDLER', message: 'No game room handler for this room' },
       });
       return;
     }
 
-    this.handler.handleAction(client, parsed);
+    handler.handleAction(client, parsed);
   }
 }
