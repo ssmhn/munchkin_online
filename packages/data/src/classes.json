@@ -4,7 +4,7 @@
     "name": "Воин",
     "deck": "DOOR",
     "type": "CLASS",
-    "description": "Воин может использовать любое оружие независимо от ограничений.",
+    "description": "Берсерк: может сыграть любое количество Одноразовых бонусов в бою (другие классы — только один за бой).",
     "playableFrom": [
       "YOUR_TURN_PRECOMBAT",
       "ANYTIME"
@@ -12,7 +12,7 @@
     "effects": [
       {
         "type": "APPLY_STATUS",
-        "status": "IGNORE_WEAPON_RESTRICTIONS",
+        "status": "BERSERK",
         "target": "SELF"
       }
     ],
@@ -24,38 +24,43 @@
     "name": "Волшебник",
     "deck": "DOOR",
     "type": "CLASS",
-    "description": "Может сбросить карты для отмены проклятия.",
+    "description": "Автоматическое бегство: Волшебник автоматически убегает от монстров без броска кубика.",
     "playableFrom": [
       "YOUR_TURN_PRECOMBAT",
       "ANYTIME"
     ],
-    "effects": [],
-    "triggers": [
+    "effects": [
       {
-        "event": "ON_CURSE_RECEIVED",
-        "effects": [
-          {
-            "type": "DRAW_CARDS",
-            "count": 1,
-            "deck": "DOOR",
-            "target": "SELF"
-          }
-        ]
+        "type": "APPLY_STATUS",
+        "status": "WIZARD_AUTO_ESCAPE",
+        "target": "SELF"
       }
     ],
+    "triggers": [],
     "set": "base"
   },
   {
     "id": "class_cleric",
-    "name": "Клирик",
+    "name": "Клерик",
     "deck": "DOOR",
     "type": "CLASS",
-    "description": "Может сбросить карту для повышения уровня в бою.",
+    "description": "Изгнание Нежити: сбросить 1 карту, чтобы уничтожить монстра-Нежить без боя (без наград). Отмена Проклятий: сбросить 1 карту, чтобы отменить Проклятие.",
     "playableFrom": [
       "YOUR_TURN_PRECOMBAT",
       "ANYTIME"
     ],
-    "effects": [],
+    "effects": [
+      {
+        "type": "APPLY_STATUS",
+        "status": "CLERIC_BANISH_UNDEAD",
+        "target": "SELF"
+      },
+      {
+        "type": "APPLY_STATUS",
+        "status": "CLERIC_CANCEL_CURSE",
+        "target": "SELF"
+      }
+    ],
     "triggers": [],
     "set": "base"
   },
@@ -64,12 +69,18 @@
     "name": "Вор",
     "deck": "DOOR",
     "type": "CLASS",
-    "description": "Может красть предмет у другого игрока.",
+    "description": "Кража: бросок кубика 4+ — украсть надетую Шмотку у другого игрока (раз в ход). Подлый удар в спину.",
     "playableFrom": [
       "YOUR_TURN_PRECOMBAT",
       "ANYTIME"
     ],
-    "effects": [],
+    "effects": [
+      {
+        "type": "APPLY_STATUS",
+        "status": "THIEF_STEAL",
+        "target": "SELF"
+      }
+    ],
     "triggers": [],
     "set": "base"
   }

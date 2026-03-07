@@ -5,7 +5,7 @@ export function createDefaultEquipped(): EquippedItems {
     head: null,
     body: null,
     feet: null,
-    hand: null,
+    hand1: null, hand2: null,
     twoHands: null,
     extras: [],
   };
@@ -23,6 +23,9 @@ export function createPlayer(overrides: Partial<PlayerState> & { id: string }): 
     carried: [],
     curses: [],
     isConnected: true,
+    statuses: [],
+    backpack: [],
+    soldGold: 0,
     ...overrides,
   };
 }

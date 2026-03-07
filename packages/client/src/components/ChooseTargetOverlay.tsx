@@ -34,6 +34,9 @@ export function ChooseTargetOverlay({ action, onChoose }: Props) {
       case 'CHOOSE_CARDS_TO_DISCARD': return 'Choose a card to discard';
       case 'CHOOSE_PLAYER': return 'Choose a player';
       case 'CHOOSE_ITEM_FROM_PLAYER': return 'Choose an item';
+      case 'CLERIC_CANCEL_CURSE': return 'Клерик: Отмена проклятия';
+      case 'HALFLING_CANCEL_CURSE': return 'Халфлинг: Отмена проклятия';
+      case 'WIZARD_CANCEL_CURSE': return 'Волшебник: Отмена проклятия';
       default: return 'Make a choice';
     }
   })();

@@ -8,6 +8,7 @@ import type {
   ActiveCurse,
   PendingAction,
   EquipSlot,
+  EquippedItems,
 } from '@munchkin/shared';
 import { InvalidActionError } from '../utils/errors';
 import { v4IdGen } from '../utils/ids';
@@ -18,7 +19,7 @@ import { hasStatus } from './equipment';
 // Equip slots for iteration
 // ---------------------------------------------------------------------------
 
-const EQUIP_SLOTS: EquipSlot[] = [
+const EQUIP_SLOTS: (keyof Omit<EquippedItems, 'extras'>)[] = [
   'head',
   'body',
   'feet',
@@ -60,18 +61,15 @@ export function applyCurseCard(
     }
   }
 
-  // Check for WIZARD_CURSE_CANCEL status
-  if (
-    currentPlayer.classes.includes('WIZARD') &&
-    hasStatus(currentPlayer, 'WIZARD_CURSE_CANCEL', cardDb)
-  ) {
+  // Check for Cleric curse cancel (discard 1 card)
+  if (hasStatus(currentPlayer, 'CLERIC_CANCEL_CURSE', cardDb) && currentPlayer.hand.length >= 1) {
     const pendingAction: PendingAction = {
-      type: 'WIZARD_CANCEL_CURSE',
+      type: 'CLERIC_CANCEL_CURSE',
       playerId,
       timeoutMs: currentState.config.reactionTimeoutMs,
       options: [
-        { id: 'cancel', label: 'Cancel this curse' },
-        { id: 'accept', label: 'Accept the curse' },
+        { id: 'cancel', label: 'Отменить проклятие (сбросить 1 карту)' },
+        { id: 'accept', label: 'Принять проклятие' },
       ],
     };
 
@@ -80,7 +78,27 @@ export function applyCurseCard(
       pendingActions: [...currentState.pendingActions, pendingAction],
     };
 
-    events.push({ type: 'PENDING_ACTION_CREATED', actionType: 'WIZARD_CANCEL_CURSE' });
+    events.push({ type: 'PENDING_ACTION_CREATED', actionType: 'CLERIC_CANCEL_CURSE' });
+  }
+
+  // Check for Halfling curse cancel (discard 2 cards)
+  if (hasStatus(currentPlayer, 'HALFLING_CURSE_CANCEL', cardDb) && currentPlayer.hand.length >= 2) {
+    const pendingAction: PendingAction = {
+      type: 'HALFLING_CANCEL_CURSE',
+      playerId,
+      timeoutMs: currentState.config.reactionTimeoutMs,
+      options: [
+        { id: 'cancel', label: 'Отменить проклятие (сбросить 2 карты)' },
+        { id: 'accept', label: 'Принять проклятие' },
+      ],
+    };
+
+    currentState = {
+      ...currentState,
+      pendingActions: [...currentState.pendingActions, pendingAction],
+    };
+
+    events.push({ type: 'PENDING_ACTION_CREATED', actionType: 'HALFLING_CANCEL_CURSE' });
   }
 
   // Discard curse card to door discard pile
@@ -254,7 +272,7 @@ function applyImmediateEffect(
         }
       } else {
         // Specific slot
-        const cid = currentEquipped[effect.slot as EquipSlot];
+        const cid = currentEquipped[effect.slot as keyof typeof currentEquipped] as string | null;
         if (cid) {
           const cardDef = cardDb[cid];
           discardState = discardCard(discardState, cid, cardDef?.deck ?? 'TREASURE');
@@ -278,6 +296,7 @@ function applyImmediateEffect(
       const activeCurse: ActiveCurse = {
         curseId: v4IdGen(),
         cardId: effect.curseId as CardId,
+        duration: effect.duration,
       };
       const updatedPlayer: PlayerState = {
         ...player,

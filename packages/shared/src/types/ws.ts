@@ -31,7 +31,10 @@ export type GameAction =
   | { type: 'TAKE_FROM_BACKPACK'; cardId: string }
   | { type: 'STEAL_ITEM'; targetPlayerId: string; cardId: string; diceRoll: number }
   | { type: 'WIZARD_CANCEL_CURSE'; cardIds: string[] }
-  | { type: 'CLERIC_RESURRECTION'; cardId: string };
+  | { type: 'CLERIC_RESURRECTION'; cardId: string }
+  | { type: 'DISCARD_CLASS' }
+  | { type: 'DISCARD_RACE' }
+  | { type: 'BANISH_UNDEAD'; cardId: string };
 
 // ---------------------------------------------------------------------------
 // Game events (S2C broadcast)
@@ -56,6 +59,7 @@ export type GameEvent =
   | { type: 'COMBAT_ENDED' }
   | { type: 'MONSTER_ADDED'; cardId: CardId; instanceId: string }
   | { type: 'MONSTER_CLONED'; originalInstanceId: string; cloneInstanceId: string }
+  | { type: 'MONSTER_DISCARDED'; cardId: CardId; instanceId: string }
   | { type: 'RUN_ATTEMPTED'; playerId: string; diceRoll: number; success: boolean; monsterId?: CardId }
   | { type: 'PLAYER_ESCAPED'; playerId: string; automatic?: boolean }
   | { type: 'BAD_STUFF_APPLIED'; playerId: string; monsterId: CardId }

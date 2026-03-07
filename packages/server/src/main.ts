@@ -99,6 +99,7 @@ async function initGame(roomId: string, players: { id: string; name: string }[])
       isConnected: true,
       statuses: [],
       backpack: [],
+      soldGold: 0,
     };
   }
 

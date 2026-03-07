@@ -18,16 +18,16 @@ export function RevealedCardOverlay({ revealed, cardDb, isOwner, reactionWindowO
 
   useEffect(() => {
     if (ref.current) {
-      gsap.from(ref.current, { opacity: 0, duration: 0.2 });
+      gsap.fromTo(ref.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
     }
     if (cardRef.current) {
       if (revealed.source === 'KICK_DOOR') {
-        gsap.from(cardRef.current, {
-          scale: 0.3, rotation: -10, opacity: 0,
-          ease: 'elastic.out(1, 0.5)', duration: 0.6,
-        });
+        gsap.fromTo(cardRef.current,
+          { scale: 0.3, rotation: -10, opacity: 0 },
+          { scale: 1, rotation: 0, opacity: 1, ease: 'elastic.out(1, 0.5)', duration: 0.6 },
+        );
       } else {
-        gsap.from(cardRef.current, { y: -60, opacity: 0, duration: 0.4, ease: 'power2.out' });
+        gsap.fromTo(cardRef.current, { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power2.out' });
       }
     }
   }, [revealed.source]);

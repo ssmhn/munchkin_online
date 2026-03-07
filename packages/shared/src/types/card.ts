@@ -82,7 +82,7 @@ export type CardEffect =
   | { type: 'CHANGE_GENDER'; target: EffectTarget }
 
   // Statuses and curses
-  | { type: 'APPLY_CURSE'; curseId: string; target: EffectTarget }
+  | { type: 'APPLY_CURSE'; curseId: string; target: EffectTarget; duration?: 'NEXT_COMBAT' | 'PERMANENT' }
   | { type: 'REMOVE_CURSE'; curseId?: string; target: EffectTarget }
   | { type: 'APPLY_STATUS'; status: StatusEffect; target: EffectTarget }
 
@@ -95,6 +95,7 @@ export type CardEffect =
   | { type: 'ESCAPE_BONUS'; value: number }
   | { type: 'PREVENT_ESCAPE'; target: EffectTarget }
   | { type: 'COMBAT_IMMUNITY'; condition?: CardCondition }
+  | { type: 'DISCARD_MONSTER' }
 
   // Treasures
   | { type: 'EXTRA_TREASURE'; count: number }

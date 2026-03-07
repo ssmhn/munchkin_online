@@ -251,6 +251,19 @@ export function resolveCombatVictory(
     }
   }
 
+  // EXTRA_TREASURE from monster modifier cards
+  for (const monster of combat.monsters) {
+    for (const mod of monster.modifiers) {
+      const modDef = cardDb[mod.cardId];
+      if (!modDef) continue;
+      for (const effect of modDef.effects) {
+        if (effect.type === 'EXTRA_TREASURE') {
+          treasureCount += effect.count;
+        }
+      }
+    }
+  }
+
   // Draw treasure cards
   const drawnTreasures: string[] = [];
   for (let i = 0; i < treasureCount; i++) {

@@ -14,7 +14,7 @@ describe('GameState types', () => {
       head: null,
       body: null,
       feet: null,
-      hand: null,
+      hand1: null, hand2: null,
       twoHands: null,
       extras: [],
     };

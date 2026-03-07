@@ -12,12 +12,16 @@ interface Props {
   player: PlayerState;
   cardDb: CardDb | null;
   otherPlayers: OtherPlayer[];
+  enableBackpack?: boolean;
+  backpackSize?: number;
   onAction: (action: GameAction) => void;
 }
 
-export function CharityOverlay({ player, cardDb, otherPlayers, onAction }: Props) {
+export function CharityOverlay({ player, cardDb, otherPlayers, enableBackpack, backpackSize = 5, onAction }: Props) {
   const excess = player.hand.length - 5;
   if (excess <= 0) return null;
+
+  const backpackFull = player.backpack.length >= backpackSize;
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[3000]">
@@ -43,6 +47,14 @@ export function CharityOverlay({ player, cardDb, otherPlayers, onAction }: Props
                   >
                     Discard
                   </button>
+                  {enableBackpack && !backpackFull && def && def.value != null && def.value > 0 && (
+                    <button
+                      onClick={() => onAction({ type: 'PUT_IN_BACKPACK', cardId })}
+                      className="text-[8px] px-1.5 py-0.5 bg-amber-600/20 text-amber-400 rounded border border-amber-600/30 cursor-pointer"
+                    >
+                      Backpack
+                    </button>
+                  )}
                 </div>
               </div>
             );

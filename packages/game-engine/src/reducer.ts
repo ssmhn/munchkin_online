@@ -8,6 +8,7 @@ import type {
   CombatMonster,
   RevealedCard,
   PlayerState,
+  PendingAction,
 } from '@munchkin/shared';
 import { InvalidActionError, GameRuleError } from './utils/errors';
 import { v4IdGen } from './utils/ids';
@@ -19,6 +20,7 @@ import { resolveCombatVictory } from './combat/victory';
 import { handleRunAway, clearCombat } from './combat/defeat';
 import { handleEquipItem, handleUnequipItem } from './mechanics/equipment';
 import { applyCurseCard } from './mechanics/curses';
+import { hasStatus } from './mechanics/equipment';
 import {
   handleOfferHelp,
   handleAcceptHelp,
@@ -152,6 +154,15 @@ export function reduce(
 
     case 'CLERIC_RESURRECTION':
       return reduceClericResurrection(state, playerId, action.cardId, cardDb);
+
+    case 'DISCARD_CLASS':
+      return reduceDiscardClass(state, playerId);
+
+    case 'DISCARD_RACE':
+      return reduceDiscardRace(state, playerId);
+
+    case 'BANISH_UNDEAD':
+      return reduceBanishUndead(state, playerId, action.cardId, cardDb);
 
     default:
       throw new InvalidActionError(`Unknown action type: ${(action as GameAction).type}`);
@@ -513,12 +524,33 @@ function reducePlayCard(
       }
 
       case 'ONE_SHOT': {
-        // If targetMonsterId is specified, apply COMBAT_BONUS effects as monster modifier
+        // Berserk check: non-Warriors can only play 1 ONE_SHOT per combat
+        const playerState = s.players[playerId];
+        if (playerState && !hasStatus(playerState, 'BERSERK', cardDb)) {
+          const alreadyPlayedOneShot = s.combat.appliedCards.some((ac) => {
+            if (ac.playerId !== playerId) return false;
+            const acDef = cardDb[ac.cardId];
+            return acDef?.type === 'ONE_SHOT';
+          });
+          // Also check monster modifiers for ONE_SHOT cards played by this player
+          const playedOnMonster = s.combat.monsters.some((m) =>
+            m.modifiers.some((mod) => {
+              const modDef = cardDb[mod.cardId];
+              return modDef?.type === 'ONE_SHOT';
+            })
+          );
+          if (alreadyPlayedOneShot || playedOnMonster) {
+            throw new InvalidActionError('You can only play one One-Shot card per combat (Warrior can play unlimited)');
+          }
+        }
+
+        // If targetMonsterId is specified, apply MONSTER_BONUS/MONSTER_PENALTY as monster modifier
         if (targetMonsterId && s.combat.monsters.length > 0) {
-          const hasCombatBonus = def.effects.some((e) => e.type === 'COMBAT_BONUS');
-          if (hasCombatBonus) {
+          const hasMonsterMod = def.effects.some((e) => e.type === 'MONSTER_BONUS' || e.type === 'MONSTER_PENALTY');
+          if (hasMonsterMod) {
             const bonusValue = def.effects.reduce((sum, e) => {
-              if (e.type === 'COMBAT_BONUS') return sum + e.value;
+              if (e.type === 'MONSTER_BONUS') return sum + e.value;
+              if (e.type === 'MONSTER_PENALTY') return sum - e.value;
               return sum;
             }, 0);
 
@@ -537,9 +569,9 @@ function reducePlayCard(
               combat: { ...s.combat, monsters: updatedMonsters },
             };
 
-            // Resolve non-COMBAT_BONUS effects (e.g. AUTO_ESCAPE, ESCAPE_BONUS)
+            // Resolve non-monster-modifier effects
             for (const effect of def.effects) {
-              if (effect.type === 'COMBAT_BONUS') continue;
+              if (effect.type === 'MONSTER_BONUS' || effect.type === 'MONSTER_PENALTY') continue;
               const [newState, effectEvents] = resolveEffect(s, effect, context);
               s = newState;
               events.push(...effectEvents);
@@ -568,6 +600,33 @@ function reducePlayCard(
         break;
       }
 
+      case 'CURSE': {
+        // Curse in combat — needs a target player
+        if (targetPlayerId) {
+          const [cursedState, curseEvents] = applyCurseCard(s, targetPlayerId, cardId, cardDb);
+          s = cursedState;
+          events.push(...curseEvents);
+        } else {
+          // Create pending action to choose player
+          const otherPlayers = s.playerOrder.filter((id) => id !== playerId);
+          const pendingAction: PendingAction = {
+            type: 'CHOOSE_PLAYER',
+            playerId,
+            timeoutMs: s.config.reactionTimeoutMs,
+            options: otherPlayers.map((id) => ({
+              id,
+              label: s.players[id]?.name ?? id,
+            })),
+            availableCards: [cardId],
+          };
+          s = {
+            ...s,
+            pendingActions: [...s.pendingActions, pendingAction],
+          };
+        }
+        break;
+      }
+
       default: {
         // Other card types in combat -- resolve effects
         for (const effect of def.effects) {
@@ -579,6 +638,33 @@ function reducePlayCard(
       }
     }
   } else {
+    // CURSE cards: need to choose a target player
+    if (def.type === 'CURSE') {
+      if (targetPlayerId) {
+        const [cursedState, curseEvents] = applyCurseCard(s, targetPlayerId, cardId, cardDb);
+        s = cursedState;
+        events.push(...curseEvents);
+      } else {
+        // Create pending action to choose player
+        const otherPlayers = s.playerOrder.filter((id) => id !== playerId);
+        const pendingAction: PendingAction = {
+          type: 'CHOOSE_PLAYER',
+          playerId,
+          timeoutMs: s.config.reactionTimeoutMs,
+          options: otherPlayers.map((id) => ({
+            id,
+            label: s.players[id]?.name ?? id,
+          })),
+          availableCards: [cardId],
+        };
+        s = {
+          ...s,
+          pendingActions: [...s.pendingActions, pendingAction],
+        };
+      }
+      return [s, events];
+    }
+
     // Not in combat -- resolve card effects
     for (const effect of def.effects) {
       const [newState, effectEvents] = resolveEffect(s, effect, context);
@@ -621,8 +707,10 @@ function reducePlayCard(
 
   // Discard the played card — but NOT if it was added to combat.appliedCards,
   // because clearCombat will discard all appliedCards when combat ends.
+  // Also skip for CURSE cards (applyCurseCard handles discard) and pending actions.
   const addedToApplied = s.combat?.appliedCards.some((ac) => ac.cardId === cardId);
-  if (!addedToApplied) {
+  const isPendingCurse = s.pendingActions.some((pa) => pa.availableCards?.includes(cardId));
+  if (!addedToApplied && def.type !== 'CURSE' && !isPendingCurse) {
     s = discardCard(s, cardId, def.deck);
   }
 
@@ -750,7 +838,70 @@ function reduceChooseOption(
       break;
     }
 
-    case 'CHOOSE_PLAYER':
+    case 'CHOOSE_PLAYER': {
+      // If this was a curse targeting selection
+      if (pending.availableCards && pending.availableCards.length > 0) {
+        const curseCardId = pending.availableCards[0];
+        const targetId = optionId;
+        const [cursedState, curseEvents] = applyCurseCard(s, targetId, curseCardId, cardDb);
+        s = cursedState;
+        events.push(...curseEvents);
+      }
+      break;
+    }
+
+    case 'CLERIC_CANCEL_CURSE': {
+      if (optionId === 'cancel') {
+        // Cleric discards 1 card to cancel curse — remove most recent curse
+        const clericPlayer = s.players[playerId];
+        if (clericPlayer && clericPlayer.hand.length >= 1 && clericPlayer.curses.length > 0) {
+          // Auto-discard first card from hand
+          const discardCid = clericPlayer.hand[0];
+          s = removeFromHand(s, playerId, discardCid);
+          const discDef = cardDb[discardCid];
+          s = discardCard(s, discardCid, discDef?.deck ?? 'DOOR');
+          events.push({ type: 'CARD_DISCARDED', playerId, cardId: discardCid });
+
+          // Remove last curse
+          const curses = s.players[playerId].curses;
+          const removedCurse = curses[curses.length - 1];
+          s = updatePlayer(s, playerId, (p) => ({
+            ...p,
+            curses: p.curses.slice(0, -1),
+          }));
+          events.push({ type: 'CURSE_REMOVED', playerId, curseId: removedCurse.curseId });
+        }
+      }
+      break;
+    }
+
+    case 'HALFLING_CANCEL_CURSE': {
+      if (optionId === 'cancel') {
+        // Halfling discards 2 cards to cancel curse
+        const halflingPlayer = s.players[playerId];
+        if (halflingPlayer && halflingPlayer.hand.length >= 2 && halflingPlayer.curses.length > 0) {
+          // Discard first 2 cards from hand
+          for (let i = 0; i < 2; i++) {
+            const discardCid = s.players[playerId].hand[0];
+            s = removeFromHand(s, playerId, discardCid);
+            const discDef = cardDb[discardCid];
+            s = discardCard(s, discardCid, discDef?.deck ?? 'DOOR');
+            events.push({ type: 'CARD_DISCARDED', playerId, cardId: discardCid });
+          }
+
+          // Remove last curse
+          const curses = s.players[playerId].curses;
+          const removedCurse = curses[curses.length - 1];
+          s = updatePlayer(s, playerId, (p) => ({
+            ...p,
+            curses: p.curses.slice(0, -1),
+          }));
+          events.push({ type: 'CURSE_REMOVED', playerId, curseId: removedCurse.curseId });
+        }
+      }
+      break;
+    }
+
     case 'CHOOSE_ITEM_FROM_PLAYER':
     case 'HALFLING_ESCAPE_BONUS_CHOICE':
     case 'RESPOND_TO_HELP_OFFER':
@@ -997,4 +1148,117 @@ function reduceResolveCombat(
   };
 
   return [s, []];
+}
+
+// ---------------------------------------------------------------------------
+// DISCARD_CLASS
+// ---------------------------------------------------------------------------
+
+function reduceDiscardClass(
+  state: GameState,
+  playerId: string,
+): [GameState, GameEvent[]] {
+  const player = state.players[playerId];
+  if (!player) {
+    throw new InvalidActionError('Player not found');
+  }
+
+  if (player.classes.length === 0) {
+    throw new InvalidActionError('Player has no class to discard');
+  }
+
+  const s = updatePlayer(state, playerId, (p) => ({
+    ...p,
+    classes: [],
+  }));
+
+  return [s, [{ type: 'CLASS_CHANGED', playerId, classes: [] }]];
+}
+
+// ---------------------------------------------------------------------------
+// DISCARD_RACE
+// ---------------------------------------------------------------------------
+
+function reduceDiscardRace(
+  state: GameState,
+  playerId: string,
+): [GameState, GameEvent[]] {
+  const player = state.players[playerId];
+  if (!player) {
+    throw new InvalidActionError('Player not found');
+  }
+
+  if (player.race === null) {
+    throw new InvalidActionError('Player is already Human (no race)');
+  }
+
+  const oldRace = player.race;
+  const s = updatePlayer(state, playerId, (p) => ({
+    ...p,
+    race: null,
+  }));
+
+  return [s, [{ type: 'RACE_CHANGED', playerId, from: oldRace, to: null }]];
+}
+
+// ---------------------------------------------------------------------------
+// BANISH_UNDEAD (Cleric ability)
+// ---------------------------------------------------------------------------
+
+function reduceBanishUndead(
+  state: GameState,
+  playerId: string,
+  discardCardId: string,
+  cardDb: CardDb,
+): [GameState, GameEvent[]] {
+  const player = state.players[playerId];
+  if (!player) {
+    throw new InvalidActionError('Player not found');
+  }
+
+  if (!hasStatus(player, 'CLERIC_BANISH_UNDEAD', cardDb)) {
+    throw new InvalidActionError('Only a Cleric can banish undead');
+  }
+
+  if (!state.combat) {
+    throw new InvalidActionError('Not in combat');
+  }
+
+  if (state.combat.activePlayerId !== playerId) {
+    throw new InvalidActionError('Only the active player can banish undead');
+  }
+
+  // Check all monsters are undead
+  const allUndead = state.combat.monsters.every((m) => {
+    const def = cardDb[m.cardId];
+    return def?.tags?.includes('UNDEAD');
+  });
+  if (!allUndead) {
+    throw new InvalidActionError('Can only banish undead monsters');
+  }
+
+  if (!player.hand.includes(discardCardId)) {
+    throw new InvalidActionError('Discarded card is not in your hand');
+  }
+
+  let s: GameState = state;
+  const events: GameEvent[] = [];
+
+  // Discard a card from hand
+  s = removeFromHand(s, playerId, discardCardId);
+  const discardDef = cardDb[discardCardId];
+  s = discardCard(s, discardCardId, discardDef?.deck ?? 'DOOR');
+  events.push({ type: 'CARD_DISCARDED', playerId, cardId: discardCardId });
+
+  // Discard all monsters (no rewards)
+  for (const monster of state.combat.monsters) {
+    s = discardCard(s, monster.cardId, 'DOOR');
+  }
+
+  // Clear combat, move to END_TURN
+  s = { ...s, combat: null, phase: 'END_TURN' };
+
+  events.push({ type: 'COMBAT_WON', playerId, monsters: state.combat.monsters.map((m) => m.cardId) });
+
+  return [s, events];
 }

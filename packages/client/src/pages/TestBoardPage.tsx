@@ -18,12 +18,12 @@ function createMockState(): GameState {
       p1: {
         id: 'p1', name: 'Alice', level: 3, gender: 'FEMALE', race: 'ELF',
         classes: ['WIZARD'], hand: ['sword_1', 'potion_2', 'armor_3'],
-        equipped: createEquipped(), carried: [], curses: [], isConnected: true, statuses: [], backpack: [],
+        equipped: createEquipped(), carried: [], curses: [], isConnected: true, statuses: [], backpack: [], soldGold: 0,
       },
       p2: {
         id: 'p2', name: 'Bob', level: 1, gender: 'MALE', race: null,
         classes: [], hand: ['HIDDEN', 'HIDDEN'],
-        equipped: createEquipped(), carried: [], curses: [], isConnected: true, statuses: [], backpack: [],
+        equipped: createEquipped(), carried: [], curses: [], isConnected: true, statuses: [], backpack: [], soldGold: 0,
       },
     },
     doorDeck: Array(20).fill('HIDDEN'),

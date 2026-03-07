@@ -8,11 +8,12 @@ interface Props {
   cardDb: CardDb | null;
   playerLevel: number;
   winLevel: number;
+  soldGold?: number;
   onAction: (action: GameAction) => void;
   onClose: () => void;
 }
 
-export function SellItemsModal({ handCards, carriedCards, cardDb, playerLevel, winLevel, onAction, onClose }: Props) {
+export function SellItemsModal({ handCards, carriedCards, cardDb, playerLevel, winLevel, soldGold = 0, onAction, onClose }: Props) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const sellableCards = useMemo(() => {
@@ -23,14 +24,15 @@ export function SellItemsModal({ handCards, carriedCards, cardDb, playerLevel, w
     });
   }, [handCards, carriedCards, cardDb]);
 
-  const { totalGold, levelsGained } = useMemo(() => {
+  const { totalGold, accumulatedGold, levelsGained } = useMemo(() => {
     let gold = 0;
     for (const id of selected) {
       const def = cardDb?.[id];
       if (def?.value) gold += def.value;
     }
-    return { totalGold: gold, levelsGained: Math.floor(gold / 1000) };
-  }, [selected, cardDb]);
+    const accumulated = gold + soldGold;
+    return { totalGold: gold, accumulatedGold: accumulated, levelsGained: Math.floor(accumulated / 1000) };
+  }, [selected, cardDb, soldGold]);
 
   const wouldReachWinLevel = playerLevel + levelsGained >= winLevel;
 
@@ -77,8 +79,16 @@ export function SellItemsModal({ handCards, carriedCards, cardDb, playerLevel, w
         )}
 
         <div className="text-sm text-munch-text mb-1">
-          Total: <span className="text-amber-500 font-bold">{totalGold} gold</span>
-          {' -> '}<span className="text-green-400 font-bold">+{levelsGained} level{levelsGained !== 1 ? 's' : ''}</span>
+          Выбрано: <span className="text-amber-500 font-bold">{totalGold} gp</span>
+          {soldGold > 0 && <span className="text-munch-text-muted"> + {soldGold} ранее</span>}
+          {' = '}<span className="text-amber-500 font-bold">{accumulatedGold} gp</span>
+          {' -> '}<span className="text-green-400 font-bold">+{levelsGained} ур.</span>
+        </div>
+        <div className="w-full h-1.5 bg-munch-surface-light rounded-sm mb-1">
+          <div
+            className="h-full bg-amber-500 rounded-sm transition-all"
+            style={{ width: `${Math.min(100, (accumulatedGold % 1000) / 10)}%` }}
+          />
         </div>
 
         {wouldReachWinLevel && (

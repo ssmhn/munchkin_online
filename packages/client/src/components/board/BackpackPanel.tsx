@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import type { CardId, CardDb, GameAction, GamePhase } from '@munchkin/shared';
 import { GameCard } from '../GameCard';
 import { useDropZone, type DragPayload } from '../../hooks/useDragAndDrop';
+import { HoverTooltip } from '../ui/CardTooltip';
 
 interface Props {
   backpack: CardId[];
@@ -69,7 +70,7 @@ export function BackpackPanel({ backpack, backpackSize, cardDb, phase, onAction 
                   if (!isCombat) onAction({ type: 'TAKE_FROM_BACKPACK', cardId });
                 }}
               >
-                {def ? <GameCard card={def} compact /> : (
+                {def ? <HoverTooltip card={def}><GameCard card={def} compact /></HoverTooltip> : (
                   <div className="w-[54px] h-[76px] bg-munch-surface-light rounded-md border border-munch-border flex items-center justify-center text-[8px] text-munch-text-muted">
                     {cardId}
                   </div>

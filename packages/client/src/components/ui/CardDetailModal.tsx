@@ -34,12 +34,10 @@ export function CardDetailModal({ card, onClose }: Props) {
 
   useEffect(() => {
     if (ref.current) {
-      gsap.from(ref.current, {
-        scale: 0.9,
-        opacity: 0,
-        duration: 0.25,
-        ease: 'back.out(1.5)',
-      });
+      gsap.fromTo(ref.current,
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.25, ease: 'back.out(1.5)' },
+      );
     }
   }, []);
 

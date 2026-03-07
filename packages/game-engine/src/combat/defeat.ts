@@ -4,16 +4,18 @@ import type {
   CombatMonster,
   GameEvent,
   EquipSlot,
+  EquippedItems,
 } from '@munchkin/shared';
 import { InvalidActionError } from '../utils/errors';
 import { discardCard } from '../utils/deck';
 import { resolveEffect } from '../effects/resolver';
+import { hasStatus } from '../mechanics/equipment';
 
 // ---------------------------------------------------------------------------
 // Equipment slots to iterate
 // ---------------------------------------------------------------------------
 
-const EQUIP_SLOTS: EquipSlot[] = [
+const EQUIP_SLOTS: (keyof Omit<EquippedItems, 'extras'>)[] = [
   'head',
   'body',
   'feet',
@@ -100,6 +102,20 @@ function calculateMonsterEscapeModifier(
   return { bonus, prevented };
 }
 
+/**
+ * Build the ordered list of players who need to roll escape dice.
+ * Active player first, then each helper.
+ */
+function getEscapePlayerOrder(combat: NonNullable<GameState['combat']>): string[] {
+  const order: string[] = [combat.activePlayerId];
+  for (const h of combat.helpers) {
+    if (!order.includes(h.playerId)) {
+      order.push(h.playerId);
+    }
+  }
+  return order;
+}
+
 export function handleRunAway(
   state: GameState,
   playerId: string,
@@ -116,6 +132,12 @@ export function handleRunAway(
     throw new InvalidActionError('No active combat');
   }
 
+  // Verify it's the correct player's turn to escape
+  const escapingPlayerId = combat.escapingPlayerId ?? combat.activePlayerId;
+  if (playerId !== escapingPlayerId) {
+    throw new InvalidActionError('It is not your turn to roll for escape');
+  }
+
   const player = state.players[playerId];
   if (!player) {
     throw new InvalidActionError('Player not found');
@@ -123,6 +145,44 @@ export function handleRunAway(
 
   let currentState = state;
   const events: GameEvent[] = [];
+
+  // Wizard auto-escape: skip dice roll, escape all monsters automatically
+  if (hasStatus(player, 'WIZARD_AUTO_ESCAPE', cardDb)) {
+    // Auto-escape this player through all remaining monsters
+    const escapeResults = [...(combat.escapeResults ?? [])];
+    for (let i = combat.escapeMonsterIndex ?? 0; i < combat.monsters.length; i++) {
+      escapeResults.push({
+        instanceId: combat.monsters[i].instanceId,
+        escaped: true,
+        prevented: false,
+        roll: 6,
+        playerId,
+      });
+    }
+    events.push({ type: 'PLAYER_ESCAPED', playerId, automatic: true });
+
+    // Move to next player or finish
+    const escapeOrder = getEscapePlayerOrder(combat);
+    const currentIdx = escapeOrder.indexOf(playerId);
+    const nextPlayer = escapeOrder[currentIdx + 1];
+
+    if (nextPlayer) {
+      currentState = {
+        ...currentState,
+        combat: {
+          ...currentState.combat!,
+          escapeMonsterIndex: 0,
+          escapeResults,
+          escapingPlayerId: nextPlayer,
+          runAttempts: currentState.combat!.runAttempts + 1,
+        },
+      };
+      return [currentState, events];
+    }
+
+    // All players done
+    return finishEscape(currentState, escapeResults, combat, cardDb, events);
+  }
 
   // Global escape bonus from equipment, curses, etc.
   let globalEscapeBonus = calculateGlobalEscapeBonus(player, cardDb);
@@ -159,70 +219,123 @@ export function handleRunAway(
     }
   }
 
-  // Increment run attempts
-  const updatedCombat = {
-    ...currentState.combat!,
-    runAttempts: currentState.combat!.runAttempts + 1,
-  };
-  currentState = { ...currentState, combat: updatedCombat };
+  // Determine which monster we're escaping from
+  const monsterIndex = combat.escapeMonsterIndex ?? 0;
+  const monster = combat.monsters[monsterIndex];
+  if (!monster) {
+    throw new InvalidActionError('No monster to escape from');
+  }
 
-  // Roll escape for each monster separately
-  // In Munchkin, the same dice roll is used but each monster has its own modifiers
-  const escapedMonsters: CombatMonster[] = [];
-  const failedMonsters: CombatMonster[] = [];
+  const escapeResults = [...(combat.escapeResults ?? [])];
+  const monsterMod = calculateMonsterEscapeModifier(monster, cardDb);
 
-  for (const monster of updatedCombat.monsters) {
-    const monsterMod = calculateMonsterEscapeModifier(monster, cardDb);
+  let escaped: boolean;
+  if (monsterMod.prevented) {
+    escaped = false;
+    events.push({
+      type: 'RUN_ATTEMPTED',
+      playerId,
+      diceRoll,
+      success: false,
+      monsterId: monster.cardId,
+    });
+  } else {
+    const totalEscape = diceRoll + globalEscapeBonus + monsterMod.bonus;
+    escaped = totalEscape >= 5;
+    events.push({
+      type: 'RUN_ATTEMPTED',
+      playerId,
+      diceRoll,
+      success: escaped,
+      monsterId: monster.cardId,
+    });
+  }
 
-    if (monsterMod.prevented) {
-      // Cannot escape this monster
-      failedMonsters.push(monster);
-      events.push({
-        type: 'RUN_ATTEMPTED',
-        playerId,
-        diceRoll,
-        success: false,
-        monsterId: monster.cardId,
-      });
+  escapeResults.push({
+    instanceId: monster.instanceId,
+    escaped,
+    prevented: monsterMod.prevented,
+    roll: diceRoll,
+    playerId,
+  });
+
+  const nextMonsterIndex = monsterIndex + 1;
+  const hasMoreMonsters = nextMonsterIndex < combat.monsters.length;
+
+  if (hasMoreMonsters) {
+    // More monsters to escape from for this player
+    currentState = {
+      ...currentState,
+      combat: {
+        ...currentState.combat!,
+        escapeMonsterIndex: nextMonsterIndex,
+        escapeResults,
+        runAttempts: currentState.combat!.runAttempts + 1,
+      },
+    };
+    return [currentState, events];
+  }
+
+  // This player finished all monsters — move to next player
+  const escapeOrder = getEscapePlayerOrder(combat);
+  const currentIdx = escapeOrder.indexOf(playerId);
+  const nextPlayer = escapeOrder[currentIdx + 1];
+
+  if (nextPlayer) {
+    // Next player starts escaping from monster 0
+    currentState = {
+      ...currentState,
+      combat: {
+        ...currentState.combat!,
+        escapeMonsterIndex: 0,
+        escapeResults,
+        escapingPlayerId: nextPlayer,
+        runAttempts: currentState.combat!.runAttempts + 1,
+      },
+    };
+    return [currentState, events];
+  }
+
+  // All players done escaping — apply results
+  return finishEscape(currentState, escapeResults, combat, cardDb, events);
+}
+
+/**
+ * After all players have rolled escape for all monsters, resolve bad stuff.
+ */
+function finishEscape(
+  currentState: GameState,
+  escapeResults: GameState['combat'] extends infer C ? C extends { escapeResults?: infer R } ? NonNullable<R> : never : never,
+  combat: NonNullable<GameState['combat']>,
+  cardDb: CardDb,
+  events: GameEvent[],
+): [GameState, GameEvent[]] {
+  const escapeOrder = getEscapePlayerOrder(combat);
+
+  // For each player, find which monsters they failed to escape
+  for (const pid of escapeOrder) {
+    const playerResults = escapeResults.filter((r) => r.playerId === pid);
+    const failedMonsters = combat.monsters.filter((m) => {
+      const result = playerResults.find((r) => r.instanceId === m.instanceId);
+      return result && !result.escaped;
+    });
+
+    if (failedMonsters.length === 0) {
+      events.push({ type: 'PLAYER_ESCAPED', playerId: pid });
     } else {
-      const totalEscape = diceRoll + globalEscapeBonus + monsterMod.bonus;
-      const escaped = totalEscape >= 5;
-
-      events.push({
-        type: 'RUN_ATTEMPTED',
-        playerId,
-        diceRoll,
-        success: escaped,
-        monsterId: monster.cardId,
-      });
-
-      if (escaped) {
-        escapedMonsters.push(monster);
-      } else {
-        failedMonsters.push(monster);
-      }
+      const [stateAfterBadStuff, badStuffEvents] = applyBadStuff(
+        currentState,
+        pid,
+        failedMonsters,
+        cardDb,
+      );
+      currentState = stateAfterBadStuff;
+      events.push(...badStuffEvents);
     }
   }
 
-  if (failedMonsters.length === 0) {
-    // Escaped all monsters
-    events.push({ type: 'PLAYER_ESCAPED', playerId });
-    currentState = clearCombat(currentState);
-    currentState = { ...currentState, phase: 'END_TURN' };
-  } else {
-    // Apply bad stuff only from monsters that caught the player
-    const [stateAfterBadStuff, badStuffEvents] = applyBadStuff(
-      currentState,
-      playerId,
-      failedMonsters,
-      cardDb,
-    );
-    currentState = stateAfterBadStuff;
-    events.push(...badStuffEvents);
-
-    currentState = clearCombat(currentState);
-    currentState = { ...currentState, phase: 'END_TURN' };
-  }
+  currentState = clearCombat(currentState);
+  currentState = { ...currentState, phase: 'END_TURN' };
 
   return [currentState, events];
 }
@@ -291,5 +404,16 @@ export function clearCombat(state: GameState): GameState {
     currentState = discardCard(currentState, applied.cardId, 'DOOR');
   }
 
-  return { ...currentState, combat: null };
+  // Remove NEXT_COMBAT duration curses from all players who were in combat
+  const updatedPlayers = { ...currentState.players };
+  for (const pid of Object.keys(updatedPlayers)) {
+    const player = updatedPlayers[pid];
+    const hadCurses = player.curses.length;
+    const filteredCurses = player.curses.filter((c) => c.duration !== 'NEXT_COMBAT');
+    if (filteredCurses.length !== hadCurses) {
+      updatedPlayers[pid] = { ...player, curses: filteredCurses };
+    }
+  }
+
+  return { ...currentState, players: updatedPlayers, combat: null };
 }

@@ -5,6 +5,7 @@ import type {
   CombatMonster,
   CardId,
   EquipSlot,
+  EquippedItems,
   ActiveCurse,
   PendingAction,
 } from '@munchkin/shared';
@@ -110,6 +111,9 @@ export function resolveEffect(
 
     case 'ADD_MONSTER':
       return handleAddMonster(state, effect, context);
+
+    case 'DISCARD_MONSTER':
+      return handleDiscardMonster(state, context);
 
     default:
       return [state, []];
@@ -225,7 +229,11 @@ export function evaluateCondition(
 
     case 'ITEM_EQUIPPED': {
       const player = state.players[context.playerId];
-      return player ? player.equipped[condition.slot] !== null : false;
+      if (!player) return false;
+      if (condition.slot === 'hand') {
+        return player.equipped.hand1 !== null || player.equipped.hand2 !== null;
+      }
+      return player.equipped[condition.slot as keyof EquippedItems] !== null;
     }
 
     case 'HAS_STATUS': {
@@ -422,8 +430,8 @@ function handleRemoveEquipment(
       }
     } else {
       // Specific slot
-      const slot = effect.slot as EquipSlot;
-      const cardId = player.equipped[slot];
+      const slot = effect.slot;
+      const cardId = player.equipped[slot as keyof EquippedItems] as string | null;
       if (cardId) {
         const def = context.cardDb[cardId];
         const discardDeck = def?.deck ?? 'TREASURE';
@@ -847,4 +855,44 @@ function handleAddMonster(
   // Not a monster -- discard it
   s = discardCard(s, drawnCardId, 'DOOR');
   return [s, []];
+}
+
+function handleDiscardMonster(
+  state: GameState,
+  context: EffectContext,
+): [GameState, GameEvent[]] {
+  if (!state.combat) return [state, []];
+
+  const monsters = state.combat.monsters;
+  if (monsters.length === 0) return [state, []];
+
+  // Find target monster — use targetMonsterId from context, otherwise first monster
+  const targetId = context.targetMonsterId;
+  const monsterIdx = targetId
+    ? monsters.findIndex((m) => m.instanceId === targetId)
+    : 0;
+  const effectiveIdx = monsterIdx >= 0 ? monsterIdx : 0;
+  const removedMonster = monsters[effectiveIdx];
+
+  // Remove from combat
+  const remainingMonsters = monsters.filter((_, i) => i !== effectiveIdx);
+
+  // Discard the monster card to door discard pile
+  let s = discardCard(state, removedMonster.cardId, 'DOOR');
+
+  // If no monsters remain, end combat — player collects treasures
+  if (remainingMonsters.length === 0) {
+    s = {
+      ...s,
+      combat: null,
+      phase: 'AFTER_COMBAT',
+    };
+  } else {
+    s = {
+      ...s,
+      combat: { ...s.combat!, monsters: remainingMonsters },
+    };
+  }
+
+  return [s, [{ type: 'MONSTER_DISCARDED', cardId: removedMonster.cardId, instanceId: removedMonster.instanceId }]];
 }

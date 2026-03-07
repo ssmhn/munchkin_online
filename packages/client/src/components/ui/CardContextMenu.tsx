@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import type { CardDefinition, GamePhase } from '@munchkin/shared';
 
@@ -34,16 +34,32 @@ export function CardContextMenu({
   onClose,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const [adjusted, setAdjusted] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     if (ref.current) {
-      gsap.from(ref.current, {
-        scale: 0.85,
-        opacity: 0,
-        y: -10,
-        duration: 0.2,
-        ease: 'back.out(2)',
-      });
+      const rect = ref.current.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      let x = position.x;
+      let y = position.y;
+
+      // If menu would overflow bottom, open upward
+      if (y + rect.height > vh) {
+        y = position.y - rect.height;
+      }
+      // If menu would overflow right, shift left
+      if (x + rect.width > vw) {
+        x = vw - rect.width - 8;
+      }
+      if (x !== position.x || y !== position.y) {
+        setAdjusted({ x, y });
+      }
+
+      gsap.fromTo(ref.current,
+        { scale: 0.85, opacity: 0, y: -10 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.2, ease: 'back.out(2)' },
+      );
     }
 
     const handleClickOutside = (e: MouseEvent) => {
@@ -67,7 +83,7 @@ export function CardContextMenu({
     ) {
       items.push({ label: 'Equip', action: 'EQUIP_ITEM' });
     }
-    if (enableBackpack && !backpackFull && !isCombat) {
+    if (enableBackpack && !backpackFull && !isCombat && card.value != null && card.value > 0) {
       items.push({ label: 'Put in Backpack', action: 'PUT_IN_BACKPACK' });
     }
     if (card.type === 'MONSTER' && phase === 'LOOT_ROOM' && !isCombat) {
@@ -122,7 +138,7 @@ export function CardContextMenu({
     <div
       ref={ref}
       className="fixed z-[10000] bg-munch-surface border border-munch-border rounded-lg shadow-xl overflow-hidden min-w-[180px]"
-      style={{ left: position.x, top: position.y }}
+      style={{ left: adjusted?.x ?? position.x, top: adjusted?.y ?? position.y }}
     >
       <div className="px-3 py-2 border-b border-munch-border">
         <div className="text-xs font-bold text-munch-text font-fantasy">

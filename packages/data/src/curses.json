@@ -153,7 +153,13 @@
       {
         "type": "APPLY_CURSE",
         "curseId": "curse_combat_minus2",
+        "duration": "NEXT_COMBAT",
         "target": "ACTIVE_PLAYER"
+      },
+      {
+        "type": "COMBAT_BONUS",
+        "value": -2,
+        "target": "SELF"
       }
     ],
     "set": "base"

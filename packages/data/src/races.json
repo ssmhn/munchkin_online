@@ -4,7 +4,7 @@
     "name": "Эльф",
     "deck": "DOOR",
     "type": "RACE",
-    "description": "Каждый раз, когда ты помогаешь победить монстра, получаешь уровень.",
+    "description": "Помощник победителя: каждый раз, когда Эльф помогает другому игроку победить монстра, Эльф получает +1 уровень.",
     "playableFrom": [
       "YOUR_TURN_PRECOMBAT",
       "ANYTIME"
@@ -29,7 +29,47 @@
     "name": "Дварф",
     "deck": "DOOR",
     "type": "RACE",
-    "description": "Можешь нести дополнительный Большой предмет.",
+    "description": "Носить всё: Дварф может носить любое количество Больших Шмоток одновременно.",
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
+    ],
+    "effects": [
+      {
+        "type": "APPLY_STATUS",
+        "status": "UNLIMITED_BIG_ITEMS",
+        "target": "SELF"
+      }
+    ],
+    "triggers": [],
+    "set": "base"
+  },
+  {
+    "id": "race_halfling",
+    "name": "Халфлинг",
+    "deck": "DOOR",
+    "type": "RACE",
+    "description": "Избавление от проклятия: когда Халфлинг получает Проклятие, он может сбросить 2 карты с руки, чтобы отменить его.",
+    "playableFrom": [
+      "YOUR_TURN_PRECOMBAT",
+      "ANYTIME"
+    ],
+    "effects": [
+      {
+        "type": "APPLY_STATUS",
+        "status": "HALFLING_CURSE_CANCEL",
+        "target": "SELF"
+      }
+    ],
+    "triggers": [],
+    "set": "base"
+  },
+  {
+    "id": "race_human",
+    "name": "Человек",
+    "deck": "DOOR",
+    "type": "RACE",
+    "description": "Дополнительная Шмотка: Человек может носить одну дополнительную Большую Шмотку (итого две).",
     "playableFrom": [
       "YOUR_TURN_PRECOMBAT",
       "ANYTIME"
@@ -41,39 +81,6 @@
         "target": "SELF"
       }
     ],
-    "triggers": [],
-    "set": "base"
-  },
-  {
-    "id": "race_halfling",
-    "name": "Хоббит",
-    "deck": "DOOR",
-    "type": "RACE",
-    "description": "+1 к побегу. Можешь продать предмет за двойную цену раз в ход.",
-    "playableFrom": [
-      "YOUR_TURN_PRECOMBAT",
-      "ANYTIME"
-    ],
-    "effects": [
-      {
-        "type": "ESCAPE_BONUS",
-        "value": 1
-      }
-    ],
-    "triggers": [],
-    "set": "base"
-  },
-  {
-    "id": "race_human",
-    "name": "Человек",
-    "deck": "DOOR",
-    "type": "RACE",
-    "description": "Нет особых способностей, но нет и ограничений.",
-    "playableFrom": [
-      "YOUR_TURN_PRECOMBAT",
-      "ANYTIME"
-    ],
-    "effects": [],
     "triggers": [],
     "set": "base"
   }

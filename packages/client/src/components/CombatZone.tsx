@@ -25,6 +25,10 @@ function evalCondition(cond: any, player: PlayerState): boolean {
   }
 }
 
+function hasWizardAutoEscape(player: PlayerState, cardDb: CardDb | null): boolean {
+  return player.statuses?.includes('WIZARD_AUTO_ESCAPE') ?? false;
+}
+
 interface Props {
   combat: CombatState;
   cardDb: CardDb | null;
@@ -40,6 +44,7 @@ export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayer
   const monstersRef = useRef<HTMLDivElement>(null);
   const [helpTarget, setHelpTarget] = useState<string | null>(null);
   const [treasureOffer, setTreasureOffer] = useState(1);
+  const [diceResult, setDiceResult] = useState<{ roll: number; needed: number } | null>(null);
 
   useEffect(() => {
     if (zoneRef.current) {
@@ -92,7 +97,7 @@ export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayer
     helperBonus += helperState.level;
     if (cardDb) {
       const heq = helperState.equipped;
-      const helperEquipIds = [heq.head, heq.body, heq.feet, heq.hand, heq.twoHands, ...heq.extras].filter(Boolean) as string[];
+      const helperEquipIds = [heq.head, heq.body, heq.feet, heq.hand1, heq.hand2, heq.twoHands, ...heq.extras].filter(Boolean) as string[];
       helperEquipIds.forEach((id) => {
         const def = cardDb[id];
         if (def?.effects) {
@@ -104,7 +109,21 @@ export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayer
     }
   });
 
-  const playerTotal = playerLevel + equipmentBonus + appliedBonus + helperBonus;
+  // Curse combat penalties
+  let cursePenalty = 0;
+  if (activePlayerState && cardDb) {
+    for (const curse of activePlayerState.curses) {
+      const curseDef = cardDb[curse.cardId];
+      if (!curseDef) continue;
+      for (const e of curseDef.effects) {
+        if ((e as any).type === 'COMBAT_BONUS' && (e as any).value < 0) {
+          cursePenalty += (e as any).value;
+        }
+      }
+    }
+  }
+
+  const playerTotal = Math.max(0, playerLevel + equipmentBonus + appliedBonus + helperBonus + cursePenalty);
 
   // Calculate monster total (base + modifiers + conditional bonuses + applied cards)
   let monsterTotal = 0;
@@ -169,10 +188,32 @@ export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayer
     }
   });
 
+  // Extra treasures from monster modifier cards
+  combat.monsters.forEach((m) => {
+    m.modifiers.forEach((mod) => {
+      const def = cardDb?.[mod.cardId];
+      if (def?.effects) {
+        def.effects.forEach((e: any) => {
+          if (e.type === 'EXTRA_TREASURE') totalTreasures += e.count ?? 0;
+        });
+      }
+    });
+  });
+
   const fighterName = players[combat.activePlayerId]?.name || 'Unknown';
   const otherPlayerIds = Object.keys(players).filter((id) => id !== combat.activePlayerId);
   const isNegotiating = combat.phase === 'NEGOTIATION';
   const helpOffer = combat.helpOffer;
+
+  // Cleric banish undead check
+  const allMonstersUndead = cardDb ? combat.monsters.every((m) => {
+    const def = cardDb[m.cardId];
+    return def?.tags?.includes('UNDEAD');
+  }) : false;
+  const canBanishUndead = isActivePlayer
+    && (activePlayerState?.statuses?.includes('CLERIC_BANISH_UNDEAD') ?? false)
+    && allMonstersUndead
+    && (activePlayerState?.hand?.length ?? 0) > 0;
 
   // Am I the target of a help offer?
   const amHelpTarget = helpOffer?.toPlayerId === selfPlayerId;
@@ -206,6 +247,7 @@ export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayer
             {equipmentBonus > 0 && ` +${equipmentBonus} equip`}
             {helperBonus > 0 && ` +${helperBonus} helper`}
             {appliedBonus > 0 && ` +${appliedBonus} bonus`}
+            {cursePenalty < 0 && <span className="text-red-400"> {cursePenalty} curse</span>}
           </div>
         </div>
 
@@ -362,6 +404,20 @@ export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayer
           >
             {playerTotal > monsterTotal ? 'Fight!' : 'Done'}
           </GoldButton>
+          {canBanishUndead && (
+            <GoldButton
+              onClick={() => {
+                // Discard first card from hand to banish
+                const firstCard = activePlayerState?.hand?.[0];
+                if (firstCard) {
+                  onAction({ type: 'BANISH_UNDEAD', cardId: firstCard } as GameAction);
+                }
+              }}
+              data-testid="btn-banish"
+            >
+              Banish Undead
+            </GoldButton>
+          )}
           {otherPlayerIds.length > 0 && (
             <GoldButton
               onClick={() => setHelpTarget(otherPlayerIds[0])}
@@ -374,27 +430,133 @@ export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayer
       )}
 
       {/* Run attempt phase — player is not strong enough, must roll dice */}
-      {isActivePlayer && combat.phase === 'RUN_ATTEMPT' && (
-        <div className="flex flex-col items-center gap-2 pt-2 border-t border-red-600/20 w-full">
-          <div className="text-xs text-red-400 font-bold">
-            Not strong enough! Roll dice to run away.
-          </div>
-          <GoldButton
-            variant="danger"
-            onClick={() => onAction({ type: 'RUN_AWAY', diceRoll: Math.floor(Math.random() * 6) + 1 })}
-            data-testid="btn-run-away"
-          >
-            Roll Dice & Run
-          </GoldButton>
-        </div>
-      )}
+      {combat.phase === 'RUN_ATTEMPT' && (() => {
+        const escapingId = combat.escapingPlayerId ?? combat.activePlayerId;
+        const escapingName = players[escapingId]?.name || escapingId;
+        const isMyTurnToEscape = selfPlayerId === escapingId;
+        const escapingPlayerState = playerStates?.[escapingId];
+        const escapingIsWizard = escapingPlayerState ? hasWizardAutoEscape(escapingPlayerState, cardDb) : false;
 
-      {/* Non-active player sees waiting message during RUN_ATTEMPT */}
-      {!isActivePlayer && combat.phase === 'RUN_ATTEMPT' && (
-        <div className="text-[10px] text-red-400/70 animate-pulse pt-1">
-          {fighterName} must roll dice to escape...
-        </div>
-      )}
+        const monsterIdx = combat.escapeMonsterIndex ?? 0;
+        const currentMonster = combat.monsters[monsterIdx];
+        const currentMonsterDef = currentMonster ? cardDb?.[currentMonster.cardId] : null;
+        const monsterName = currentMonsterDef?.name ?? currentMonster?.cardId.replace(/_/g, ' ') ?? '???';
+        const isPrevented = currentMonsterDef?.effects?.some((e: any) => e.type === 'PREVENT_ESCAPE') ?? false;
+        const prevResults = combat.escapeResults ?? [];
+
+        return (
+          <div className="flex flex-col items-center gap-2 pt-2 border-t border-red-600/20 w-full">
+            {/* Who is escaping */}
+            <div className="text-[10px] font-bold text-amber-300 uppercase tracking-wide">
+              {escapingName} убегает
+            </div>
+
+            {/* Previous escape results */}
+            {prevResults.length > 0 && (
+              <div className="flex flex-col gap-1 w-full items-center mb-1">
+                {prevResults.map((r, ri) => {
+                  const m = combat.monsters.find((m) => m.instanceId === r.instanceId);
+                  const mDef = m ? cardDb?.[m.cardId] : null;
+                  const mName = mDef?.name ?? m?.cardId.replace(/_/g, ' ') ?? '???';
+                  const rPlayerName = players[(r as any).playerId]?.name || '';
+                  return (
+                    <div key={`${r.instanceId}-${ri}`} className={`text-[10px] font-bold ${r.escaped ? 'text-green-400' : 'text-red-400'}`}>
+                      {rPlayerName ? `${rPlayerName}: ` : ''}{mName}: {r.prevented ? 'Побег невозможен!' : r.escaped ? `Убежал (${r.roll})` : `Не убежал (${r.roll})`}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {isMyTurnToEscape ? (
+              <>
+                {escapingIsWizard ? (
+                  <>
+                    <div className="text-xs text-blue-400 font-bold">
+                      Wizard auto-escape! You flee automatically.
+                    </div>
+                    <GoldButton
+                      onClick={() => onAction({ type: 'RUN_AWAY', diceRoll: 6 })}
+                      data-testid="btn-auto-escape"
+                    >
+                      Auto Escape
+                    </GoldButton>
+                  </>
+                ) : (
+                  <>
+                    {/* Current monster */}
+                    <div className="text-xs text-amber-400 font-semibold">
+                      Убегаем от: {monsterName} ({monsterIdx + 1}/{combat.monsters.length})
+                    </div>
+
+                    {isPrevented ? (
+                      <>
+                        <div className="text-xs text-red-400 font-bold">
+                          Побег невозможен! {monsterName} не даёт убежать.
+                        </div>
+                        {diceResult ? (
+                          <div className="text-sm font-bold text-red-400">
+                            Не удалось убежать! Bad Stuff...
+                          </div>
+                        ) : (
+                          <GoldButton
+                            variant="danger"
+                            onClick={() => {
+                              setDiceResult({ roll: 0, needed: 99 });
+                              setTimeout(() => {
+                                onAction({ type: 'RUN_AWAY', diceRoll: 1 });
+                                setDiceResult(null);
+                              }, 1500);
+                            }}
+                            data-testid="btn-cant-escape"
+                          >
+                            Побег невозможен
+                          </GoldButton>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-xs text-red-400 font-bold">
+                          Брось кубик чтобы убежать (нужно 5+).
+                        </div>
+                        {diceResult ? (
+                          <div className="flex flex-col items-center gap-2">
+                            <div className={`text-4xl font-bold font-fantasy ${diceResult.roll >= diceResult.needed ? 'text-green-400' : 'text-red-400'}`}>
+                              {diceResult.roll}
+                            </div>
+                            <div className={`text-sm font-bold ${diceResult.roll >= diceResult.needed ? 'text-green-400' : 'text-red-400'}`}>
+                              {diceResult.roll >= diceResult.needed ? 'Убежал!' : 'Не убежал!'}
+                            </div>
+                          </div>
+                        ) : (
+                          <GoldButton
+                            variant="danger"
+                            onClick={() => {
+                              const roll = Math.floor(Math.random() * 6) + 1;
+                              setDiceResult({ roll, needed: 5 });
+                              setTimeout(() => {
+                                onAction({ type: 'RUN_AWAY', diceRoll: roll });
+                                setDiceResult(null);
+                              }, 2000);
+                            }}
+                            data-testid="btn-run-away"
+                          >
+                            Бросить кубик
+                          </GoldButton>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="text-[10px] text-red-400/70 animate-pulse pt-1">
+                {escapingName} бросает кубик...
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Help offer UI — active player choosing who to ask and treasure count */}
       {isActivePlayer && helpTarget && combat.phase === 'ACTIVE' && (

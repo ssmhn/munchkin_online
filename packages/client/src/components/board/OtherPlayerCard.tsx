@@ -74,7 +74,7 @@ export function OtherPlayerCard({ player, isActive, isHelper, cardDb, onClick }:
       {/* Curses */}
       {player.curses.length > 0 && (
         <div className="flex gap-0.5 flex-wrap justify-center">
-          {player.curses.map((c) => <CurseTag key={c.curseId} curse={c} />)}
+          {player.curses.map((c) => <CurseTag key={c.curseId} curse={c} cardDb={cardDb} />)}
         </div>
       )}
     </div>

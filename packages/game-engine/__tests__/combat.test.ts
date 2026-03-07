@@ -107,7 +107,7 @@ describe('Combat system', () => {
           level: 5,
           equipped: {
             head: null, body: null, feet: null,
-            hand: 'sword_of_slaying', twoHands: null,
+            hand1: 'sword_of_slaying', hand2: null, twoHands: null,
             extras: [],
           },
         }),
@@ -140,7 +140,7 @@ describe('Combat system', () => {
           level: 5,
           equipped: {
             head: null, body: null, feet: null,
-            hand: 'sword_of_slaying', twoHands: null,
+            hand1: 'sword_of_slaying', hand2: null, twoHands: null,
             extras: [],
           },
         }),
@@ -203,7 +203,7 @@ describe('Combat system', () => {
           classes: ['WARRIOR'],
           equipped: {
             head: 'helmet_of_courage', body: null, feet: null,
-            hand: null, twoHands: null,
+            hand1: null, hand2: null, twoHands: null,
             extras: [],
           },
         }),
@@ -236,7 +236,7 @@ describe('Combat system', () => {
           classes: ['THIEF'],
           equipped: {
             head: 'helmet_of_courage', body: null, feet: null,
-            hand: null, twoHands: null,
+            hand1: null, hand2: null, twoHands: null,
             extras: [],
           },
         }),

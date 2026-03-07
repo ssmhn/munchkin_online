@@ -105,7 +105,7 @@ describe('Passive Race/Class Abilities', () => {
           race: 'DWARF',
           equipped: {
             head: null, body: 'big_item_1', feet: null,
-            hand: null, twoHands: null,
+            hand1: null, hand2: null, twoHands: null,
             extras: [],
           },
           hand: ['big_item_2'],

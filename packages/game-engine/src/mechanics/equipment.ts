@@ -15,7 +15,7 @@ import { InvalidActionError } from '../utils/errors';
 // Equip slots (excluding extras array)
 // ---------------------------------------------------------------------------
 
-const EQUIP_SLOTS: EquipSlot[] = [
+const EQUIP_SLOTS: (keyof Omit<EquippedItems, 'extras'>)[] = [
   'head',
   'body',
   'feet',
@@ -62,13 +62,15 @@ export function hasStatus(
   }
 
   // Check race and class cards in cardDb
+  // Match by card ID pattern: race_elf → ELF, class_warrior → WARRIOR
   for (const defId of Object.keys(cardDb)) {
     const def = cardDb[defId];
     if (!def) continue;
 
-    if (def.type === 'RACE' && player.race !== null) {
-      // Match by race name
-      if (def.name.toUpperCase() === player.race) {
+    if (def.type === 'RACE') {
+      const raceFromId = defId.replace('race_', '').toUpperCase();
+      const effectiveRace = player.race ?? 'HUMAN';
+      if (raceFromId === effectiveRace) {
         for (const effect of def.effects) {
           if (effect.type === 'APPLY_STATUS' && effect.status === status) {
             return true;
@@ -78,12 +80,11 @@ export function hasStatus(
     }
 
     if (def.type === 'CLASS' && player.classes.length > 0) {
-      for (const pc of player.classes) {
-        if (def.name.toUpperCase() === pc) {
-          for (const effect of def.effects) {
-            if (effect.type === 'APPLY_STATUS' && effect.status === status) {
-              return true;
-            }
+      const classFromId = defId.replace('class_', '').toUpperCase();
+      if (player.classes.includes(classFromId as any)) {
+        for (const effect of def.effects) {
+          if (effect.type === 'APPLY_STATUS' && effect.status === status) {
+            return true;
           }
         }
       }
@@ -234,8 +235,8 @@ export function handleEquipItem(
     }
   }
 
-  // Big item check
-  if (def.isBig) {
+  // Big item check (Dwarf with UNLIMITED_BIG_ITEMS skips this entirely)
+  if (def.isBig && !hasStatus(player, 'UNLIMITED_BIG_ITEMS', cardDb)) {
     const currentBig = countBigItems(player, cardDb);
     const maxBig =
       hasStatus(player, 'CARRY_EXTRA_BIG_ITEM', cardDb) ||

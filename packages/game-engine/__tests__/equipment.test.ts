@@ -56,7 +56,7 @@ describe('Equipment system', () => {
 
     const [next, events] = handleEquipItemFull(state, 'p1', 'sword_of_slaying', cardDb);
 
-    expect(next.players['p1'].equipped.hand).toBe('sword_of_slaying');
+    expect(next.players['p1'].equipped.hand1).toBe('sword_of_slaying');
     expect(next.players['p1'].hand).not.toContain('sword_of_slaying');
     expect(events.some(e => e.type === 'ITEM_EQUIPPED')).toBe(true);
   });
@@ -69,7 +69,7 @@ describe('Equipment system', () => {
           hand: ['sword_of_slaying'],
           equipped: {
             head: null, body: null, feet: null,
-            hand: 'other_sword', twoHands: null, extras: [],
+            hand1: 'other_sword', hand2: 'shield_2', twoHands: null, extras: [],
           },
         }),
         p2: createPlayer({ id: 'p2' }),
@@ -105,7 +105,7 @@ describe('Equipment system', () => {
           hand: ['big_armor'],
           equipped: {
             head: null, body: null, feet: null,
-            hand: null, twoHands: 'two_handed_sword', extras: [],
+            hand1: null, hand2: null, twoHands: 'two_handed_sword', extras: [],
           },
         }),
         p2: createPlayer({ id: 'p2' }),
@@ -125,7 +125,7 @@ describe('Equipment system', () => {
           hand: ['big_armor'],
           equipped: {
             head: null, body: null, feet: null,
-            hand: null, twoHands: 'two_handed_sword', extras: [],
+            hand1: null, hand2: null, twoHands: 'two_handed_sword', extras: [],
           },
         }),
         p2: createPlayer({ id: 'p2' }),

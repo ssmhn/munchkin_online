@@ -16,6 +16,8 @@ const PHASE_ACTIONS: Record<GamePhase, string[]> = {
     'SELL_ITEMS',
     'PUT_IN_BACKPACK',
     'TAKE_FROM_BACKPACK',
+    'DISCARD_CLASS',
+    'DISCARD_RACE',
   ],
   LOOT_ROOM: [
     'LOOT',
@@ -27,6 +29,8 @@ const PHASE_ACTIONS: Record<GamePhase, string[]> = {
     'SELL_ITEMS',
     'PUT_IN_BACKPACK',
     'TAKE_FROM_BACKPACK',
+    'DISCARD_CLASS',
+    'DISCARD_RACE',
   ],
   COMBAT: [
     'PLAY_CARD',
@@ -40,6 +44,7 @@ const PHASE_ACTIONS: Record<GamePhase, string[]> = {
     'REACT_PASS',
     'REACT_CARD',
     'STEAL_ITEM',
+    'BANISH_UNDEAD',
   ],
   AFTER_COMBAT: [
     'PLAY_CARD',
@@ -49,6 +54,8 @@ const PHASE_ACTIONS: Record<GamePhase, string[]> = {
     'SELL_ITEMS',
     'PUT_IN_BACKPACK',
     'TAKE_FROM_BACKPACK',
+    'DISCARD_CLASS',
+    'DISCARD_RACE',
   ],
   END_TURN: [
     'END_TURN',
@@ -58,6 +65,8 @@ const PHASE_ACTIONS: Record<GamePhase, string[]> = {
     'SELL_ITEMS',
     'PUT_IN_BACKPACK',
     'TAKE_FROM_BACKPACK',
+    'DISCARD_CLASS',
+    'DISCARD_RACE',
   ],
   CHARITY: ['DISCARD_CARD', 'GIVE_CARD', 'SELL_ITEMS', 'PUT_IN_BACKPACK', 'TAKE_FROM_BACKPACK'],
   END_GAME: [],
@@ -111,6 +120,8 @@ export function validateAction(
   } else if (actionType === 'PLAY_CARD' && state.phase === 'COMBAT') {
     // During combat, non-active players can play cards with ANY_COMBAT or REACTION context
     // (actual playableFrom check happens in the reducer)
+  } else if (actionType === 'RUN_AWAY' && state.phase === 'COMBAT' && state.combat?.escapingPlayerId === playerId) {
+    // During escape, the currently escaping player (may be a helper) can roll
   } else if (playerId !== state.activePlayerId) {
     throw new InvalidActionError(
       `Only the active player ("${state.activePlayerId}") can perform "${actionType}"`,

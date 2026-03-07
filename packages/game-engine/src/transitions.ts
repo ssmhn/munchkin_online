@@ -57,7 +57,7 @@ export function runAutoTransitions(
         // LOSE: player is not strong enough — must roll dice to run away
         s = {
           ...s,
-          combat: { ...s.combat, phase: 'RUN_ATTEMPT', resolved: false },
+          combat: { ...s.combat, phase: 'RUN_ATTEMPT', resolved: false, escapeMonsterIndex: 0, escapeResults: [], escapingPlayerId: s.combat.activePlayerId },
         };
         changed = true;
         continue;
@@ -77,11 +77,20 @@ export function runAutoTransitions(
       const idx = s.playerOrder.indexOf(s.activePlayerId);
       const nextPlayerId = s.playerOrder[(idx + 1) % s.playerOrder.length];
 
+      // Reset soldGold for all players at turn change
+      const resetPlayers = { ...s.players };
+      for (const pid of Object.keys(resetPlayers)) {
+        if (resetPlayers[pid].soldGold) {
+          resetPlayers[pid] = { ...resetPlayers[pid], soldGold: 0 };
+        }
+      }
+
       s = {
         ...s,
         phase: 'KICK_DOOR',
         turn: s.turn + 1,
         activePlayerId: nextPlayerId,
+        players: resetPlayers,
         combat: null,
         revealedCards: [],
       };

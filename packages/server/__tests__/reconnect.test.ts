@@ -4,7 +4,7 @@ import type { GameState, PlayerState, EquippedItems } from '@munchkin/shared';
 import type { WsClient } from '../src/ws/ws-client';
 
 function createEquipped(): EquippedItems {
-  return { head: null, body: null, feet: null, hand: null, twoHands: null, extras: [] };
+  return { head: null, body: null, feet: null, hand1: null, hand2: null, twoHands: null, extras: [] };
 }
 
 function createPlayer(id: string, connected = true): PlayerState {

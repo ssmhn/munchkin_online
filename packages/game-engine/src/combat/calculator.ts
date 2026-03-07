@@ -8,6 +8,7 @@ import type {
   CardEffect,
   CardCondition,
   EquipSlot,
+  EquippedItems,
 } from '@munchkin/shared';
 
 // ---------------------------------------------------------------------------
@@ -48,7 +49,10 @@ function evaluateCondition(
       return combat !== null;
 
     case 'ITEM_EQUIPPED':
-      return player.equipped[condition.slot] !== null;
+      if (condition.slot === 'hand') {
+        return player.equipped.hand1 !== null || player.equipped.hand2 !== null;
+      }
+      return player.equipped[condition.slot as keyof EquippedItems] !== null;
 
     case 'HAS_STATUS':
       return player.statuses.includes(condition.status);
@@ -120,7 +124,7 @@ function resolveEffectsBonus(
 // Equipped item slots (excluding extras which is an array)
 // ---------------------------------------------------------------------------
 
-const EQUIP_SLOTS: EquipSlot[] = [
+const EQUIP_SLOTS: (keyof Omit<EquippedItems, 'extras'>)[] = [
   'head',
   'body',
   'feet',

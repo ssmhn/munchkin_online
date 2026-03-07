@@ -177,6 +177,9 @@ export function GameBoard({ state, selfPlayerId, cardDb, onAction }: Props) {
               combat={state.combat}
               backpackSize={state.config.backpackSize}
               enableBackpack={state.config.enableBackpack}
+              onAction={sendAction}
+              isSelf={true}
+              isCombat={!!state.combat}
             />
             <EquipmentZone
               equipped={localPlayer.equipped}
@@ -189,7 +192,7 @@ export function GameBoard({ state, selfPlayerId, cardDb, onAction }: Props) {
 
         {/* Center: Table zone */}
         <div
-          className="flex-1 flex items-center justify-center p-3 relative [&.drop-hover]:bg-munch-gold/5 transition-colors"
+          className="flex-1 flex items-center justify-center p-3 relative [&.drop-hover]:bg-munch-gold/5 transition-colors overflow-auto min-h-0"
           onDrop={handleTableDrop}
           onDragOver={handleTableDragOver}
           onDragLeave={handleTableDragLeave}
@@ -294,6 +297,8 @@ export function GameBoard({ state, selfPlayerId, cardDb, onAction }: Props) {
           player={localPlayer}
           cardDb={cardDb}
           otherPlayers={charityOtherPlayers}
+          enableBackpack={state.config.enableBackpack}
+          backpackSize={state.config.backpackSize}
           onAction={sendAction}
         />
       )}

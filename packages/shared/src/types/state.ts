@@ -6,17 +6,24 @@ export type Race = 'ELF' | 'DWARF' | 'HALFLING' | 'HUMAN';
 
 export type PlayerClass = 'WARRIOR' | 'WIZARD' | 'CLERIC' | 'THIEF';
 
-export type EquipSlot = 'head' | 'body' | 'feet' | 'hand' | 'twoHands';
+export type EquipSlot = 'head' | 'body' | 'feet' | 'hand' | 'hand1' | 'hand2' | 'twoHands';
 
 export type MonsterTag = 'UNDEAD' | 'DEMON' | 'DRAGON';
 
 export type StatusEffect =
   | 'IGNORE_WEAPON_RESTRICTIONS'
   | 'EXTRA_BIG_ITEM'
+  | 'UNLIMITED_BIG_ITEMS'
   | 'ESCAPE_BONUS'
   | 'HALFLING_ESCAPE_BONUS'
+  | 'HALFLING_CURSE_CANCEL'
   | 'WIZARD_CURSE_CANCEL'
+  | 'WIZARD_AUTO_ESCAPE'
+  | 'BERSERK'
+  | 'CLERIC_BANISH_UNDEAD'
+  | 'CLERIC_CANCEL_CURSE'
   | 'CLERIC_RESURRECTION_AVAILABLE'
+  | 'THIEF_STEAL'
   | 'CARRY_EXTRA_BIG_ITEM';
 
 export type GamePhase =
@@ -103,6 +110,8 @@ export interface PlayerState {
   isConnected: boolean;
   statuses: StatusEffect[];
   backpack: CardId[];
+  /** Gold accumulated from selling this turn (remainder after levels gained) */
+  soldGold: number;
 }
 
 export interface EquippedItems {
@@ -129,6 +138,20 @@ export interface CombatState {
   helpOffer: HelpOffer | null;
   runAttempts: number;
   resolved: boolean;
+  /** Index of the monster the player is currently trying to escape from */
+  escapeMonsterIndex?: number;
+  /** Per-monster escape results: { instanceId, escaped, prevented, roll } */
+  escapeResults?: EscapeResult[];
+  /** Which player is currently rolling to escape (active player or a helper) */
+  escapingPlayerId?: string;
+}
+
+export interface EscapeResult {
+  instanceId: string;
+  escaped: boolean;
+  prevented: boolean;
+  roll: number;
+  playerId: string;
 }
 
 export interface HelpOffer {
@@ -167,6 +190,8 @@ export interface AppliedCard {
 export interface ActiveCurse {
   curseId: string;
   cardId: CardId;
+  /** If set, curse is removed after this trigger (e.g. 'NEXT_COMBAT' = removed when combat ends) */
+  duration?: 'NEXT_COMBAT' | 'PERMANENT';
 }
 
 // ---------------------------------------------------------------------------
@@ -209,6 +234,8 @@ export type PendingActionType =
   | 'CHOOSE_ITEM_FROM_PLAYER'
   | 'CHOOSE_CARDS_TO_DISCARD'
   | 'WIZARD_CANCEL_CURSE'
+  | 'CLERIC_CANCEL_CURSE'
+  | 'HALFLING_CANCEL_CURSE'
   | 'HALFLING_ESCAPE_BONUS_CHOICE'
   | 'RESPOND_TO_HELP_OFFER'
   | 'CLERIC_RESURRECTION';

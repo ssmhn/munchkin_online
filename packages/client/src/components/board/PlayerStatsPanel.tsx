@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import type { PlayerState, CardDb, CombatState, AppliedCard, GamePhase } from '@munchkin/shared';
+import type { PlayerState, CardDb, CombatState, AppliedCard, GamePhase, GameAction } from '@munchkin/shared';
 import { LevelBadge } from '../LevelBadge';
 import { PowerDisplay } from '../ui/PowerDisplay';
 import { GenderIcon } from '../ui/GenderIcon';
@@ -14,9 +14,12 @@ interface Props {
   combat: CombatState | null;
   backpackSize: number;
   enableBackpack: boolean;
+  onAction?: (action: GameAction) => void;
+  isSelf?: boolean;
+  isCombat?: boolean;
 }
 
-export function PlayerStatsPanel({ player, cardDb, combat, backpackSize, enableBackpack }: Props) {
+export function PlayerStatsPanel({ player, cardDb, combat, backpackSize, enableBackpack, onAction, isSelf, isCombat }: Props) {
   // Calculate combat power — level + sum of equipment bonuses
   const combatPower = useMemo(() => {
     if (!cardDb) return player.level;
@@ -50,17 +53,37 @@ export function PlayerStatsPanel({ player, cardDb, combat, backpackSize, enableB
       {/* Race */}
       <div>
         <div className="text-[9px] text-munch-text-muted uppercase font-semibold mb-0.5">Race</div>
-        <RaceIcon race={player.race} />
+        <div className="flex items-center gap-1">
+          <RaceIcon race={player.race} />
+          {isSelf && !isCombat && player.race !== null && onAction && (
+            <button
+              className="text-[9px] text-red-400 hover:text-red-300 transition-colors px-1"
+              title="Discard race (become Human)"
+              onClick={() => onAction({ type: 'DISCARD_RACE' })}
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Classes */}
       <div>
         <div className="text-[9px] text-munch-text-muted uppercase font-semibold mb-0.5">Classes</div>
         {player.classes.length > 0 ? (
-          <div className="flex gap-1 flex-wrap">
+          <div className="flex items-center gap-1 flex-wrap">
             {player.classes.map((cls) => (
               <ClassIcon key={cls} cls={cls} />
             ))}
+            {isSelf && !isCombat && onAction && (
+              <button
+                className="text-[9px] text-red-400 hover:text-red-300 transition-colors px-1"
+                title="Discard class"
+                onClick={() => onAction({ type: 'DISCARD_CLASS' })}
+              >
+                ✕
+              </button>
+            )}
           </div>
         ) : (
           <span className="text-[10px] text-munch-text-muted">None</span>
@@ -73,7 +96,7 @@ export function PlayerStatsPanel({ player, cardDb, combat, backpackSize, enableB
           <div className="text-[9px] text-munch-text-muted uppercase font-semibold mb-0.5">Curses</div>
           <div className="flex gap-1 flex-wrap">
             {player.curses.map((c) => (
-              <CurseTag key={c.curseId} curse={c} />
+              <CurseTag key={c.curseId} curse={c} cardDb={cardDb} />
             ))}
           </div>
         </div>
@@ -88,6 +111,23 @@ export function PlayerStatsPanel({ player, cardDb, combat, backpackSize, enableB
               <StatusTag key={s} status={s} />
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Sold gold progress */}
+      {isSelf && (player.soldGold ?? 0) > 0 && (
+        <div className="pt-1 border-t border-munch-border">
+          <div className="text-[9px] text-munch-text-muted uppercase font-semibold mb-0.5">Продано за ход</div>
+          <div className="text-[10px] text-amber-400">
+            {player.soldGold} gp
+          </div>
+          <div className="w-full h-1 bg-munch-surface-light rounded-sm mt-0.5">
+            <div
+              className="h-full bg-amber-500 rounded-sm transition-all"
+              style={{ width: `${((player.soldGold % 1000) / 1000) * 100}%` }}
+            />
+          </div>
+          <div className="text-[8px] text-munch-text-muted mt-0.5">{player.soldGold % 1000}/1000 к след. уровню</div>
         </div>
       )}
 

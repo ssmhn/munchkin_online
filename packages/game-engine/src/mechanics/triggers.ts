@@ -7,6 +7,7 @@ import type {
   GameEvent,
   PlayerState,
   EquipSlot,
+  EquippedItems,
 } from '@munchkin/shared';
 import type { TriggerEvent, CardTrigger, CardCondition } from '@munchkin/shared';
 import { evaluateCondition } from '../combat/calculator';
@@ -15,7 +16,7 @@ import { evaluateCondition } from '../combat/calculator';
 // Equip slots for iteration
 // ---------------------------------------------------------------------------
 
-const EQUIP_SLOTS: EquipSlot[] = [
+const EQUIP_SLOTS: (keyof Omit<EquippedItems, 'extras'>)[] = [
   'head',
   'body',
   'feet',

@@ -4,10 +4,17 @@ import type { StatusEffect } from '@munchkin/shared';
 const STATUS_LABELS: Record<StatusEffect, string> = {
   IGNORE_WEAPON_RESTRICTIONS: 'Weapon Master',
   EXTRA_BIG_ITEM: 'Extra Big Item',
+  UNLIMITED_BIG_ITEMS: 'Unlimited Big Items',
   ESCAPE_BONUS: 'Escape Bonus',
   HALFLING_ESCAPE_BONUS: 'Halfling Escape',
+  HALFLING_CURSE_CANCEL: 'Curse Immunity',
   WIZARD_CURSE_CANCEL: 'Anti-Magic',
+  WIZARD_AUTO_ESCAPE: 'Auto Escape',
+  BERSERK: 'Berserker',
+  CLERIC_BANISH_UNDEAD: 'Banish Undead',
+  CLERIC_CANCEL_CURSE: 'Cancel Curse',
   CLERIC_RESURRECTION_AVAILABLE: 'Resurrection Ready',
+  THIEF_STEAL: 'Steal',
   CARRY_EXTRA_BIG_ITEM: 'Strong Back',
 };
 

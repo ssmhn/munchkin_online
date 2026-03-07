@@ -54,7 +54,7 @@ interface Props {
   card: CardDefinition;
   style?: React.CSSProperties;
   compact?: boolean;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent) => void;
 }
 
 export function GameCard({ card, style, compact, onClick }: Props) {
@@ -66,7 +66,7 @@ export function GameCard({ card, style, compact, onClick }: Props) {
     return (
       <div
         data-testid={`card-${card.id}`}
-        onClick={onClick}
+        onClick={(e) => onClick?.(e)}
         className={`w-[54px] h-[76px] rounded-md bg-munch-surface flex flex-col overflow-hidden shrink-0 ${onClick ? 'cursor-pointer' : 'cursor-default'}`}
         style={{ borderWidth: '2px', borderStyle: 'solid', borderColor: typeColor, ...style }}
       >
@@ -96,7 +96,7 @@ export function GameCard({ card, style, compact, onClick }: Props) {
   return (
     <div
       data-testid={`card-${card.id}`}
-      onClick={onClick}
+      onClick={(e) => onClick?.(e)}
       className={`w-[120px] rounded-lg bg-munch-surface flex flex-col overflow-hidden shrink-0 transition-[transform,box-shadow] duration-150 ease-linear shadow-[0_2px_8px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] ${onClick ? 'cursor-pointer' : 'cursor-default'}`}
       style={{ borderWidth: '2px', borderStyle: 'solid', borderColor: typeColor, minHeight: '170px', ...style }}
     >

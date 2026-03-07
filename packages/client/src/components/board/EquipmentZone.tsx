@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import type { EquippedItems, CardDb, GameAction, CardId, GamePhase } from '@munchkin/shared';
 import { GameCard } from '../GameCard';
 import { useDropZone, type DragPayload } from '../../hooks/useDragAndDrop';
+import { HoverTooltip } from '../ui/CardTooltip';
 
 interface SlotConfig {
   id: string;
@@ -28,7 +29,8 @@ interface Props {
 
 export function EquipmentZone({ equipped, cardDb, phase, onAction }: Props) {
   const isCombat = phase === 'COMBAT';
-  const showTwoHands = !!equipped.twoHands;
+  const hasTwoHands = !!equipped.twoHands;
+  const hasHandItems = !!equipped.hand1 || !!equipped.hand2;
   const [selectedSlotCardId, setSelectedSlotCardId] = useState<CardId | null>(null);
   const zoneRef = useRef<HTMLDivElement>(null);
 
@@ -60,8 +62,18 @@ export function EquipmentZone({ equipped, cardDb, phase, onAction }: Props) {
         <div className="col-start-2">
           <EquipSlot slot={SLOTS[0]} cardId={equipped.head} cardDb={cardDb} isCombat={isCombat} onAction={handleSlotAction} selectedSlotCardId={selectedSlotCardId} onSelect={setSelectedSlotCardId} />
         </div>
-        {/* Middle row: Hand(s)/2-Hand, Body */}
-        {showTwoHands ? (
+        {/* Middle row(s): Hand(s)/2-Hand, Body */}
+        {hasTwoHands && hasHandItems ? (
+          <>
+            {/* Warrior case: show both twoHands row and hand1/hand2 row */}
+            <EquipSlot slot={SLOTS[3]} cardId={equipped.hand1} cardDb={cardDb} isCombat={isCombat} onAction={handleSlotAction} selectedSlotCardId={selectedSlotCardId} onSelect={setSelectedSlotCardId} />
+            <EquipSlot slot={SLOTS[1]} cardId={equipped.body} cardDb={cardDb} isCombat={isCombat} onAction={handleSlotAction} selectedSlotCardId={selectedSlotCardId} onSelect={setSelectedSlotCardId} />
+            <EquipSlot slot={SLOTS[4]} cardId={equipped.hand2} cardDb={cardDb} isCombat={isCombat} onAction={handleSlotAction} selectedSlotCardId={selectedSlotCardId} onSelect={setSelectedSlotCardId} />
+            <div className="col-start-2">
+              <EquipSlot slot={SLOTS[5]} cardId={equipped.twoHands} cardDb={cardDb} isCombat={isCombat} onAction={handleSlotAction} selectedSlotCardId={selectedSlotCardId} onSelect={setSelectedSlotCardId} />
+            </div>
+          </>
+        ) : hasTwoHands ? (
           <>
             <EquipSlot slot={SLOTS[5]} cardId={equipped.twoHands} cardDb={cardDb} isCombat={isCombat} onAction={handleSlotAction} selectedSlotCardId={selectedSlotCardId} onSelect={setSelectedSlotCardId} />
             <EquipSlot slot={SLOTS[1]} cardId={equipped.body} cardDb={cardDb} isCombat={isCombat} onAction={handleSlotAction} selectedSlotCardId={selectedSlotCardId} onSelect={setSelectedSlotCardId} />
@@ -84,7 +96,7 @@ export function EquipmentZone({ equipped, cardDb, phase, onAction }: Props) {
         <div className="flex gap-1 flex-wrap justify-center pt-1 border-t border-munch-border">
           {equipped.extras.map((id) => {
             const def = cardDb?.[id];
-            return def ? <GameCard key={id} card={def} compact /> : null;
+            return def ? <HoverTooltip key={id} card={def}><GameCard card={def} compact /></HoverTooltip> : null;
           })}
         </div>
       )}
@@ -136,7 +148,9 @@ function EquipSlot({
         }}
       >
         {def ? (
-          <GameCard card={def} compact />
+          <HoverTooltip card={def}>
+            <GameCard card={def} compact />
+          </HoverTooltip>
         ) : (
           <div className="text-center">
             <div className="text-[10px] font-bold text-munch-text-muted">{slot.icon}</div>

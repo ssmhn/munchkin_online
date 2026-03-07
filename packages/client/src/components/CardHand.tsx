@@ -113,10 +113,18 @@ export function CardHand({
   }, []);
 
   const handleCardClick = useCallback(
-    (cardId: string) => {
+    (cardId: string, e?: React.MouseEvent) => {
       if (!onAction || !cardDb) return;
       const def = cardDb[cardId];
       if (!def) return;
+
+      // Equipment cards: always open context menu to show equip/sell/backpack options
+      if (def.type === 'EQUIPMENT' && !inCombat) {
+        if (e && onContextMenu) {
+          onContextMenu(cardId, { x: e.clientX, y: e.clientY });
+        }
+        return;
+      }
 
       if (inCombat) {
         // During combat, only allow playable card types
@@ -139,12 +147,6 @@ export function CardHand({
         return;
       }
 
-      // Outside combat
-      if (def.type === 'EQUIPMENT') {
-        onAction({ type: 'EQUIP_ITEM', cardId });
-        return;
-      }
-
       // Monster in LOOT_ROOM = Look for Trouble
       if (def.type === 'MONSTER' && phase === 'LOOT_ROOM') {
         onAction({ type: 'LOOK_FOR_TROUBLE', cardId });
@@ -164,7 +166,7 @@ export function CardHand({
 
       onAction({ type: 'PLAY_CARD', cardId });
     },
-    [onAction, cardDb, phase, inCombat, combatActivePlayerId, selfPlayerId],
+    [onAction, cardDb, phase, inCombat, combatActivePlayerId, selfPlayerId, onContextMenu],
   );
 
   if (!isSelf) {
@@ -252,7 +254,7 @@ export function CardHand({
             }}
           >
             {cardDef ? (
-              <GameCard card={cardDef} onClick={() => handleCardClick(cardId)} />
+              <GameCard card={cardDef} onClick={(e?: React.MouseEvent) => handleCardClick(cardId, e)} />
             ) : (
               <div className="w-full h-full rounded-lg border-2 border-violet-600 bg-gradient-to-br from-violet-600/[.13] to-violet-600/[.27] flex items-center justify-center text-violet-600 text-xs font-semibold">
                 {cardId}

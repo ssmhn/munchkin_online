@@ -196,9 +196,7 @@
     "value": 200,
     "effects": [
       {
-        "type": "COMBAT_BONUS",
-        "value": 99,
-        "target": "SELF"
+        "type": "DISCARD_MONSTER"
       }
     ],
     "set": "base"
