@@ -11,7 +11,7 @@ import type { S2C_Message, GameAction } from '@munchkin/shared';
 export function GamePage() {
   const { roomId } = useParams<{ roomId: string }>();
   const navigate = useNavigate();
-  const { state, cardDb, applyFullSync, applyStatePatch, reset } = useGameStore();
+  const { state, cardDb, applyFullSync, applyStatePatch, setError, reset } = useGameStore();
   const wsRef = useRef<GameWsClient | null>(null);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
 
@@ -41,6 +41,10 @@ export function GamePage() {
           break;
         case 'STATE_PATCH':
           applyStatePatch(msg.payload.patch, msg.payload.events);
+          break;
+        case 'ERROR':
+          console.warn('[WS] Server error:', msg.payload.message);
+          setError(msg.payload.message);
           break;
         default:
           break;
@@ -80,6 +84,8 @@ export function GamePage() {
     reset();
     navigate('/');
   }, [navigate, reset]);
+
+  const lastError = useGameStore((s) => s.lastError);
 
   // Build the players list for the voice panel from game state
   const players = useMemo(() => {
@@ -151,6 +157,11 @@ export function GamePage() {
         </div>
       )}
       <GameBoard state={state} selfPlayerId={localPlayerId} cardDb={cardDb} onAction={sendAction} />
+      {lastError && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999] px-4 py-2 bg-red-600/90 text-white text-sm font-semibold rounded-lg shadow-lg animate-bounce-in">
+          {lastError}
+        </div>
+      )}
       {wsRef.current && localPlayerId && (
         <VoiceChatPanel
           wsClient={wsRef.current}

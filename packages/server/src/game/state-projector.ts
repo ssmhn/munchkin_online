@@ -17,9 +17,12 @@ export function projectStateForPlayer(state: GameState, playerId: string): GameS
       projected.players[id] = {
         ...player,
         hand: Array(player.hand.length).fill(HIDDEN),
+        backpack: Array(player.backpack.length).fill(HIDDEN),
       };
     }
   }
+
+  // revealedCards are visible to all players (cards are face-up on the table)
 
   return projected;
 }

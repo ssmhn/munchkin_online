@@ -40,11 +40,11 @@ export function validateActionServer(
       break;
 
     case 'OFFER_HELP':
-      validateOfferHelp(state, action, playerId);
+      validateOfferHelp(state, action);
       break;
 
     case 'COUNTER_OFFER':
-      validateCounterOfferCards(state, action, playerId);
+      validateTreasureCount(action.treasureCount);
       break;
 
     case 'RUN_AWAY':
@@ -52,20 +52,19 @@ export function validateActionServer(
       break;
 
     default:
-      // Other actions don't need additional server-side validation
       break;
   }
 }
 
 function validateCardOwnership(
-  player: { hand: string[]; carried: string[]; equipped: { rightHand: string | null; leftHand: string | null; head: string | null; body: string | null; feet: string | null } },
+  player: { hand: string[]; carried: string[]; equipped: { hand1: string | null; hand2: string | null; head: string | null; body: string | null; feet: string | null } },
   cardId: string
 ): void {
   const inHand = player.hand.includes(cardId);
   const inCarried = player.carried.includes(cardId);
   const inEquipped =
-    player.equipped.rightHand === cardId ||
-    player.equipped.leftHand === cardId ||
+    player.equipped.hand1 === cardId ||
+    player.equipped.hand2 === cardId ||
     player.equipped.head === cardId ||
     player.equipped.body === cardId ||
     player.equipped.feet === cardId;
@@ -99,37 +98,17 @@ function validateSellCards(
 
 function validateOfferHelp(
   state: GameState,
-  action: { type: 'OFFER_HELP'; targetPlayerId: string; rewardCardIds: string[] },
-  playerId: string
+  action: { type: 'OFFER_HELP'; targetPlayerId: string; treasureCount: number },
 ): void {
-  // Verify target player exists
   if (!state.players[action.targetPlayerId]) {
     throw new ValidationError('INVALID_ACTION', 'Target player not found');
   }
-
-  // Verify reward cards belong to the offering player
-  const player = state.players[playerId];
-  for (const cardId of action.rewardCardIds) {
-    const inHand = player.hand.includes(cardId);
-    const inCarried = player.carried.includes(cardId);
-    if (!inHand && !inCarried) {
-      throw new ValidationError('INVALID_ACTION', `Cannot offer card ${cardId} that you don't own`);
-    }
-  }
+  validateTreasureCount(action.treasureCount);
 }
 
-function validateCounterOfferCards(
-  state: GameState,
-  action: { type: 'COUNTER_OFFER'; rewardCardIds: string[] },
-  playerId: string
-): void {
-  const player = state.players[playerId];
-  for (const cardId of action.rewardCardIds) {
-    const inHand = player.hand.includes(cardId);
-    const inCarried = player.carried.includes(cardId);
-    if (!inHand && !inCarried) {
-      throw new ValidationError('INVALID_ACTION', `Cannot offer card ${cardId} that you don't own`);
-    }
+function validateTreasureCount(treasureCount: number): void {
+  if (!Number.isInteger(treasureCount) || treasureCount < 0) {
+    throw new ValidationError('INVALID_ACTION', 'treasureCount must be a non-negative integer');
   }
 }
 

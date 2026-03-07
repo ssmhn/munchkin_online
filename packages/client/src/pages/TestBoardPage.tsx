@@ -4,7 +4,7 @@ import { CombatZone } from '../components/CombatZone';
 import type { GameState, EquippedItems, CombatState } from '@munchkin/shared';
 
 function createEquipped(): EquippedItems {
-  return { head: null, body: null, feet: null, leftHand: null, rightHand: null, twoHands: null, extras: [] };
+  return { head: null, body: null, feet: null, hand1: null, hand2: null, twoHands: null, extras: [] };
 }
 
 function createMockState(): GameState {
@@ -18,12 +18,12 @@ function createMockState(): GameState {
       p1: {
         id: 'p1', name: 'Alice', level: 3, gender: 'FEMALE', race: 'ELF',
         classes: ['WIZARD'], hand: ['sword_1', 'potion_2', 'armor_3'],
-        equipped: createEquipped(), carried: [], curses: [], isConnected: true,
+        equipped: createEquipped(), carried: [], curses: [], isConnected: true, statuses: [], backpack: [],
       },
       p2: {
         id: 'p2', name: 'Bob', level: 1, gender: 'MALE', race: null,
         classes: [], hand: ['HIDDEN', 'HIDDEN'],
-        equipped: createEquipped(), carried: [], curses: [], isConnected: true,
+        equipped: createEquipped(), carried: [], curses: [], isConnected: true, statuses: [], backpack: [],
       },
     },
     doorDeck: Array(20).fill('HIDDEN'),
@@ -37,6 +37,8 @@ function createMockState(): GameState {
       { timestamp: Date.now(), message: 'A Big Rat appears!' },
     ],
     winner: null,
+    revealedCards: [],
+    config: { winLevel: 10, epicMode: false, allowedSets: ['base'], maxPlayers: 6, enableBackpack: false, backpackSize: 5, reactionTimeoutMs: 15000, revealTimeoutMs: 60000 },
   };
 }
 
@@ -93,9 +95,10 @@ export function TestBoardPage() {
       {combat && (
         <CombatZone
           combat={combat}
+          cardDb={null}
+          players={{ p1: { name: 'Alice' }, p2: { name: 'Bob' } }}
           isActivePlayer={true}
-          playerPower={5}
-          monsterPower={3}
+          onAction={() => {}}
         />
       )}
     </div>

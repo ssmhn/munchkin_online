@@ -33,12 +33,6 @@ const PHASE_CONFIG: Record<GamePhase, PhaseConfig> = {
     bgColor: 'rgba(217, 119, 6, 0.15)',
     description: 'Draw a face-down door card.',
   },
-  LOOK_FOR_TROUBLE: {
-    label: 'Look For Trouble',
-    color: '#7c3aed',
-    bgColor: 'rgba(124, 58, 237, 0.15)',
-    description: 'Play a monster from your hand to fight.',
-  },
   CHARITY: {
     label: 'Charity',
     color: '#059669',

@@ -5,8 +5,11 @@ interface GameStore {
   state: GameState | null;
   cardDb: CardDb | null;
   events: GameEvent[];
+  lastError: string | null;
   applyFullSync: (state: GameState, cardDb: CardDb) => void;
   applyStatePatch: (patch: JsonPatch[], events: GameEvent[]) => void;
+  setError: (message: string) => void;
+  clearError: () => void;
   reset: () => void;
 }
 
@@ -35,6 +38,7 @@ export const useGameStore = create<GameStore>((set) => ({
   state: null,
   cardDb: null,
   events: [],
+  lastError: null,
 
   applyFullSync: (state, cardDb) => {
     set({ state, cardDb, events: [] });
@@ -47,7 +51,17 @@ export const useGameStore = create<GameStore>((set) => ({
     }));
   },
 
+  setError: (message) => {
+    set({ lastError: message });
+    // Auto-clear after 3 seconds
+    setTimeout(() => set((prev) => prev.lastError === message ? { lastError: null } : {}), 3000);
+  },
+
+  clearError: () => {
+    set({ lastError: null });
+  },
+
   reset: () => {
-    set({ state: null, cardDb: null, events: [] });
+    set({ state: null, cardDb: null, events: [], lastError: null });
   },
 }));

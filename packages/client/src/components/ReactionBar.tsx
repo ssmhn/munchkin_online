@@ -32,7 +32,7 @@ export function ReactionBar({ window: rw, onPass, onPlayCard, hasPassed, reactio
 
   const triggerText = (() => {
     switch (rw.trigger.type) {
-      case 'DOOR_OPENED': return `Door opened: ${rw.trigger.cardId}`;
+      case 'DOOR_REVEALED': return `Door revealed: ${rw.trigger.cardId}`;
       case 'COMBAT_STARTED': return `Combat started: ${rw.trigger.monsterId}`;
       case 'CARD_PLAYED': return `Card played: ${rw.trigger.cardId}`;
       case 'COMBAT_RESULT': return `Combat result: ${rw.trigger.result}`;

@@ -1,20 +1,45 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import gsap from 'gsap';
-import type { CombatState } from '@munchkin/shared';
+import type { CombatState, CardDb, GameAction, PlayerState } from '@munchkin/shared';
+import { GameCard } from './GameCard';
+import { GoldButton } from './GoldButton';
+
+/** Simple client-side condition evaluator for displaying conditional bonuses */
+function evalCondition(cond: any, player: PlayerState): boolean {
+  if (!cond) return false;
+  switch (cond.type) {
+    case 'PLAYER_GENDER': return player.gender === cond.gender;
+    case 'PLAYER_RACE': return (player.race ?? 'HUMAN') === cond.race;
+    case 'PLAYER_CLASS': return player.classes?.includes(cond.class);
+    case 'PLAYER_LEVEL': {
+      const lvl = player.level;
+      if (cond.op === 'gte') return lvl >= cond.value;
+      if (cond.op === 'lte') return lvl <= cond.value;
+      if (cond.op === 'eq') return lvl === cond.value;
+      return false;
+    }
+    case 'AND': return cond.conditions?.every((c: any) => evalCondition(c, player));
+    case 'OR': return cond.conditions?.some((c: any) => evalCondition(c, player));
+    case 'NOT': return !evalCondition(cond.condition, player);
+    default: return false;
+  }
+}
 
 interface Props {
   combat: CombatState;
+  cardDb: CardDb | null;
+  players: Record<string, { name: string }>;
   isActivePlayer: boolean;
-  playerPower: number;
-  monsterPower: number;
-  onRunAway?: () => void;
-  onOfferHelp?: () => void;
+  selfPlayerId?: string;
+  onAction: (action: GameAction) => void;
+  playerStates?: Record<string, PlayerState>;
 }
 
-export function CombatZone({ combat, isActivePlayer, playerPower, monsterPower, onRunAway, onOfferHelp }: Props) {
+export function CombatZone({ combat, cardDb, players, isActivePlayer, selfPlayerId, onAction, playerStates }: Props) {
   const zoneRef = useRef<HTMLDivElement>(null);
   const monstersRef = useRef<HTMLDivElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
+  const [helpTarget, setHelpTarget] = useState<string | null>(null);
+  const [treasureOffer, setTreasureOffer] = useState(1);
 
   useEffect(() => {
     if (zoneRef.current) {
@@ -29,69 +54,417 @@ export function CombatZone({ combat, isActivePlayer, playerPower, monsterPower, 
     }
   }, [combat.monsters.length]);
 
-  useEffect(() => {
-    if (buttonsRef.current) {
-      gsap.fromTo(buttonsRef.current.children, { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 0.3 });
+  // Calculate player total combat power
+  const activePlayerState = playerStates?.[combat.activePlayerId];
+  const playerLevel = activePlayerState?.level ?? 1;
+
+  // Equipment bonuses
+  let equipmentBonus = 0;
+  if (activePlayerState && cardDb) {
+    const eq = activePlayerState.equipped;
+    const equipIds = [eq.head, eq.body, eq.feet, eq.hand1, eq.hand2, eq.twoHands, ...eq.extras].filter(Boolean) as string[];
+    equipIds.forEach((id) => {
+      const def = cardDb[id];
+      if (def?.effects) {
+        def.effects.forEach((e: any) => {
+          if (e.type === 'COMBAT_BONUS') equipmentBonus += e.value ?? 0;
+        });
+      }
+    });
+  }
+
+  // Applied combat card bonuses (one-shots, etc.)
+  let appliedBonus = 0;
+  combat.appliedCards.forEach((ac) => {
+    const def = cardDb?.[ac.cardId];
+    if (def?.effects) {
+      def.effects.forEach((e: any) => {
+        if (e.type === 'COMBAT_BONUS') appliedBonus += e.value ?? 0;
+      });
     }
-  }, []);
+  });
+
+  // Helper bonuses (level + equipment for each helper)
+  let helperBonus = 0;
+  combat.helpers.forEach((h) => {
+    const helperState = playerStates?.[h.playerId];
+    if (!helperState) return;
+    helperBonus += helperState.level;
+    if (cardDb) {
+      const heq = helperState.equipped;
+      const helperEquipIds = [heq.head, heq.body, heq.feet, heq.hand, heq.twoHands, ...heq.extras].filter(Boolean) as string[];
+      helperEquipIds.forEach((id) => {
+        const def = cardDb[id];
+        if (def?.effects) {
+          def.effects.forEach((e: any) => {
+            if (e.type === 'COMBAT_BONUS') helperBonus += e.value ?? 0;
+          });
+        }
+      });
+    }
+  });
+
+  const playerTotal = playerLevel + equipmentBonus + appliedBonus + helperBonus;
+
+  // Calculate monster total (base + modifiers + conditional bonuses + applied cards)
+  let monsterTotal = 0;
+  combat.monsters.forEach((m) => {
+    const def = cardDb?.[m.cardId];
+    const base = def?.baseLevel ?? 0;
+    const mods = m.modifiers.reduce((sum, mod) => sum + mod.value, 0);
+    let conditionalBonus = 0;
+    // Evaluate conditional effects on monster (e.g., +2 vs elves)
+    if (def?.effects && activePlayerState) {
+      def.effects.forEach((e: any) => {
+        if (e.type === 'CONDITIONAL' && e.condition && e.then) {
+          if (evalCondition(e.condition, activePlayerState)) {
+            e.then.forEach((sub: any) => {
+              if (sub.type === 'MONSTER_BONUS' || sub.type === 'COMBAT_BONUS') {
+                conditionalBonus += sub.value ?? 0;
+              }
+            });
+          }
+        }
+      });
+    }
+    monsterTotal += base + mods + conditionalBonus;
+  });
+
+  // Applied cards affecting monsters (MONSTER_BONUS / MONSTER_PENALTY)
+  combat.appliedCards.forEach((ac) => {
+    const def = cardDb?.[ac.cardId];
+    if (def?.effects) {
+      def.effects.forEach((e: any) => {
+        if (e.type === 'MONSTER_BONUS') monsterTotal += e.value ?? 0;
+        if (e.type === 'MONSTER_PENALTY') monsterTotal -= e.value ?? 0;
+      });
+    }
+  });
+
+  // Total treasures from all monsters
+  let totalTreasures = 0;
+  combat.monsters.forEach((m) => {
+    const def = cardDb?.[m.cardId];
+    totalTreasures += def?.treasures ?? 0;
+  });
+
+  // Total levels gained on victory
+  let totalLevels = combat.monsters.length;
+  combat.appliedCards.forEach((ac) => {
+    const def = cardDb?.[ac.cardId];
+    if (def?.effects) {
+      def.effects.forEach((e: any) => {
+        if (e.type === 'GAIN_LEVELS_FROM_KILL') totalLevels += e.value ?? 0;
+      });
+    }
+  });
+
+  // Extra treasures from applied cards
+  combat.appliedCards.forEach((ac) => {
+    const def = cardDb?.[ac.cardId];
+    if (def?.effects) {
+      def.effects.forEach((e: any) => {
+        if (e.type === 'EXTRA_TREASURE') totalTreasures += e.count ?? 0;
+      });
+    }
+  });
+
+  const fighterName = players[combat.activePlayerId]?.name || 'Unknown';
+  const otherPlayerIds = Object.keys(players).filter((id) => id !== combat.activePlayerId);
+  const isNegotiating = combat.phase === 'NEGOTIATION';
+  const helpOffer = combat.helpOffer;
+
+  // Am I the target of a help offer?
+  const amHelpTarget = helpOffer?.toPlayerId === selfPlayerId;
 
   return (
     <div
       ref={zoneRef}
       data-testid="combat-zone"
-      className="bg-[#2d1b1b] border-2 border-munch-danger rounded-xl p-4 my-2"
+      className="flex flex-col items-center gap-3 w-full max-w-[600px] p-4 rounded-xl border border-red-600/20"
+      style={{ background: 'radial-gradient(ellipse at center, rgba(220,38,38,0.08) 0%, transparent 70%)' }}
     >
-      <h3>Combat!</h3>
+      {/* Phase badge */}
+      <div className="text-[10px] font-bold text-red-600 uppercase tracking-wide px-2.5 py-0.5 rounded bg-red-600/15">
+        Combat
+      </div>
 
-      <div ref={monstersRef} data-testid="monsters-area" className="flex gap-3 flex-wrap">
-        {combat.monsters.map((monster) => (
-          <div
-            key={monster.instanceId}
-            data-testid={`monster-${monster.instanceId}`}
-            className="bg-[#4a1515] p-3 rounded-lg border border-[#991b1b] min-w-[120px]"
-          >
-            <div data-testid={`monster-name-${monster.instanceId}`}>{monster.cardId}</div>
-            <div>
-              Modifiers: {monster.modifiers.length > 0
-                ? monster.modifiers.map(m => `+${m.value}`).join(', ')
-                : 'none'}
-            </div>
+      {/* VS layout */}
+      <div className="flex items-start gap-6 w-full justify-center">
+        {/* Player side */}
+        <div className="flex flex-col items-center gap-1.5 flex-1">
+          <div className="text-[11px] font-semibold text-green-400">
+            {fighterName}
+            {combat.helpers.length > 0 &&
+              ` + ${combat.helpers.map((h) => players[h.playerId]?.name || '?').join(', ')}`}
           </div>
-        ))}
+          <div className="text-2xl font-bold text-green-400 font-fantasy">
+            {playerTotal}
+          </div>
+          <div className="text-[9px] text-green-400/70">
+            Lv.{playerLevel}
+            {equipmentBonus > 0 && ` +${equipmentBonus} equip`}
+            {helperBonus > 0 && ` +${helperBonus} helper`}
+            {appliedBonus > 0 && ` +${appliedBonus} bonus`}
+          </div>
+        </div>
+
+        <div className="text-lg font-bold text-red-600 font-fantasy px-1 pt-4">VS</div>
+
+        {/* Monster side */}
+        <div className="flex flex-col items-center gap-1.5 flex-1">
+          <div ref={monstersRef} className="flex gap-2 justify-center flex-wrap">
+            {combat.monsters.map((monster) => {
+              const def = cardDb?.[monster.cardId];
+              return (
+                <div
+                  key={monster.instanceId}
+                  data-testid={`monster-${monster.instanceId}`}
+                  className="flex flex-col items-center"
+                  onDragOver={(e) => {
+                    if (e.dataTransfer.types.includes('application/munchkin-card')) {
+                      e.preventDefault();
+                      e.currentTarget.classList.add('ring-2', 'ring-red-500');
+                    }
+                  }}
+                  onDragLeave={(e) => {
+                    e.currentTarget.classList.remove('ring-2', 'ring-red-500');
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.remove('ring-2', 'ring-red-500');
+                    const raw = e.dataTransfer.getData('application/munchkin-card');
+                    if (!raw) return;
+                    try {
+                      const payload = JSON.parse(raw);
+                      onAction({ type: 'PLAY_CARD', cardId: payload.cardId, targetMonsterId: monster.instanceId });
+                    } catch { /* ignore */ }
+                  }}
+                >
+                  {def ? (
+                    <GameCard card={def} />
+                  ) : (
+                    <div className="w-[120px] h-[170px] rounded-lg bg-violet-600/[.13] border-2 border-violet-600 flex flex-col items-center justify-center p-2">
+                      <div className="text-xs text-violet-400 font-bold text-center">
+                        {monster.cardId.replace(/_/g, ' ')}
+                      </div>
+                    </div>
+                  )}
+                  {monster.modifiers.length > 0 && (
+                    <div className="text-[9px] text-center text-red-400 mt-0.5 font-bold">
+                      Mods: {monster.modifiers.map((m) => (m.value >= 0 ? `+${m.value}` : `${m.value}`)).join(', ')}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          <div className="text-2xl font-bold text-red-600 font-fantasy">Lv.{monsterTotal}</div>
+          <div className="text-[9px] text-amber-400">
+            Treasures: {totalTreasures} | +{totalLevels} level{totalLevels > 1 ? 's' : ''}
+          </div>
+        </div>
       </div>
 
-      <div data-testid="combat-powers" className="flex gap-6 my-3 text-xl">
-        <div>
-          Players: <span data-testid="player-power">{playerPower}</span>
-        </div>
-        <div>vs</div>
-        <div>
-          Monsters: <span data-testid="monster-power">{monsterPower}</span>
-        </div>
-      </div>
-
-      {combat.helpers.length > 0 && (
-        <div data-testid="helpers-area">
-          Helpers: {combat.helpers.map(h => h.playerId).join(', ')}
+      {/* Applied cards — player-side buffs */}
+      {combat.appliedCards.length > 0 && (
+        <div className="w-full">
+          <div className="text-[9px] font-bold text-indigo-400 uppercase tracking-wide mb-1 text-center">
+            Played Cards
+          </div>
+          <div className="flex gap-2 flex-wrap justify-center">
+            {combat.appliedCards.map((ac, i) => {
+              const def = cardDb?.[ac.cardId];
+              const ownerName = players[ac.playerId]?.name || ac.playerId;
+              return (
+                <div
+                  key={`applied-${ac.cardId}-${i}`}
+                  className="flex flex-col items-center"
+                >
+                  {def ? (
+                    <div className="transform scale-75 origin-top">
+                      <GameCard card={def} />
+                    </div>
+                  ) : (
+                    <div className="w-[90px] h-[125px] rounded-lg bg-indigo-500/10 border border-indigo-400/25 flex items-center justify-center p-1">
+                      <div className="text-[9px] text-indigo-400 font-bold text-center">{ac.cardId.replace(/_/g, ' ')}</div>
+                    </div>
+                  )}
+                  <div className="text-[8px] text-munch-text-muted -mt-4">by {ownerName}</div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
-      <div ref={buttonsRef} data-testid="action-panel" className="flex gap-2 mt-3">
-        <button
-          data-testid="btn-run-away"
-          disabled={!isActivePlayer}
-          onClick={onRunAway}
-        >
-          Run Away
-        </button>
-        <button
-          data-testid="btn-offer-help"
-          disabled={!isActivePlayer}
-          onClick={onOfferHelp}
-        >
-          Ask for Help
-        </button>
-      </div>
+      {/* Monster modifiers — cards applied to monsters */}
+      {combat.monsters.some((m) => m.modifiers.length > 0) && (
+        <div className="w-full">
+          <div className="text-[9px] font-bold text-red-400 uppercase tracking-wide mb-1 text-center">
+            Monster Modifiers
+          </div>
+          <div className="flex gap-2 flex-wrap justify-center">
+            {combat.monsters.flatMap((m) =>
+              m.modifiers.map((mod, mi) => {
+                const def = cardDb?.[mod.cardId];
+                return (
+                  <div
+                    key={`mod-${m.instanceId}-${mod.cardId}-${mi}`}
+                    className="flex flex-col items-center"
+                  >
+                    {def ? (
+                      <div className="transform scale-75 origin-top">
+                        <GameCard card={def} />
+                      </div>
+                    ) : (
+                      <div className="w-[90px] h-[125px] rounded-lg bg-red-500/10 border border-red-400/25 flex items-center justify-center p-1">
+                        <div className="text-[9px] text-red-400 font-bold text-center">{mod.cardId.replace(/_/g, ' ')}</div>
+                      </div>
+                    )}
+                    <div className="text-[8px] text-red-400/70 -mt-4">
+                      {mod.value >= 0 ? `+${mod.value}` : mod.value}
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Helpers */}
+      {combat.helpers.length > 0 && (
+        <div className="text-[10px] text-green-400">
+          Helpers: {combat.helpers.map((h) =>
+            `${players[h.playerId]?.name || h.playerId} (${h.agreedTreasureCount} treasures)`
+          ).join(', ')}
+        </div>
+      )}
+
+      {/* Power comparison hint */}
+      {combat.phase === 'ACTIVE' && (
+        <div className={`text-[10px] font-bold ${playerTotal > monsterTotal ? 'text-green-400' : 'text-red-400'}`}>
+          {playerTotal > monsterTotal
+            ? 'You are winning! Press Fight to claim victory.'
+            : playerTotal === monsterTotal
+              ? 'Tie — you will lose! Play cards or ask for help.'
+              : 'You are losing! Play cards, ask for help, or press Done to run.'}
+        </div>
+      )}
+
+      {/* Combat action buttons — for active player */}
+      {isActivePlayer && combat.phase === 'ACTIVE' && !helpTarget && (
+        <div className="flex gap-2.5 flex-wrap justify-center pt-1 border-t border-red-600/20 w-full">
+          <GoldButton
+            onClick={() => onAction({ type: 'RESOLVE_COMBAT' })}
+            data-testid="btn-fight"
+          >
+            {playerTotal > monsterTotal ? 'Fight!' : 'Done'}
+          </GoldButton>
+          {otherPlayerIds.length > 0 && (
+            <GoldButton
+              onClick={() => setHelpTarget(otherPlayerIds[0])}
+              data-testid="btn-ask-help"
+            >
+              Ask for Help
+            </GoldButton>
+          )}
+        </div>
+      )}
+
+      {/* Run attempt phase — player is not strong enough, must roll dice */}
+      {isActivePlayer && combat.phase === 'RUN_ATTEMPT' && (
+        <div className="flex flex-col items-center gap-2 pt-2 border-t border-red-600/20 w-full">
+          <div className="text-xs text-red-400 font-bold">
+            Not strong enough! Roll dice to run away.
+          </div>
+          <GoldButton
+            variant="danger"
+            onClick={() => onAction({ type: 'RUN_AWAY', diceRoll: Math.floor(Math.random() * 6) + 1 })}
+            data-testid="btn-run-away"
+          >
+            Roll Dice & Run
+          </GoldButton>
+        </div>
+      )}
+
+      {/* Non-active player sees waiting message during RUN_ATTEMPT */}
+      {!isActivePlayer && combat.phase === 'RUN_ATTEMPT' && (
+        <div className="text-[10px] text-red-400/70 animate-pulse pt-1">
+          {fighterName} must roll dice to escape...
+        </div>
+      )}
+
+      {/* Help offer UI — active player choosing who to ask and treasure count */}
+      {isActivePlayer && helpTarget && combat.phase === 'ACTIVE' && (
+        <div className="flex flex-col items-center gap-2 pt-2 border-t border-amber-600/20 w-full">
+          <div className="text-xs text-munch-gold font-semibold">Ask for Help</div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-munch-text-muted">Player:</span>
+            <select
+              value={helpTarget}
+              onChange={(e) => setHelpTarget(e.target.value)}
+              className="text-xs bg-munch-surface border border-munch-border rounded px-2 py-1 text-munch-text"
+            >
+              {otherPlayerIds.map((id) => (
+                <option key={id} value={id}>{players[id]?.name || id}</option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-munch-text-muted">Treasures offered:</span>
+            <input
+              type="number"
+              min={0}
+              max={totalTreasures}
+              value={treasureOffer}
+              onChange={(e) => setTreasureOffer(Math.max(0, Math.min(totalTreasures, Number(e.target.value))))}
+              className="w-12 text-xs text-center bg-munch-surface border border-munch-border rounded px-1 py-1 text-munch-text"
+            />
+            <span className="text-[10px] text-munch-text-muted">/ {totalTreasures}</span>
+          </div>
+          <div className="flex gap-2">
+            <GoldButton
+              onClick={() => {
+                onAction({ type: 'OFFER_HELP', targetPlayerId: helpTarget, treasureCount: treasureOffer });
+                setHelpTarget(null);
+              }}
+            >
+              Send Offer
+            </GoldButton>
+            <GoldButton variant="danger" onClick={() => setHelpTarget(null)}>
+              Cancel
+            </GoldButton>
+          </div>
+        </div>
+      )}
+
+      {/* Negotiation state — pending help offer */}
+      {isNegotiating && helpOffer && (
+        <div className="flex flex-col items-center gap-2 pt-2 border-t border-amber-600/20 w-full">
+          <div className="text-xs text-amber-400 font-semibold">
+            {players[helpOffer.fromPlayerId]?.name} offers {players[helpOffer.toPlayerId]?.name} help for {helpOffer.treasureCount} treasure{helpOffer.treasureCount !== 1 ? 's' : ''}
+          </div>
+
+          {amHelpTarget && (
+            <div className="flex gap-2">
+              <GoldButton onClick={() => onAction({ type: 'ACCEPT_HELP' })}>
+                Accept
+              </GoldButton>
+              <GoldButton variant="danger" onClick={() => onAction({ type: 'DECLINE_HELP' })}>
+                Decline
+              </GoldButton>
+            </div>
+          )}
+
+          {!amHelpTarget && helpOffer.fromPlayerId === selfPlayerId && (
+            <div className="text-[10px] text-munch-text-muted animate-pulse">
+              Waiting for response...
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

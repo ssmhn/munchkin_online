@@ -10,7 +10,7 @@ describe('Card system types', () => {
       type: 'EQUIPMENT',
       description: '+3 к бою',
       playableFrom: ['YOUR_TURN_PRECOMBAT', 'YOUR_TURN_COMBAT'],
-      slots: ['rightHand'],
+      slots: ['hand'],
       value: 300,
       effects: [{ type: 'COMBAT_BONUS', value: 3, target: 'SELF' }],
     };

@@ -16,7 +16,7 @@ const availableCards = [
 const mockIncomingOffer: HelpOffer = {
   fromPlayerId: 'p2',
   toPlayerId: 'p1',
-  rewardCardIds: ['sword-1', 'potion-1'],
+  treasureCount: 2,
 };
 
 export function TestNegotiationPage() {

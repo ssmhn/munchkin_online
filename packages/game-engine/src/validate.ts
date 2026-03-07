@@ -1,53 +1,144 @@
-import type { GameState } from '@munchkin/shared';
-import type { GameAction } from '@munchkin/shared';
-import { InvalidActionError } from './errors';
+import type { GameState, GameAction, GamePhase } from '@munchkin/shared';
+import { InvalidActionError } from './utils/errors';
 
-const PHASE_ALLOWED_ACTIONS: Record<string, string[]> = {
+// ---------------------------------------------------------------------------
+// Phase-allowed actions map
+// ---------------------------------------------------------------------------
+
+const PHASE_ACTIONS: Record<GamePhase, string[]> = {
   WAITING: [],
-  KICK_DOOR: ['KICK_DOOR', 'PLAY_CARD', 'EQUIP_ITEM', 'SELL_ITEMS'],
-  COMBAT: ['PLAY_CARD', 'OFFER_HELP', 'ACCEPT_HELP', 'DECLINE_HELP', 'COUNTER_OFFER', 'RUN_AWAY', 'REACT_PASS'],
-  LOOT_ROOM: ['PLAY_CARD', 'EQUIP_ITEM', 'END_TURN', 'SELL_ITEMS'],
-  LOOK_FOR_TROUBLE: ['PLAY_CARD', 'END_TURN', 'SELL_ITEMS'],
-  AFTER_COMBAT: ['END_TURN', 'EQUIP_ITEM', 'SELL_ITEMS'],
-  CHARITY: ['PLAY_CARD', 'CHOOSE_OPTION', 'END_TURN'],
-  END_TURN: ['END_TURN'],
+  KICK_DOOR: [
+    'KICK_DOOR',
+    'APPLY_REVEALED_CARD',
+    'PLAY_CARD',
+    'EQUIP_ITEM',
+    'UNEQUIP_ITEM',
+    'SELL_ITEMS',
+    'PUT_IN_BACKPACK',
+    'TAKE_FROM_BACKPACK',
+  ],
+  LOOT_ROOM: [
+    'LOOT',
+    'LOOK_FOR_TROUBLE',
+    'APPLY_REVEALED_CARD',
+    'PLAY_CARD',
+    'EQUIP_ITEM',
+    'UNEQUIP_ITEM',
+    'SELL_ITEMS',
+    'PUT_IN_BACKPACK',
+    'TAKE_FROM_BACKPACK',
+  ],
+  COMBAT: [
+    'PLAY_CARD',
+    'RESOLVE_COMBAT',
+    'OFFER_HELP',
+    'RUN_AWAY',
+    'END_NEGOTIATION',
+    'ACCEPT_HELP',
+    'DECLINE_HELP',
+    'COUNTER_OFFER',
+    'REACT_PASS',
+    'REACT_CARD',
+    'STEAL_ITEM',
+  ],
+  AFTER_COMBAT: [
+    'PLAY_CARD',
+    'EQUIP_ITEM',
+    'UNEQUIP_ITEM',
+    'APPLY_REVEALED_CARD',
+    'SELL_ITEMS',
+    'PUT_IN_BACKPACK',
+    'TAKE_FROM_BACKPACK',
+  ],
+  END_TURN: [
+    'END_TURN',
+    'PLAY_CARD',
+    'EQUIP_ITEM',
+    'UNEQUIP_ITEM',
+    'SELL_ITEMS',
+    'PUT_IN_BACKPACK',
+    'TAKE_FROM_BACKPACK',
+  ],
+  CHARITY: ['DISCARD_CARD', 'GIVE_CARD', 'SELL_ITEMS', 'PUT_IN_BACKPACK', 'TAKE_FROM_BACKPACK'],
   END_GAME: [],
 };
 
-const ALWAYS_ALLOWED: string[] = ['REACT_PASS', 'CHOOSE_OPTION'];
+// ---------------------------------------------------------------------------
+// Always-allowed actions (any phase, any player)
+// ---------------------------------------------------------------------------
 
-export function validateAction(state: GameState, action: GameAction, playerId: string): void {
-  if (state.phase === 'END_GAME') {
-    throw new InvalidActionError('Game is over');
-  }
+const ALWAYS_ALLOWED: Set<string> = new Set([
+  'REACT_PASS',
+  'REACT_CARD',
+  'CHOOSE_OPTION',
+  'ACCEPT_HELP',
+  'DECLINE_HELP',
+  'COUNTER_OFFER',
+]);
 
-  if (state.phase === 'WAITING') {
-    throw new InvalidActionError('Game has not started yet');
-  }
+// ---------------------------------------------------------------------------
+// Validation
+// ---------------------------------------------------------------------------
 
-  if (ALWAYS_ALLOWED.includes(action.type)) {
+export function validateAction(
+  state: GameState,
+  action: GameAction,
+  playerId: string,
+): void {
+  const actionType = action.type;
+
+  // Always-allowed actions bypass phase and active-player checks
+  if (ALWAYS_ALLOWED.has(actionType)) {
     return;
   }
 
-  const allowed = PHASE_ALLOWED_ACTIONS[state.phase] ?? [];
-  if (!allowed.includes(action.type)) {
+  // Check phase allows this action
+  const allowed = PHASE_ACTIONS[state.phase];
+  if (!allowed || !allowed.includes(actionType)) {
     throw new InvalidActionError(
-      `Action ${action.type} is not allowed in phase ${state.phase}`
+      `Action "${actionType}" is not allowed during phase "${state.phase}"`,
     );
   }
 
-  // Only active player can do non-reaction actions in most phases
-  const reactionActions = ['REACT_PASS', 'PLAY_CARD', 'ACCEPT_HELP', 'DECLINE_HELP', 'COUNTER_OFFER'];
-  if (state.phase === 'COMBAT' && reactionActions.includes(action.type)) {
-    // In combat, non-active players can react
-    return;
+  // Active player check (most actions require the acting player to be active)
+  if (actionType === 'STEAL_ITEM') {
+    // STEAL_ITEM can be done by non-active players during COMBAT
+    if (state.phase !== 'COMBAT') {
+      throw new InvalidActionError(
+        'STEAL_ITEM is only allowed during COMBAT phase',
+      );
+    }
+  } else if (actionType === 'PLAY_CARD' && state.phase === 'COMBAT') {
+    // During combat, non-active players can play cards with ANY_COMBAT or REACTION context
+    // (actual playableFrom check happens in the reducer)
+  } else if (playerId !== state.activePlayerId) {
+    throw new InvalidActionError(
+      `Only the active player ("${state.activePlayerId}") can perform "${actionType}"`,
+    );
   }
 
-  if (playerId !== state.activePlayerId && !ALWAYS_ALLOWED.includes(action.type)) {
-    // Allow PLAY_CARD in combat for non-active players (reactions)
-    if (state.phase === 'COMBAT' && action.type === 'PLAY_CARD') {
-      return;
+  // Additional validation for APPLY_REVEALED_CARD
+  if (actionType === 'APPLY_REVEALED_CARD') {
+    if (state.revealedCards.length === 0) {
+      throw new InvalidActionError(
+        'No revealed cards available to apply',
+      );
     }
-    throw new InvalidActionError('It is not your turn');
+
+    const applyAction = action as Extract<GameAction, { type: 'APPLY_REVEALED_CARD' }>;
+    const revealed = state.revealedCards.find(
+      (rc) => rc.cardId === applyAction.cardId,
+    );
+    if (!revealed) {
+      throw new InvalidActionError(
+        `Card "${applyAction.cardId}" is not among the revealed cards`,
+      );
+    }
+
+    if (revealed.ownerId !== playerId) {
+      throw new InvalidActionError(
+        'You can only apply your own revealed cards',
+      );
+    }
   }
 }

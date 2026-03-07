@@ -15,8 +15,8 @@ function countEquipped(player: PlayerState): number {
   if (eq.head) count++;
   if (eq.body) count++;
   if (eq.feet) count++;
-  if (eq.leftHand) count++;
-  if (eq.rightHand) count++;
+  if (eq.hand1) count++;
+  if (eq.hand2) count++;
   if (eq.twoHands) count++;
   count += eq.extras.length;
   return count;

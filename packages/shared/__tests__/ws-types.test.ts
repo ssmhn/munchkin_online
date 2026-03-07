@@ -49,7 +49,7 @@ describe('WS protocol types', () => {
           race: null,
           classes: [],
           hand: [],
-          equipped: { head: null, body: null, feet: null, leftHand: null, rightHand: null, twoHands: null, extras: [] },
+          equipped: { head: null, body: null, feet: null, hand: null, twoHands: null, extras: [] },
           carried: [],
           curses: [],
           isConnected: true,

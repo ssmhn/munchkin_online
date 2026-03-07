@@ -7,12 +7,12 @@ function buildCardDb(): CardDb {
   return {
     sword_of_slaying: {
       id: 'sword_of_slaying', name: 'Sword', deck: 'TREASURE', type: 'EQUIPMENT',
-      description: '+3', slots: ['rightHand'], value: 300,
+      description: '+3', slots: ['hand'], value: 300,
       effects: [{ type: 'COMBAT_BONUS', value: 3, target: 'SELF' }],
     },
     shield: {
       id: 'shield', name: 'Shield', deck: 'TREASURE', type: 'EQUIPMENT',
-      description: '+2', slots: ['leftHand'], value: 400,
+      description: '+2', slots: ['hand'], value: 400,
       effects: [{ type: 'COMBAT_BONUS', value: 2, target: 'SELF' }],
     },
     two_handed_sword: {
@@ -46,7 +46,7 @@ function buildCardDb(): CardDb {
 describe('Equipment system', () => {
   const cardDb = buildCardDb();
 
-  it('equip rightHand item from hand → slot filled, hand shrinks', () => {
+  it('equip hand item from hand → slot filled, hand shrinks', () => {
     const state = createGameState({
       players: {
         p1: createPlayer({ id: 'p1', hand: ['sword_of_slaying'] }),
@@ -56,7 +56,7 @@ describe('Equipment system', () => {
 
     const [next, events] = handleEquipItemFull(state, 'p1', 'sword_of_slaying', cardDb);
 
-    expect(next.players['p1'].equipped.rightHand).toBe('sword_of_slaying');
+    expect(next.players['p1'].equipped.hand).toBe('sword_of_slaying');
     expect(next.players['p1'].hand).not.toContain('sword_of_slaying');
     expect(events.some(e => e.type === 'ITEM_EQUIPPED')).toBe(true);
   });
@@ -69,7 +69,7 @@ describe('Equipment system', () => {
           hand: ['sword_of_slaying'],
           equipped: {
             head: null, body: null, feet: null,
-            leftHand: null, rightHand: 'other_sword', twoHands: null, extras: [],
+            hand: 'other_sword', twoHands: null, extras: [],
           },
         }),
         p2: createPlayer({ id: 'p2' }),
@@ -105,7 +105,7 @@ describe('Equipment system', () => {
           hand: ['big_armor'],
           equipped: {
             head: null, body: null, feet: null,
-            leftHand: null, rightHand: null, twoHands: 'two_handed_sword', extras: [],
+            hand: null, twoHands: 'two_handed_sword', extras: [],
           },
         }),
         p2: createPlayer({ id: 'p2' }),
@@ -125,7 +125,7 @@ describe('Equipment system', () => {
           hand: ['big_armor'],
           equipped: {
             head: null, body: null, feet: null,
-            leftHand: null, rightHand: null, twoHands: 'two_handed_sword', extras: [],
+            hand: null, twoHands: 'two_handed_sword', extras: [],
           },
         }),
         p2: createPlayer({ id: 'p2' }),

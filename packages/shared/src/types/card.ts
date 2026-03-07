@@ -10,8 +10,6 @@ export type CardType =
   | 'MODIFIER'
   | 'SPECIAL';
 
-export type CardSubtype = string;
-
 export type PlayContext =
   | 'YOUR_TURN_PRECOMBAT'
   | 'YOUR_TURN_COMBAT'
@@ -28,13 +26,15 @@ export type EffectTarget =
   | 'HIGHEST_LEVEL'
   | 'CHOSEN_PLAYER';
 
-export type ItemFilter = {
+export interface ItemFilter {
   slot?: EquipSlot;
   isBig?: boolean;
   maxValue?: number;
-};
+}
 
-// --- Card Conditions ---
+// ---------------------------------------------------------------------------
+// Card conditions
+// ---------------------------------------------------------------------------
 
 export type CardCondition =
   | { type: 'PLAYER_CLASS'; class: PlayerClass }
@@ -46,11 +46,14 @@ export type CardCondition =
   | { type: 'IN_COMBAT' }
   | { type: 'ITEM_EQUIPPED'; slot: EquipSlot }
   | { type: 'HAS_STATUS'; status: StatusEffect }
+  | { type: 'GAME_MODE'; mode: 'EPIC' | 'NORMAL' }
   | { type: 'AND'; conditions: CardCondition[] }
   | { type: 'OR'; conditions: CardCondition[] }
   | { type: 'NOT'; condition: CardCondition };
 
-// --- Card Effects ---
+// ---------------------------------------------------------------------------
+// Card effects
+// ---------------------------------------------------------------------------
 
 export type CardEffect =
   // Combat bonuses
@@ -100,7 +103,9 @@ export type CardEffect =
   // Conditional meta-effect
   | { type: 'CONDITIONAL'; condition: CardCondition; then: CardEffect[]; else?: CardEffect[] };
 
-// --- Card Triggers ---
+// ---------------------------------------------------------------------------
+// Card triggers
+// ---------------------------------------------------------------------------
 
 export type TriggerEvent =
   | 'ON_EQUIP'
@@ -119,28 +124,34 @@ export interface CardTrigger {
   effects: CardEffect[];
 }
 
-// --- Card Requirements ---
+// ---------------------------------------------------------------------------
+// Card requirements
+// ---------------------------------------------------------------------------
 
 export interface CardRequirement {
   type: 'CLASS' | 'RACE' | 'GENDER' | 'NOT_CLASS' | 'NOT_RACE';
   value: string;
 }
 
-// --- Bad Stuff ---
+// ---------------------------------------------------------------------------
+// Bad stuff
+// ---------------------------------------------------------------------------
 
 export interface BadStuff {
   description?: string;
   effects: CardEffect[];
 }
 
-// --- Card Definition ---
+// ---------------------------------------------------------------------------
+// Card definition
+// ---------------------------------------------------------------------------
 
 export interface CardDefinition {
   id: string;
   name: string;
   deck: 'DOOR' | 'TREASURE';
   type: CardType;
-  subtype?: CardSubtype;
+  subtype?: string;
   set?: string;
   description: string;
   imageUrl?: string;
@@ -158,6 +169,8 @@ export interface CardDefinition {
   tags?: MonsterTag[];
 }
 
-// --- Card Database ---
+// ---------------------------------------------------------------------------
+// Card database
+// ---------------------------------------------------------------------------
 
 export type CardDb = Record<string, CardDefinition>;

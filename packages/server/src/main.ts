@@ -12,7 +12,7 @@ import { PgUserStore } from './store/pg-user-store';
 import { RedisGameStore } from './store/redis-game-store';
 import { GameRoom } from './game/game-room';
 import { projectStateForPlayer } from './game/state-projector';
-import type { CardDb, GameState, PlayerState, EquippedItems } from '@munchkin/shared';
+import type { CardDb, GameState, PlayerState, EquippedItems, GameConfig } from '@munchkin/shared';
 
 // Load .env from project root
 config({ path: path.resolve(__dirname, '../../../.env') });
@@ -59,7 +59,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 function emptyEquipped(): EquippedItems {
-  return { head: null, body: null, feet: null, leftHand: null, rightHand: null, twoHands: null, extras: [] };
+  return { head: null, body: null, feet: null, hand1: null, hand2: null, twoHands: null, extras: [] };
 }
 
 async function initGame(roomId: string, players: { id: string; name: string }[]) {
@@ -96,9 +96,22 @@ async function initGame(roomId: string, players: { id: string; name: string }[])
       equipped: emptyEquipped(),
       carried: [],
       curses: [],
-      isConnected: false,
+      isConnected: true,
+      statuses: [],
+      backpack: [],
     };
   }
+
+  const gameConfig: GameConfig = {
+    winLevel: 10,
+    epicMode: false,
+    allowedSets: ['base'],
+    maxPlayers: 6,
+    enableBackpack: true,
+    backpackSize: 5,
+    reactionTimeoutMs: 15000,
+    revealTimeoutMs: 60000,
+  };
 
   const state: GameState = {
     id: roomId,
@@ -115,6 +128,8 @@ async function initGame(roomId: string, players: { id: string; name: string }[])
     pendingActions: [],
     log: [],
     winner: null,
+    revealedCards: [],
+    config: gameConfig,
   };
 
   await gameStore.setState(roomId, state, 1);
@@ -133,6 +148,11 @@ const { app, router } = createServer({ port, jwtSecret }, {
       gameRoom.addClient(client);
       gameStore.getState(client.roomId).then(stored => {
         if (stored) {
+          const player = stored.state.players[client.playerId];
+          if (player) {
+            player.isConnected = true;
+            gameStore.setState(client.roomId, stored.state, stored.version);
+          }
           const projected = projectStateForPlayer(stored.state, client.playerId);
           client.send({
             type: 'FULL_SYNC',

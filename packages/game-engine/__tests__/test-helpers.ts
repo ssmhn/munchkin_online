@@ -5,8 +5,7 @@ export function createDefaultEquipped(): EquippedItems {
     head: null,
     body: null,
     feet: null,
-    leftHand: null,
-    rightHand: null,
+    hand: null,
     twoHands: null,
     extras: [],
   };

@@ -6,7 +6,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 300,
     "effects": [
@@ -25,7 +25,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для женщин.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "requirements": [
@@ -50,7 +50,7 @@
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Дварфов.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 600,
     "requirements": [
@@ -75,7 +75,7 @@
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Клирика.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 600,
     "requirements": [
@@ -100,7 +100,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Эльфов.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 600,
     "requirements": [
@@ -125,7 +125,7 @@
     "type": "EQUIPMENT",
     "description": "+5 к бою. Только для Волшебника.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 800,
     "requirements": [
@@ -229,7 +229,7 @@
     "type": "EQUIPMENT",
     "description": "+1 к бою.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 100,
     "effects": [
@@ -248,7 +248,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Вора.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "requirements": [
@@ -273,7 +273,7 @@
     "type": "EQUIPMENT",
     "description": "+2 к бою. Не для Вора.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "requirements": [
@@ -298,7 +298,7 @@
     "type": "EQUIPMENT",
     "description": "+4 к бою. Только для Воина.",
     "slots": [
-      "leftHand"
+      "hand"
     ],
     "value": 600,
     "requirements": [
@@ -323,7 +323,7 @@
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
     "slots": [
-      "leftHand"
+      "hand"
     ],
     "value": 400,
     "effects": [
@@ -599,7 +599,7 @@
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "effects": [
@@ -693,7 +693,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Хоббитов.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "requirements": [
@@ -787,7 +787,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Большой предмет.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 300,
     "isBig": true,
@@ -807,7 +807,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для мужчин.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "requirements": [
@@ -832,7 +832,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Только для Клирика.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "requirements": [
@@ -857,7 +857,7 @@
     "type": "EQUIPMENT",
     "description": "+3 к бою. Большой. Только для Хоббитов.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 400,
     "isBig": true,
@@ -883,7 +883,7 @@
     "type": "EQUIPMENT",
     "description": "+2 к бою.",
     "slots": [
-      "rightHand"
+      "hand"
     ],
     "value": 200,
     "effects": [

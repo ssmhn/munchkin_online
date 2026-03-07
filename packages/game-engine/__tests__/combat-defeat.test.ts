@@ -107,8 +107,7 @@ describe('Run Away / Bad Stuff', () => {
             head: 'helmet_1',
             body: 'armor_1',
             feet: null,
-            leftHand: null,
-            rightHand: 'sword_1',
+            hand: 'sword_1',
             twoHands: null,
             extras: [],
           },
@@ -133,7 +132,7 @@ describe('Run Away / Bad Stuff', () => {
     expect(next.players['p1'].level).toBe(1);
     expect(next.players['p1'].equipped.head).toBeNull();
     expect(next.players['p1'].equipped.body).toBeNull();
-    expect(next.players['p1'].equipped.rightHand).toBeNull();
+    expect(next.players['p1'].equipped.hand).toBeNull();
     expect(next.players['p1'].hand).toHaveLength(0);
     expect(next.discardTreasure).toContain('helmet_1');
     expect(next.discardTreasure).toContain('armor_1');

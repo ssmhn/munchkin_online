@@ -30,6 +30,8 @@ export function ChooseTargetOverlay({ action, onChoose }: Props) {
   const title = (() => {
     switch (action.type) {
       case 'CHOOSE_MONSTER_TO_CLONE': return 'Choose a monster to clone';
+      case 'CHOOSE_MONSTER_FROM_HAND': return 'Choose a monster from your hand';
+      case 'CHOOSE_CARDS_TO_DISCARD': return 'Choose a card to discard';
       case 'CHOOSE_PLAYER': return 'Choose a player';
       case 'CHOOSE_ITEM_FROM_PLAYER': return 'Choose an item';
       default: return 'Make a choice';

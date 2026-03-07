@@ -16,7 +16,7 @@ function buildCardDb(): CardDb {
       deck: 'TREASURE',
       type: 'EQUIPMENT',
       description: '+3',
-      slots: ['rightHand'],
+      slots: ['hand'],
       value: 300,
       effects: [{ type: 'COMBAT_BONUS', value: 3, target: 'SELF' }],
     },
@@ -107,7 +107,7 @@ describe('Combat system', () => {
           level: 5,
           equipped: {
             head: null, body: null, feet: null,
-            leftHand: null, rightHand: 'sword_of_slaying', twoHands: null,
+            hand: 'sword_of_slaying', twoHands: null,
             extras: [],
           },
         }),
@@ -140,7 +140,7 @@ describe('Combat system', () => {
           level: 5,
           equipped: {
             head: null, body: null, feet: null,
-            leftHand: null, rightHand: 'sword_of_slaying', twoHands: null,
+            hand: 'sword_of_slaying', twoHands: null,
             extras: [],
           },
         }),
@@ -203,7 +203,7 @@ describe('Combat system', () => {
           classes: ['WARRIOR'],
           equipped: {
             head: 'helmet_of_courage', body: null, feet: null,
-            leftHand: null, rightHand: null, twoHands: null,
+            hand: null, twoHands: null,
             extras: [],
           },
         }),
@@ -236,7 +236,7 @@ describe('Combat system', () => {
           classes: ['THIEF'],
           equipped: {
             head: 'helmet_of_courage', body: null, feet: null,
-            leftHand: null, rightHand: null, twoHands: null,
+            hand: null, twoHands: null,
             extras: [],
           },
         }),

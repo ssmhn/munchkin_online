@@ -19,9 +19,10 @@ export function TestCombatPage() {
     <div>
       <CombatZone
         combat={combat}
+        cardDb={null}
+        players={{ p1: { name: 'Player 1' } }}
         isActivePlayer={false}
-        playerPower={3}
-        monsterPower={4}
+        onAction={() => {}}
       />
     </div>
   );

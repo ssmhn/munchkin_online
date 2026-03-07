@@ -3,7 +3,7 @@ import { ReactionBar } from '../components/ReactionBar';
 import type { ReactionWindow } from '@munchkin/shared';
 
 const mockWindow: ReactionWindow = {
-  trigger: { type: 'DOOR_OPENED', cardId: 'monster_orc' },
+  trigger: { type: 'DOOR_REVEALED', cardId: 'monster_orc' },
   timeoutMs: 10000,
   responses: {
     p1: { playerId: 'p1', passed: false },

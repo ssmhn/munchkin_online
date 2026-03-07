@@ -6,21 +6,27 @@ export type Race = 'ELF' | 'DWARF' | 'HALFLING' | 'HUMAN';
 
 export type PlayerClass = 'WARRIOR' | 'WIZARD' | 'CLERIC' | 'THIEF';
 
-export type EquipSlot = 'head' | 'body' | 'feet' | 'leftHand' | 'rightHand' | 'twoHands';
+export type EquipSlot = 'head' | 'body' | 'feet' | 'hand' | 'twoHands';
 
 export type MonsterTag = 'UNDEAD' | 'DEMON' | 'DRAGON';
 
-export type StatusEffect = 'IGNORE_WEAPON_RESTRICTIONS' | 'EXTRA_BIG_ITEM' | 'ESCAPE_BONUS';
+export type StatusEffect =
+  | 'IGNORE_WEAPON_RESTRICTIONS'
+  | 'EXTRA_BIG_ITEM'
+  | 'ESCAPE_BONUS'
+  | 'HALFLING_ESCAPE_BONUS'
+  | 'WIZARD_CURSE_CANCEL'
+  | 'CLERIC_RESURRECTION_AVAILABLE'
+  | 'CARRY_EXTRA_BIG_ITEM';
 
 export type GamePhase =
   | 'WAITING'
   | 'KICK_DOOR'
   | 'LOOT_ROOM'
-  | 'LOOK_FOR_TROUBLE'
-  | 'CHARITY'
   | 'COMBAT'
   | 'AFTER_COMBAT'
   | 'END_TURN'
+  | 'CHARITY'
   | 'END_GAME';
 
 export type CombatPhase =
@@ -29,6 +35,36 @@ export type CombatPhase =
   | 'ACTIVE'
   | 'RUN_ATTEMPT'
   | 'RESOLVING';
+
+// ---------------------------------------------------------------------------
+// Config
+// ---------------------------------------------------------------------------
+
+export interface GameConfig {
+  winLevel: number;
+  epicMode: boolean;
+  allowedSets: string[];
+  maxPlayers: number;
+  enableBackpack: boolean;
+  backpackSize: number;
+  reactionTimeoutMs: number;
+  revealTimeoutMs: number;
+}
+
+// ---------------------------------------------------------------------------
+// Revealed card (face-up on table, not yet applied)
+// ---------------------------------------------------------------------------
+
+export interface RevealedCard {
+  cardId: CardId;
+  ownerId: string;
+  source: 'KICK_DOOR' | 'LOOT_DOOR' | 'LOOT_TREASURE' | 'AFTER_COMBAT_TREASURE';
+  revealedAt: number;
+}
+
+// ---------------------------------------------------------------------------
+// Game state
+// ---------------------------------------------------------------------------
 
 export interface GameState {
   id: string;
@@ -45,7 +81,13 @@ export interface GameState {
   pendingActions: PendingAction[];
   log: LogEntry[];
   winner: string | null;
+  revealedCards: RevealedCard[];
+  config: GameConfig;
 }
+
+// ---------------------------------------------------------------------------
+// Player state
+// ---------------------------------------------------------------------------
 
 export interface PlayerState {
   id: string;
@@ -59,17 +101,23 @@ export interface PlayerState {
   carried: CardId[];
   curses: ActiveCurse[];
   isConnected: boolean;
+  statuses: StatusEffect[];
+  backpack: CardId[];
 }
 
 export interface EquippedItems {
   head: CardId | null;
   body: CardId | null;
   feet: CardId | null;
-  leftHand: CardId | null;
-  rightHand: CardId | null;
+  hand1: CardId | null;
+  hand2: CardId | null;
   twoHands: CardId | null;
   extras: CardId[];
 }
+
+// ---------------------------------------------------------------------------
+// Combat state
+// ---------------------------------------------------------------------------
 
 export interface CombatState {
   phase: CombatPhase;
@@ -86,7 +134,7 @@ export interface CombatState {
 export interface HelpOffer {
   fromPlayerId: string;
   toPlayerId: string;
-  rewardCardIds: CardId[];
+  treasureCount: number;
 }
 
 export interface CombatMonster {
@@ -102,18 +150,28 @@ export interface MonsterModifier {
 
 export interface CombatHelper {
   playerId: string;
-  agreedReward: CardId[];
+  agreedTreasureCount: number;
 }
 
 export interface AppliedCard {
   cardId: CardId;
   playerId: string;
+  targetPlayerId?: string;
+  targetMonsterId?: string;
 }
+
+// ---------------------------------------------------------------------------
+// Active curse
+// ---------------------------------------------------------------------------
 
 export interface ActiveCurse {
   curseId: string;
   cardId: CardId;
 }
+
+// ---------------------------------------------------------------------------
+// Reaction window
+// ---------------------------------------------------------------------------
 
 export interface ReactionWindow {
   trigger: ReactionTrigger;
@@ -123,10 +181,11 @@ export interface ReactionWindow {
 }
 
 export type ReactionTrigger =
-  | { type: 'DOOR_OPENED'; cardId: CardId }
+  | { type: 'DOOR_REVEALED'; cardId: CardId }
   | { type: 'COMBAT_STARTED'; monsterId: CardId }
   | { type: 'CARD_PLAYED'; cardId: CardId; playerId: string }
-  | { type: 'COMBAT_RESULT'; result: 'WIN' | 'LOSE' };
+  | { type: 'COMBAT_RESULT'; result: 'WIN' | 'LOSE' }
+  | { type: 'LOOK_FOR_TROUBLE' };
 
 export interface ReactionResponse {
   playerId: string;
@@ -139,11 +198,28 @@ export interface StackItem {
   playerId: string;
 }
 
+// ---------------------------------------------------------------------------
+// Pending actions
+// ---------------------------------------------------------------------------
+
+export type PendingActionType =
+  | 'CHOOSE_MONSTER_TO_CLONE'
+  | 'CHOOSE_MONSTER_FROM_HAND'
+  | 'CHOOSE_PLAYER'
+  | 'CHOOSE_ITEM_FROM_PLAYER'
+  | 'CHOOSE_CARDS_TO_DISCARD'
+  | 'WIZARD_CANCEL_CURSE'
+  | 'HALFLING_ESCAPE_BONUS_CHOICE'
+  | 'RESPOND_TO_HELP_OFFER'
+  | 'CLERIC_RESURRECTION';
+
 export interface PendingAction {
-  type: 'CHOOSE_MONSTER_TO_CLONE' | 'CHOOSE_PLAYER' | 'CHOOSE_ITEM_FROM_PLAYER';
+  type: PendingActionType;
   playerId: string;
   timeoutMs: number;
   options: PendingActionOption[];
+  count?: number;
+  availableCards?: CardId[];
 }
 
 export interface PendingActionOption {
@@ -151,6 +227,10 @@ export interface PendingActionOption {
   label: string;
   cardId?: string;
 }
+
+// ---------------------------------------------------------------------------
+// Log entry
+// ---------------------------------------------------------------------------
 
 export interface LogEntry {
   timestamp: number;

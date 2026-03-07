@@ -26,7 +26,7 @@ import {
 
 function playSoundForEvent(event: GameEvent) {
   switch (event.type) {
-    case 'DOOR_KICKED':
+    case 'CARD_REVEALED':
       playDoorKick();
       break;
     case 'CARD_PLAYED':

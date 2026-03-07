@@ -3,7 +3,7 @@ import { projectStateForPlayer } from '../src/game/state-projector';
 import type { GameState, PlayerState, EquippedItems } from '@munchkin/shared';
 
 function createEquipped(): EquippedItems {
-  return { head: null, body: null, feet: null, leftHand: null, rightHand: null, twoHands: null, extras: [] };
+  return { head: null, body: null, feet: null, hand: null, twoHands: null, extras: [] };
 }
 
 function createPlayer(id: string, hand: string[]): PlayerState {
