@@ -1,5 +1,0 @@
-- add a filter that the test routes are not available on the product
-- voice chat in game
-- add sounds
-- add a field to the map from which set is the map so that you can see the set and the corresponding maps in the admin panel in the maps section
-- admin panel for adding/editing maps, monitoring sessions, users, etc.
